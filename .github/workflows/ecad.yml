@@ -1,0 +1,125 @@
+name: ecad
+
+on:
+  push:
+    paths:
+      - "ecad/**"
+      - ".github/workflows/ecad.yml"
+  pull_request:
+    paths:
+      - "ecad/**"
+      - ".github/workflows/ecad.yml"
+  workflow_dispatch:
+
+jobs:
+  mushroom-blade-atmega328p:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Create output directory
+        run: mkdir -p build
+
+      - name: Generate fabrication files
+        uses: nerdyscout/kicad-exports@v2.2
+        with:
+          config: ecad/jlcpcb.kibot.yml
+          dir: build
+          board: ecad/mushroom-blade-atmega328p/mushroom-blade-atmega328p.kicad_pcb
+          schema: ecad/mushroom-blade-atmega328p/mushroom-blade-atmega328p.sch
+
+      - name: Create gerber file archive
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -jr build/upload/gerber.zip build/gerber
+
+      - name: Upload fabrication files
+        uses: actions/upload-artifact@v2
+        with:
+          name: mushroom-blade-atmega328p
+          path: build/upload/*
+
+  mushroom-backplane-dm28:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Create output directory
+        run: mkdir -p build
+
+      - name: Generate fabrication files
+        uses: nerdyscout/kicad-exports@v2.2
+        with:
+          config: ecad/jlcpcb.kibot.yml
+          dir: build
+          board: ecad/mushroom-backplane-dm28/mushroom-backplane-dm28.kicad_pcb
+          schema: ecad/mushroom-backplane-dm28/mushroom-backplane-dm28.sch
+
+      - name: Create gerber file archive
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -jr build/upload/gerber.zip build/gerber
+
+      - name: Upload fabrication files
+        uses: actions/upload-artifact@v2
+        with:
+          name: mushroom-backplane-dm28
+          path: build/upload/*
+
+  mushroom-backplane-tps54560:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Create output directory
+        run: mkdir -p build
+
+      - name: Generate fabrication files
+        uses: nerdyscout/kicad-exports@v2.2
+        with:
+          config: ecad/jlcpcb.kibot.yml
+          dir: build
+          board: ecad/mushroom-backplane-tps54560/mushroom-backplane-tps54560.kicad_pcb
+          schema: ecad/mushroom-backplane-tps54560/mushroom-backplane-tps54560.sch
+
+      - name: Create gerber file archive
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -jr build/upload/gerber.zip build/gerber
+
+      - name: Upload fabrication files
+        uses: actions/upload-artifact@v2
+        with:
+          name: mushroom-backplane-tps54560
+          path: build/upload/*
+
+  mushroom-backplane-tps54561:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Create output directory
+        run: mkdir -p build
+
+      - name: Generate fabrication files
+        uses: nerdyscout/kicad-exports@v2.2
+        with:
+          config: ecad/jlcpcb.kibot.yml
+          dir: build
+          board: ecad/mushroom-backplane-tps54561/mushroom-backplane-tps54561.kicad_pcb
+          schema: ecad/mushroom-backplane-tps54561/mushroom-backplane-tps54561.sch
+
+      - name: Create gerber file archive
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -jr build/upload/gerber.zip build/gerber
+
+      - name: Upload fabrication files
+        uses: actions/upload-artifact@v2
+        with:
+          name: mushroom-backplane-tps54561
+          path: build/upload/*

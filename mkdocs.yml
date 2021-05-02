@@ -1,0 +1,23 @@
+site_name: Mycelium
+site_dir: public
+site_url: https://mycelium.optrin.io
+repo_url: https://github.com/nicklasfrahm/mycelium
+nav:
+  - Home: index.md
+  - Mycelium:
+      - Overview: mycelium-overview.md
+  - Mushroom:
+      - Overview: mushroom-overview.md
+      - Blade (ATmega328P): mushroom-blade-atmega328p.md
+theme:
+  name: material
+  custom_dir: web/template
+  features:
+    - navigation.instant
+    - navigation.tabs
+  palette:
+    primary: teal
+markdown_extensions:
+  - mdx_truly_sane_lists
+extra_css:
+  - assets/css/home.css

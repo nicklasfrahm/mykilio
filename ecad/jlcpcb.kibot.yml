@@ -1,0 +1,123 @@
+kibot:
+  version: 1
+
+preflight:
+  update_xml: yes
+  run_drc: yes
+  run_erc: yes
+  check_zone_fills: yes
+  ignore_unconnected: no
+  filters:
+    - filter: "Footprint has no courtyard defined"
+      error: "46"
+      regex: "Footprint LOGO"
+
+outputs:
+  - name: "gerber"
+    comment: "Plot gerber files for PCB fabrication."
+    type: "gerber"
+    dir: "gerber"
+    options:
+      create_gerber_job_file: yes
+      dnf_filter: ""
+      exclude_edge_layer: yes
+      exclude_pads_from_silkscreen: yes
+      force_plot_invisible_refs_vals: no
+      gerber_job_file: "%f-%i.%x"
+      gerber_precision: 4.6
+      line_width: 0.15
+      output: "%f-%i.%x"
+      plot_footprint_refs: yes
+      plot_footprint_values: no
+      plot_sheet_reference: no
+      subtract_mask_from_silk: yes
+      tent_vias: yes
+      use_aux_axis_as_origin: no
+      use_gerber_net_attributes: no
+      use_gerber_x2_attributes: no
+      use_protel_extensions: yes
+    layers:
+      - "Edge.Cuts"
+      - "copper"
+      - "F.Mask"
+      - "B.Mask"
+      - "F.SilkS"
+      - "B.SilkS"
+
+  - name: "drill"
+    comment: "Generate drill file for fabrication process."
+    type: "excellon"
+    dir: "gerber"
+    options:
+      map:
+        output: "%f-%i.%x"
+        type: "gerber"
+      metric_units: yes
+      minimal_header: no
+      mirror_y_axis: no
+      output: "%f-%i.%x"
+      pth_and_npth_single_file: no
+      use_aux_axis_as_origin: no
+
+  - name: "bom"
+    comment: "Generate bill of materials for manufacturing."
+    type: "bom"
+    dir: "upload"
+    options:
+      output: "bill-of-materials.csv"
+      columns:
+        - field: Value
+          name: Comment
+        - field: References
+          name: Designator
+        - field: Footprint
+        - field: LCSC
+      component_aliases:
+        - ["r", "r_small", "res", "resistor"]
+        - ["l", "l_small", "inductor"]
+        - ["c", "c_small", "cap", "capacitor"]
+        - ["sw", "switch"]
+        - ["zener", "zenersmall"]
+        - ["d", "diode", "d_small"]
+        - ["q", "transistor"]
+      csv:
+        hide_pcb_info: yes
+        hide_stats_info: yes
+        quote_all: yes
+        separator: ","
+      format: "CSV"
+      group_connectors: no
+      group_fields:
+        - "Part"
+        - "Part Lib"
+        - "Value"
+        - "Footprint"
+        - "Footprint Lib"
+        - "LCSC"
+      use_alt: no
+      ignore_dnf: yes
+      ref_separator: ","
+
+  - name: "cpl"
+    comment: "Generate a component placement list for automated PCB assembly."
+    type: "position"
+    dir: "upload"
+    options:
+      format: CSV
+      output: "component-placement-list.csv"
+      units: millimeters
+      separate_files_for_front_and_back: no
+      only_smd: no
+      columns:
+        - id: Ref
+          name: Designator
+        - id: Val
+        - id: Package
+        - id: PosX
+          name: "Mid X"
+        - id: PosY
+          name: "Mid Y"
+        - id: Rot
+          name: Rotation
+        - id: Side
+          name: Layer

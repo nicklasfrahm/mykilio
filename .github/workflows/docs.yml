@@ -1,0 +1,56 @@
+name: docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/**
+      - web/template/**
+      - mkdocs.yml
+      - requirements.txt
+      - .github/workflows/docs.yml
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - main
+    paths:
+      - docs/**
+      - web/template/**
+      - mkdocs.yml
+      - requirements.txt
+      - .github/workflows/docs.yml
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Configure Python runtime
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build documentation
+        run: mkdocs build
+
+      - name: Configure documentation domain
+        run: echo {{ secrets.DOCS_DOMAIN }} > public/CNAME
+
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: docs
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

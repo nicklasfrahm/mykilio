@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name Mycelium)(type KiCad)(uri ../Mycelium.pretty)(options "")(descr "The library for custom components used for this project."))
+)

@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+{% block tabs %}
+  {{ super() }}
+  <section class="home">
+    <img class="home__background" src="assets/img/home-background.svg" draggable="false" />
+    <div class="home__wrapper">
+      <div class="home__main">
+        <div class="home__content">
+          <h1>Manage and monitor your metal at scale</h1>
+          <p>
+            The Mycelium API enables you to scale faster,
+            gain valuable real-time insights and provides
+            a platform for continuous improvement in a
+            world of ever-changing requirements.
+          </p>
+          <a href="/mycelium-overview/" class="home__link">Learn more</a>
+        </div>
+        <img class="home__artwork" src="assets/img/home-artwork.svg" draggable="false" />
+      </div>
+    </div>
+  </section>
+{% endblock %}
+{% block content %}{% endblock %}
+{% block footer %}{% endblock %}

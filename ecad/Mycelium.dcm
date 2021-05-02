@@ -1,0 +1,11 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP TPS54560
+F https://datasheet.lcsc.com/lcsc/1810131310_Texas-Instruments-TPS54560DDAR_C31966.pdf
+$ENDCMP
+#
+$CMP TPS54561
+F https://datasheet.lcsc.com/lcsc/1809032041_Texas-Instruments-TPS54561DPRR_C180369.pdf
+$ENDCMP
+#
+#End Doc Library

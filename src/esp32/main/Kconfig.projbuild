@@ -1,0 +1,30 @@
+menu "I2C"
+
+    config I2C_CONTROLLER_SCL
+        int "SCL GPIO number"
+        default 6 if IDF_TARGET_ESP32C3
+        default 22 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+        help
+            GPIO number for I2C controller clock line.
+        
+    config I2C_CONTROLLER_SDA
+        int "SDA GPIO number"
+        default 5 if IDF_TARGET_ESP32C3
+        default 21 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+        help
+            GPIO number for I2C controller data line.
+        
+    config I2C_CONTROLLER_PORT_NUM
+        int "Port number"
+        default 1 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+        default 0 if IDF_TARGET_ESP32C3
+        help
+            Port number for I2C controller device.
+        
+    config I2C_CONTROLLER_FREQUENCY
+        int "Controller clock frequency"
+        default 100000
+        help
+            TWI speed of controller device.
+
+endmenu
