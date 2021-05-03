@@ -45,7 +45,9 @@ jobs:
         run: mkdocs build
 
       - name: Configure documentation domain
-        run: echo {{ secrets.DOCS_DOMAIN }} > public/CNAME
+        run: echo $DOCS_DOMAIN > public/CNAME
+        env:
+          DOCS_DOMAIN: ${{ secrets.DOCS_DOMAIN }}
 
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v2
