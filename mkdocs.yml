@@ -6,8 +6,10 @@ nav:
   - Home: index.md
   - Mycelium:
       - Overview: mycelium-overview.md
+      - Miscellaneous: mycelium-miscellaneous.md
   - Mushroom:
       - Overview: mushroom-overview.md
+      - Management interface: mushroom-management-interface.md
       - Blade (ATmega328P): mushroom-blade-atmega328p.md
 theme:
   name: material

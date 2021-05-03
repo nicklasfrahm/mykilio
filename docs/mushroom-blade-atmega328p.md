@@ -2,7 +2,7 @@
 
 This variant of the blade is based on the very popular ATmega328P microcontroller that is also used in the Arduino Uno and the Arduino Nano. Due to its usage as a microcontroller on these popular developer boards, it has a well-established online community, which provides a lot of resources on how to develop applications with this microcontroller.
 
-## Schematic
+## Electronics
 
 The electronic schematic of the PCB can be found [here](https://github.com/nicklasfrahm/mycelium/blob/main/docs/mushroom-blade-atmega328p.pdf).
 
@@ -14,12 +14,6 @@ To build the firmware, start the development container and run:
 $ make
 ```
 
-To clean the build artifacts, run:
-
-```bash
-$ make clean
-```
-
 If you are using Windows or WSL 2, you can download [AVRDUDE for Windows](https://github.com/mariusgreuel/avrdude). Install it by placing the files from the archive in `C:\Windows\System32` and renaming `avrdude.exe` to `avrdude`. Now you can open your repository folder in Git Bash or WSL 2 and run:
 
 ```bash
@@ -27,6 +21,12 @@ $ PORT=COM3 make flash
 ```
 
 **Note:** You can't flash from within the development container. So make sure to run `make` in your development container first before flashing the firmware with `make flash` from outside your container.
+
+To clean the build artifacts, run:
+
+```bash
+$ make clean
+```
 
 ### Connection issues
 
@@ -38,7 +38,7 @@ If you don't feel comfortable updating the bootloader and you are sure that the 
 $ PORT=COM3 BAUD=57600 make flash
 ```
 
-## Bootloader
+### Bootloader
 
 If the board is factory-new, it does not have a bootloader installed. Therefore it is not possible to install any firmware via the USB to serial interface. The bootloader can be installed via the in-circuit serial programming (ICSP) header by the help of an in-system programmer.
 

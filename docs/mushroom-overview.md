@@ -1,6 +1,6 @@
 # Mushroom
 
-Mushroom is a open source and open hardware blade server. It can take several single board computers that are pin-compatible with the Raspberry Pi and follow the hardware dimensions of the Model B variant of the Raspberry Pi.
+Mushroom is a open source, open hardware blade server. It can take several single board computers that are pin-compatible with the Raspberry Pi and follow the hardware dimensions of the Model B variant of the Raspberry Pi.
 
 ## Features ✨
 
