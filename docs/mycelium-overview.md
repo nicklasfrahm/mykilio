@@ -8,6 +8,14 @@ This section describes the general concepts and structures behind the API. **Myc
 
 Based on which protocol is used, the API groups are mapped to the protocol's native mechanism of representing hierarchies. In the case of HTTP, API groups are mapped to URLs, such as `/apis/baremetal.optrin.io/v1alpha1`. Very similarly, the API groups are mapped to topics in MQTT, such as `apis/baremetal.optrin.io/v1alpha1`. Please note that there is no leading forward slash (`/`) in MQTT as this may cause confusion as described [here][mqtt_topics_best_practices]).
 
+## Data category
+
+- Metadata
+- Status
+- Spec
+- Telemetry
+- Action
+
 ## Declarative and eventually consistent
 
 TBD
