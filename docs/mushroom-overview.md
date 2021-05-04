@@ -29,7 +29,7 @@ Mushroom is a open source, open hardware blade server. It can take several singl
 
 The blade server is used as a hardware platform for the reference implementation of the Mycelium API and it consists of the following components:
 
-- **Blade:** A board that is attached directly to the GPIO header of the single board computer. It monitors power usage, controls the power state and can be controlled via TWI / I<sup>2</sup>C. Currently the following variants of the blade are available:
+- **Blade:** A board that is attached directly to the GPIO header of the single board computer. It monitors power usage, controls the power state and can be controlled via TWI (I<sup>2</sup>C). Currently the following variants of the blade are available:
 
   - [Blade (ATmega328P)](mushroom-blade-atmega328p.md)
 

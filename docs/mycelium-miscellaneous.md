@@ -2,9 +2,13 @@
 
 This document contains drafts, ideas and thoughts that currently can't be assigned to any specific section of the documentation.
 
+## Kubernetes CRDs
+
+In the future, the components of **Mycelium** _could_ become a part of the Kubernetes API by using [Custom Resource Definitions](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/).
+
 ## High level resources
 
-This section describes resources that are required for day one operations.
+This section describes resources that could be used to provision baremetal via high level resources.
 
 ```yaml
 apiVersion: baremetal.optrin.io/v1alpha1
@@ -28,10 +32,6 @@ spec:
     os:
       codename: ubuntu-focal
 ```
-
-## Roadmap
-
-This section describes resources that could extend the API in a meaningful way in the future.
 
 ```yaml
 apiVersion: baremetal.optrin.io/v1alpha1
