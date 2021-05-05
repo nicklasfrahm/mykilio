@@ -21,6 +21,10 @@ theme:
   palette:
     primary: teal
 markdown_extensions:
+  - footnotes
+  - pymdownx.highlight:
+      linenums: yes
+  - pymdownx.superfences
   - mdx_truly_sane_lists
 extra_css:
   - assets/css/home.css
