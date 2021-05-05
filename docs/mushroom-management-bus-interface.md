@@ -35,11 +35,12 @@ This section describes all available register addresses that are part of the int
 | BMCSTA   | 0x13    | `uint8_t`  | RO     | [BMC][bmc] state            | The state of the baseboard management controller enumerated as described [here][mycelium_state]. |
 | SBCSTA   | 0x14    | `uint8_t`  | RO     | [SBC][sbc] state            | The state of the single board controller enumerated as described [here][mycelium_state].         |
 | FANDCC   | 0x15    | `uint8_t`  | RO     | DC fan state                | The state of the DC controlled fan enumerated as described [here][mycelium_state].               |
-| FANPWM   | 0x15    | `uint8_t`  | RO     | [PWM][pwm] fan state        | The state of the PWM controlled fan enumerated as described [here][mycelium_state].              |
-| FANMIN   | 0x16    | `uint8_t`  | RO     | Minimum fan speed           | The minimum rotational speed of the fan in Hertz before entering the stop band.                  |
-| FANMAX   | 0x17    | `uint8_t`  | RO     | Maximum fan speed           | The maximum rotational speed of the fan in Hertz at full power.                                  |
-| DUTMIN   | 0x18    | `uint8_t`  | RO     | Minimum fan duty            | The minimum duty cycle of the fan control signal before entering the stop band.                  |
-| DUTMAX   | 0x19    | `uint8_t`  | RO     | Maximum fan duty            | The maximum duty cycle of the fan control signal at full power.                                  |
+| FANPWM   | 0x16    | `uint8_t`  | RO     | [PWM][pwm] fan state        | The state of the PWM controlled fan enumerated as described [here][mycelium_state].              |
+| FANMIN   | 0x17    | `uint8_t`  | RO     | Minimum fan speed           | The minimum rotational speed of the fan in Hertz before entering the stop band.                  |
+| FANMAX   | 0x18    | `uint8_t`  | RO     | Maximum fan speed           | The maximum rotational speed of the fan in Hertz at full power.                                  |
+| DUTMIN   | 0x19    | `uint8_t`  | RO     | Minimum fan duty            | The minimum duty cycle of the fan control signal before entering the stop band.                  |
+| DUTMAX   | 0x20    | `uint8_t`  | RO     | Maximum fan duty            | The maximum duty cycle of the fan control signal at full power.                                  |
+| PSUSTA   | 0x21    | `uint8_t`  | RO     | Power supply unit state     | The state of the external power supply enumerated as described [here][mycelium_state].           |
 
 <!-- Glossary -->
 
