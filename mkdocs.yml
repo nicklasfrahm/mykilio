@@ -25,9 +25,11 @@ theme:
     primary: teal
 markdown_extensions:
   - footnotes
+  - admonition
   - attr_list
   - mdx_truly_sane_lists
   - pymdownx.superfences
   - pymdownx.highlight
+  - pymdownx.snippets
 extra_css:
   - assets/css/home.css

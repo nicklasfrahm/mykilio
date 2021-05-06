@@ -2,10 +2,6 @@
 
 With the default open-source firmware the individual blades can be controlled via a [TWI (I<sup>2</sup>C) communication bus][i2c]. The blades use **5V CMOS logic levels** for the TWI signals (SDA, SCL) on the management bus.
 
-<!--
-Some core concepts need to be established in order to understand the design of management interface. The concept of a **subsystem** describes a **distinct functional component**, such as the _power_ or the _thermal_ subsystem. Further within these subsystems there are different **classes of data** available, which are referred to as the **data domains**. The `status` data domain describes the **current state and status** of the system and is read-only, such as the version of the firmware for example. The `spec` data domain in contrast describes **desired state** of the system. These data domains are used to make the system [declarative and eventually consistent as described here](mycelium-overview.md#declarative-and-eventually-consistent). The `telemetry` data domain exposes frequently changing data, that will often be represented in a timeseries.
--->
-
 ## Address structure
 
 All registers are addressed via 8-bit addresses, which follow a common scheme as described in the table below.
@@ -46,31 +42,57 @@ This section describes all available register addresses that are part of the int
 
 | Register          | Address | Datatype  | Access | Name                | Description                                                                         |
 | ----------------- | ------- | --------- | ------ | ------------------- | ----------------------------------------------------------------------------------- |
-| [FANMOD](#fanmod) | 0x30    | `uint8_t` | RW     | Fan control mode    | The mode used to control the fan enumerated as described [here](#fanmod).           |
-| [FANFDB](#fanfdb) | 0x31    | `uint8_t` | RW     | Fan feedback source | The feedback source of the automatic fan control mode as described [here](#fanfdb). |
-| [FANSET](#fanfdb) | 0x32    | `uint8_t` | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.            |
-| DUTSET            | 0x33    | `uint8_t` | RW     | Fan duty setpoint   | The duty setpoint for the fan in manual mode.                                       |
+| [SBCPON](#sbcpon) | 0x30    | `uint8_t` | RW     | SBC power on        | The mode used to control the fan enumerated as described [here](#fanmod).           |
+| [SBCSON](#sbcson) | 0x31    | `uint8_t` | RW     | SBC soft on         | The mode used to control the fan enumerated as described [here](#fanmod).           |
+| [FANMOD](#fanmod) | 0x32    | `uint8_t` | RW     | Fan control mode    | The mode used to control the fan enumerated as described [here](#fanmod).           |
+| [FANFDB](#fanfdb) | 0x33    | `uint8_t` | RW     | Fan feedback source | The feedback source of the automatic fan control mode as described [here](#fanfdb). |
+| [FANSET](#fanfdb) | 0x34    | `uint8_t` | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.            |
+| DUTSET            | 0x35    | `uint8_t` | RW     | Fan duty setpoint   | The duty setpoint for the fan in manual mode.                                       |
 
 ### Telemetry registers
 
 | Register | Address | Datatype    | Access | Name                | Description                                                                              |
 | -------- | ------- | ----------- | ------ | ------------------- | ---------------------------------------------------------------------------------------- |
-| BMCVOL   | 0x50    | `float32_t` | R      | BMC voltage         | The current drawn by the baseboard management controller and all other electronics.      |
-| BMCCUR   | 0x51    | `float32_t` | R      | BMC current         | The voltage supplied to the baseboard management controller and all other electronics.   |
-| SBCVOL   | 0x52    | `float32_t` | R      | SBC voltage         | The current drawn by the single-board computer.                                          |
-| SBCCUR   | 0x53    | `float32_t` | R      | SBC current         | The voltage supplied to the single-board computer.                                       |
-| TMPAMB   | 0x54    | `float32_t` | R      | Ambient temperature | The ambient temperature.                                                                 |
-| TMPPSU   | 0x55    | `float32_t` | R      | PSU temperature     | The temperature of the power supply or the VIN rail trace and is based on the backplane. |
-| FANSPD   | 0x56    | `uint8_t`   | R      | Fan speed           | The current fan speed in Hertz.                                                          |
-| FANDUT   | 0x57    | `uint8_t`   | R      | Fan duty cycle      | The current fan duty cycle.                                                              |
+| BMCVOL   | 0x50    | `float32_t` | RO     | BMC voltage         | The current drawn by the baseboard management controller and all other electronics.      |
+| BMCCUR   | 0x51    | `float32_t` | RO     | BMC current         | The voltage supplied to the baseboard management controller and all other electronics.   |
+| SBCVOL   | 0x52    | `float32_t` | RO     | SBC voltage         | The current drawn by the single-board computer.                                          |
+| SBCCUR   | 0x53    | `float32_t` | RO     | SBC current         | The voltage supplied to the single-board computer.                                       |
+| TMPAMB   | 0x54    | `float32_t` | RO     | Ambient temperature | The ambient temperature.                                                                 |
+| TMPPSU   | 0x55    | `float32_t` | RO     | PSU temperature     | The temperature of the power supply or the VIN rail trace and is based on the backplane. |
+| FANSPD   | 0x56    | `uint8_t`   | RO     | Fan speed           | The current fan speed in Hertz.                                                          |
+| FANDUT   | 0x57    | `uint8_t`   | RO     | Fan duty cycle      | The current fan duty cycle.                                                              |
+
+### Action registers
+
+| Register          | Address | Datatype  | Access | Name                        | Description                                                                        |
+| ----------------- | ------- | --------- | ------ | --------------------------- | ---------------------------------------------------------------------------------- |
+| [ACTPCY](#actpcy) | 0x70    | `uint8_t` | RW     | Power-cycle action          | Power-cycle the single-board computer by disconnecting and reconnecting the power. |
+| [ACTREB](#actreb) | 0x71    | `uint8_t` | RW     | Reboot action               | Reboot the single-board computer by halting it via GPIO[^7] and restarting it.     |
+| [ACTENU](#actenu) | 0x72    | `uint8_t` | RW     | Hardware enumeration action | Enumerate the connected hardware and update the status.                            |
 
 ## Register description
 
 The following section explains more detailed how the register values are to be interpreted.
 
+### SBCPON
+
+This register controls the power rail of the single-board computer. Writing a value of `M6M_STATE_DISABLED` or `2` to this register will disable the power rail, while writing a value of `M6M_STATE_ENABLED` or `3` to the register will enable the power rail. Other values are ignored and have no effect.
+
+<!-- prettier-ignore -->
+!!! danger "Danger: Potential data loss"
+    Interrupting power without shutting the single-board computer down may cause data loss, especially if the storage medium is an SD card. Please consider using the soft-on ([SBCSON]((#sbcson))) register instead.
+
+### SBCSON
+
+This register controls the system state of the single board computer via a GPIO.
+
+<!-- prettier-ignore -->
+!!! note "Note: Limited support"
+    Not all single board computers support this. Currently this is only known to be working for the Raspberry Pi with the [`gpio-shutdown` devicetree overlay][rpi-gpio-shutdown].
+
 ### FANMOD
 
-The fan control mode of the fan can be automatic, where `x` is the feedback signal as configured by [FANFDB](#fanfdb) and `a` is a preconfigured coefficient.
+The fan control mode of the fan can be automatic, where `x` is the feedback signal as configured by [FANFDB](#fanfdb) and `a` is automatically calculated based on the configuration of the fan setpoint ([FANSET](#fanset)) register.
 
 | Mode        | Value | Description                                                         |
 | ----------- | ----- | ------------------------------------------------------------------- |
@@ -96,20 +118,63 @@ The fan feedback source that is used to compute the duty for any fan control mod
 
 The fan setpoint configures the value at which the fan will run with full speed. This value is used to compute the parameter `a` if the fan control mode ([FANMOD](#fanmod)) is not _Off_ or _Manual_. The fan setpoint is a percentage of the full-range sensor maximum and therefore unitless irrespective of which feedback source ([FANFDB](#fanfdb)) is selected.
 
-Let's consider the following example: We want our fan to run at full speed if the ambient temperature sensor shows a value of 40°C.
+<!-- prettier-ignore -->
+!!! example "Example: Controlling the fan based on a temperature measurement"
+    Let's assume that we want don't want our CPU to overheat. Our requirement is that we want to run the fan at full speed if the ambient temperature sensor reads a value above 40°C.
 
-Its maximum sensor value is 100°C. To determine the register value, we can perform the following calculation:
+    The maximum sensor value is of this sensor is 100°C as described [here](#fanfdb). To determine the register value, we can use the following code:
 
-```c linenums="1"
-float sensor_max = 100;
-float setpoint = 40;
+    ```cpp linenums="1"
+    --8<-- "src/snippets/fanset_temperature.c"
+    ```
 
-float setpoint_percent = setpoint / sensor_max; // 0.4
+    Create a file called `calc.c`, paste the code above and run `gcc -o calc calc.c -lm && ./calc && rm calc`. You should get the following output:
 
-float setpoint_register_value = floor(setpoint_percent * 255); // 102
-```
+    ```txt
+    Full-speed temperature: 40°C
+    Fan setpoint: 102
+    ```
 
-By writing the value `102` to our [FANSET](#fanset) register, the fan will now run on full speed if the sensor reads 40°C.
+    By writing the value `102` to our [FANSET](#fanset) register, the fan will now run on full speed if the sensor reads 40°C.
+
+<!-- prettier-ignore -->
+!!! example "Example: Controlling the fan based on compute load"
+    Let's assume that we want to run our fan based on the compute load of the single board computer. We can indirectly measure the load by observing the current draw, so our requirement is that we our fan to run at full speed if the current sensor reads a value above 1.5A.
+
+    The maximum sensor value is of this sensor is 5A as described [here](#fanfdb). To determine the register value, we can use the following code:
+
+    ```cpp linenums="1"
+    --8<-- "src/snippets/fanset_power.c"
+    ```
+
+    Create a file called `calc.c`, paste the code above and run `gcc -o calc calc.c -lm && ./calc && rm calc`. You should get the following output:
+
+    ```txt
+    Full-speed power: 7.5W
+    Fan setpoint: 76
+    ```
+
+    By writing the value `76` to our [FANSET](#fanset) register, the fan will now run on full speed if the sensor reads 1.5A.
+
+### ACTPCY
+
+Writing any value other than `0` to this register will issue a power-cycle of the single-board computer.
+
+<!-- prettier-ignore -->
+!!! danger "Danger: Potential data loss"
+    Issuing a power-cycle may cause data loss, especially if the storage medium is an SD card. Please consider using the reboot action ([ACTREB](#actreb)) instead.
+
+### ACTREB
+
+Writing any value other than `0` to this register will issue a soft reboot of the single-board computer using a GPIO pin.
+
+<!-- prettier-ignore -->
+!!! note "Note: Limited support"
+    Not all single board computers support this. Currently this is only known to be working for the Raspberry Pi with the [`gpio-shutdown` devicetree overlay][rpi-gpio-shutdown].
+
+### ACTENU
+
+Writing any value other than `0` to this register will start an enumeration process that will gather the information for most of the [status registers](#status-registers) described earlier.
 
 [^1]: **BMC:** [baseboard management controller][bmc]
 [^2]: **CPU:** [central processing unit][cpu]
@@ -117,6 +182,7 @@ By writing the value `102` to our [FANSET](#fanset) register, the fan will now r
 [^4]: **PSU:** [power supply unit][psu]
 [^5]: **DC:** [direct current][dc]
 [^6]: **PWM:** [pulse-width modulation][pwm]
+[^7]: **GPIO:** [general-purpose input/output][gpio]
 
 <!-- Glossary -->
 
@@ -127,5 +193,7 @@ By writing the value `102` to our [FANSET](#fanset) register, the fan will now r
 [psu]: https://en.wikipedia.org/wiki/Power_supply
 [dc]: https://en.wikipedia.org/wiki/Direct_current
 [pwm]: https://en.wikipedia.org/wiki/Pulse-width_modulation
+[gpio]: https://en.wikipedia.org/wiki/General-purpose_input/output
 [mycelium_state]: mycelium-properties.md#state
 [mycelium_data_category]: mycelium-overview.md#data-category
+[rpi-gpio-shutdown]: https://github.com/raspberrypi/firmware/blob/master/boot/overlays/README#L1015
