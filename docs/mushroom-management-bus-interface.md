@@ -100,7 +100,7 @@ Let's consider the following example: We want our fan to run at full speed if th
 
 Its maximum sensor value is 100°C. To determine the register value, we can perform the following calculation:
 
-```c
+```c linenums="1"
 float sensor_max = 100;
 float setpoint = 40;
 

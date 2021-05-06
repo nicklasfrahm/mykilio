@@ -2,6 +2,8 @@ site_name: Mycelium
 site_dir: public
 site_url: https://mycelium.optrin.io
 repo_url: https://github.com/nicklasfrahm/mycelium
+repo_name: nicklasfrahm/mycelium
+edit_uri: edit/main/docs/
 nav:
   - Home: index.md
   - Mycelium:
@@ -18,13 +20,14 @@ theme:
   features:
     - navigation.instant
     - navigation.tabs
+    - toc.integrate
   palette:
     primary: teal
 markdown_extensions:
   - footnotes
-  - pymdownx.highlight:
-      linenums: yes
-  - pymdownx.superfences
+  - attr_list
   - mdx_truly_sane_lists
+  - pymdownx.superfences
+  - pymdownx.highlight
 extra_css:
   - assets/css/home.css

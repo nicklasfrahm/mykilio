@@ -11,13 +11,13 @@ The electronic schematic of the PCB can be found [here](https://github.com/nickl
 To build the firmware, start the development container and run:
 
 ```bash
-$ make
+make
 ```
 
 If you are using Windows or WSL 2, you can download [AVRDUDE for Windows](https://github.com/mariusgreuel/avrdude). Install it by placing the files from the archive in `C:\Windows\System32` and renaming `avrdude.exe` to `avrdude`. Now you can open your repository folder in Git Bash or WSL 2 and run:
 
 ```bash
-$ PORT=COM3 make flash
+PORT=COM3 make flash
 ```
 
 **Note:** You can't flash from within the development container. So make sure to run `make` in your development container first before flashing the firmware with `make flash` from outside your container.
@@ -25,7 +25,7 @@ $ PORT=COM3 make flash
 To clean the build artifacts, run:
 
 ```bash
-$ make clean
+make clean
 ```
 
 ### Connection issues
@@ -35,7 +35,7 @@ If you are not able to flash the firmware to the device, this may have several r
 If you don't feel comfortable updating the bootloader and you are sure that the board has a bootloader installed, the issue could be caused by a BAUD mismatch of the bootloader and the programmer. By default the `Makefile` will use a BAUD of `115200` to be compatible with the bootloader that is part of this repository. Some older devices however come with an old bootloader that only supports a BAUD of `57600`. You can adjust the BAUD by changing the command to:
 
 ```bash
-$ PORT=COM3 BAUD=57600 make flash
+PORT=COM3 BAUD=57600 make flash
 ```
 
 ### Bootloader
@@ -51,13 +51,13 @@ Begin by wiring up the ICSP headers of the Arduinos as shown in the diagram belo
 The first command will install the [Arduino ISP programmer firmware](https://github.com/arduino/arduino-examples/blob/main/examples/11.ArduinoISP/ArduinoISP/ArduinoISP.ino) on the programmer Arduino.
 
 ```bash
-$ PORT=COM3 make isp
+PORT=COM3 make isp
 ```
 
 The second command will install the bootloader by first setting the fuses for the clock configuration and other important settings and then flashing the [Optiboot bootloader](https://github.com/Optiboot/optiboot) onto the device.
 
 ```bash
-$ PORT=COM3 make burn
+PORT=COM3 make burn
 ```
 
 ## Acknowledgements
