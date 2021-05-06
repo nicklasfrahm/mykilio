@@ -7,27 +7,35 @@
 #endif
 
 #include <avr/io.h>
+#include <stdint.h>
 #include <util/delay.h>
 
-#include "twi/twi_server.h"
+#include "mushroom.h"
+#include "twi_server.h"
 
-uint8_t led_state = 0;
-uint8_t twi_register = 0;
+mushroom_cursor_t cursor = MUSHROOM_CURSOR_INITIALIZER;
 
 void receive(uint8_t data) {
-  if (twi_register != 0) {
-    led_state = data;
-    twi_register = 0;
+  // Configure the address to be written to.
+  if (cursor.address == REG_NONE) {
+    cursor.address = data;
+    cursor.length = mushroom_register_len(cursor.address);
   }
 
-  if (twi_register == 0) {
-    twi_register = data;
-  }
+  // TODO: Stream data in.
 }
 
 void send(void) {
-  if (twi_register != 0) {
-    twi_server_send(led_state);
+  // Return zero data if no register is selected for reading.
+  if (cursor.address == REG_NONE) {
+    twi_server_send(0x00);
+    return;
+  }
+
+  // TODO: Stream data out.
+
+  if (cursor.index == cursor.length) {
+    mushroom_cursor_init(&cursor);
   }
 }
 
@@ -40,7 +48,7 @@ int16_t main(void) {
   twi_server_start(0x40);
 
   while (1) {
-    if (led_state) {
+    if (cursor.address != REG_NONE) {
       // Set pin 5 high to turn led on.
       PORTB |= _BV(PORTB5);
     } else {

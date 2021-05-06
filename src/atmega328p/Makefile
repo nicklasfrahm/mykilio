@@ -6,16 +6,17 @@ BUILD		:= ./build
 OBJ_DIR		:= $(BUILD)/objects
 BIN_DIR		:= $(BUILD)/bin
 IMG_DIR		:= $(BUILD)/img
+INCLUDE_DIR	:= $(BUILD)/include
 VENDOR_DIR  := ./vendor
 TARGET		:= mushroom-blade-atmega328p
 BOOTLOADER  := optiboot_atmega328
 PROGRAMMER  := arduino_isp
-INCLUDE		:= -Iinclude/
+INCLUDE		:= -Iinclude/ -I../include/
 PORT		?= /dev/ttyUSB0
 BAUD        ?= 115200
-SRC			:=				\
-	$(wildcard src/twi/*.c)	\
-	$(wildcard src/*.c)		\
+SRC			:=					\
+	$(wildcard ../include/*.c)	\
+	$(wildcard src/*.c)			\
 
 OBJECTS		:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEPENDENCIES \
@@ -44,6 +45,7 @@ clean:
 	-@rm -rvf $(OBJ_DIR)/*
 	-@rm -rvf $(BIN_DIR)/*
 	-@rm -rvf $(IMG_DIR)/*
+	-@rm -rvf $(INCLUDE_DIR)/*
 
 # Flash firmware via USB to serial to microcontroller. This requires a
 # bootloader to be installed on the microcontroller, preferrably Optiboot.

@@ -13,13 +13,13 @@ All registers are addressed via 8-bit addresses, which follow a common scheme as
 
 ## Register overview
 
-This section describes all available register addresses that are part of the interface to access the blade's BMC[^1]. The _Access_ column specifies the access to the register, which be either **RW** indicating _read-write_ access or **RO** indicating _read-only_ access. The _Datatype_ column indirectly specifies the register length in **bytes** via the datatype expected to be read from or written to the specified register. All registers use most significant byte first byte ordering.
+This section describes all available register addresses that are part of the interface to access the blade's BMC[^1]. The _Access_ column specifies the access to the register, which can be either **RW** indicating _read-write_ access or **RO** indicating _read-only_ access. The _Datatype_ column indirectly specifies the register length in **bytes** via the datatype expected to be read from or written to the specified register. All registers use most significant byte first byte ordering.
 
 ### Metadata registers
 
 | Register | Address | Datatype  | Access | Name            | Description                                               |
 | -------- | ------- | --------- | ------ | --------------- | --------------------------------------------------------- |
-| ADRPTR   | 0x00    | `uint8_t` | RW     | Address pointer | The register address of the next read or write operation. |
+| ADRPTR   | 0x01    | `uint8_t` | RW     | Address pointer | The register address of the next read or write operation. |
 
 ### Status registers
 
@@ -51,16 +51,16 @@ This section describes all available register addresses that are part of the int
 
 ### Telemetry registers
 
-| Register | Address | Datatype    | Access | Name                | Description                                                                              |
-| -------- | ------- | ----------- | ------ | ------------------- | ---------------------------------------------------------------------------------------- |
-| BMCVOL   | 0x50    | `float32_t` | RO     | BMC voltage         | The current drawn by the baseboard management controller and all other electronics.      |
-| BMCCUR   | 0x51    | `float32_t` | RO     | BMC current         | The voltage supplied to the baseboard management controller and all other electronics.   |
-| SBCVOL   | 0x52    | `float32_t` | RO     | SBC voltage         | The current drawn by the single-board computer.                                          |
-| SBCCUR   | 0x53    | `float32_t` | RO     | SBC current         | The voltage supplied to the single-board computer.                                       |
-| TMPAMB   | 0x54    | `float32_t` | RO     | Ambient temperature | The ambient temperature.                                                                 |
-| TMPPSU   | 0x55    | `float32_t` | RO     | PSU temperature     | The temperature of the power supply or the VIN rail trace and is based on the backplane. |
-| FANSPD   | 0x56    | `uint8_t`   | RO     | Fan speed           | The current fan speed in Hertz.                                                          |
-| FANDUT   | 0x57    | `uint8_t`   | RO     | Fan duty cycle      | The current fan duty cycle.                                                              |
+| Register | Address | Datatype  | Access | Name                | Description                                                                              |
+| -------- | ------- | --------- | ------ | ------------------- | ---------------------------------------------------------------------------------------- |
+| BMCVOL   | 0x50    | `float`   | RO     | BMC voltage         | The current drawn by the baseboard management controller and all other electronics.      |
+| BMCCUR   | 0x51    | `float`   | RO     | BMC current         | The voltage supplied to the baseboard management controller and all other electronics.   |
+| SBCVOL   | 0x52    | `float`   | RO     | SBC voltage         | The current drawn by the single-board computer.                                          |
+| SBCCUR   | 0x53    | `float`   | RO     | SBC current         | The voltage supplied to the single-board computer.                                       |
+| TMPAMB   | 0x54    | `float`   | RO     | Ambient temperature | The ambient temperature.                                                                 |
+| TMPPSU   | 0x55    | `float`   | RO     | PSU temperature     | The temperature of the power supply or the VIN rail trace and is based on the backplane. |
+| FANSPD   | 0x56    | `uint8_t` | RO     | Fan speed           | The current fan speed in Hertz.                                                          |
+| FANDUT   | 0x57    | `uint8_t` | RO     | Fan duty cycle      | The current fan duty cycle.                                                              |
 
 ### Action registers
 
@@ -84,7 +84,7 @@ This register controls the power rail of the single-board computer. Writing a va
 
 ### SBCSON
 
-This register controls the system state of the single board computer via a GPIO.
+This register controls the system state of the single board computer via a GPIO. Writing a value of `M6M_STATE_DISABLED` or `2` to this register will ensure that the single-board computer is off, while writing a value of `M6M_STATE_ENABLED` or `3` to the register will ensure that the single-board computer is on.
 
 <!-- prettier-ignore -->
 !!! note "Note: Limited support"
@@ -111,8 +111,8 @@ The fan feedback source that is used to compute the duty for any fan control mod
 | ------------------- | ----- | -------------------- | -------------------- |
 | Ambient temperature | 0     | 0°C                  | 100°C                |
 | PSU temperature     | 1     | 0°C                  | 100°C                |
-| SBC current         | 2     | 0A                   | 5A                   |
-| BMC current         | 3     | 0A                   | 5A                   |
+| BMC current         | 2     | 0A                   | 5A                   |
+| SBC current         | 3     | 0A                   | 5A                   |
 
 ### FANSET
 
@@ -180,6 +180,12 @@ Writing any value other than `0` to this register will issue a soft reboot of th
 
 Writing any value other than `0` to this register will start an enumeration process that will gather the information for most of the [status registers](#status-registers) described earlier.
 
+## Libraries
+
+To interface with the blade via the management bus interface, the following libraries are provided:
+
+- **C / C++:** [`mushroom.h`][mushroom_h].
+
 [^1]: **BMC:** [baseboard management controller][bmc]
 [^2]: **CPU:** [central processing unit][cpu]
 [^3]: **SBC:** [single-board computer][sbc]
@@ -201,3 +207,4 @@ Writing any value other than `0` to this register will start an enumeration proc
 [mycelium_state]: mycelium-properties.md#state
 [mycelium_data_category]: mycelium-overview.md#data-category
 [rpi-gpio-shutdown]: https://github.com/raspberrypi/firmware/blob/master/boot/overlays/README#L1015
+[mushroom_h]: https://github.com/nicklasfrahm/mycelium/blob/main/src/include/mycelium.h

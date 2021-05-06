@@ -3,12 +3,14 @@
     {
       "name": "Linux",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "/usr/lib/avr/include/**",
+        "${workspaceFolder}/../include/**"
       ],
       "defines": [],
       "compilerPath": "/usr/bin/avr-gcc",
-      "cStandard": "c17",
-      "cppStandard": "c++20",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
       "intelliSenseMode": "${default}"
     }
   ],

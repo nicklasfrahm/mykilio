@@ -4,7 +4,7 @@ This document describes common system properties and how their data is encoded.
 
 ## State
 
-The known state of the resource. If JSON is used to encode the value, it is represented as a `string`. If binary data is used to encode the value, it is represented as an enumerated `uint8`. The enumerated values are based on [Redfish][redfish].
+The known state of the resource. If JSON is used to encode the value, it is represented as a `string`. If binary data is used to encode the value, it is represented as an enumerated `uint8_t`. The enumerated values are based on [Redfish][redfish].
 
 | String             | Binary | Description                                                                                                          |
 | ------------------ | ------ | -------------------------------------------------------------------------------------------------------------------- |
@@ -26,4 +26,4 @@ Below you may find instructions on how to use this property with your language o
 - **C / C++:** `m6m_state_t` in [`mycelium.h`][mycelium_h].
 
 [redfish]: https://www.dmtf.org/standards/redfish
-[mycelium_h]: https://github.com/nicklasfrahm/mycelium/blob/main/src/lib/mycelium.h
+[mycelium_h]: https://github.com/nicklasfrahm/mycelium/blob/main/src/include/mycelium.h
