@@ -40,14 +40,14 @@ This section describes all available register addresses that are part of the int
 
 ### Specification registers
 
-| Register          | Address | Datatype  | Access | Name                | Description                                                                         |
-| ----------------- | ------- | --------- | ------ | ------------------- | ----------------------------------------------------------------------------------- |
-| [SBCPON](#sbcpon) | 0x30    | `uint8_t` | RW     | SBC power on        | The mode used to control the fan enumerated as described [here](#fanmod).           |
-| [SBCSON](#sbcson) | 0x31    | `uint8_t` | RW     | SBC soft on         | The mode used to control the fan enumerated as described [here](#fanmod).           |
-| [FANMOD](#fanmod) | 0x32    | `uint8_t` | RW     | Fan control mode    | The mode used to control the fan enumerated as described [here](#fanmod).           |
-| [FANFDB](#fanfdb) | 0x33    | `uint8_t` | RW     | Fan feedback source | The feedback source of the automatic fan control mode as described [here](#fanfdb). |
-| [FANSET](#fanfdb) | 0x34    | `uint8_t` | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.            |
-| DUTSET            | 0x35    | `uint8_t` | RW     | Fan duty setpoint   | The duty setpoint for the fan in manual mode.                                       |
+| Register          | Address | Datatype  | Access | Name                | Description                                                                                               |
+| ----------------- | ------- | --------- | ------ | ------------------- | --------------------------------------------------------------------------------------------------------- |
+| [SBCPON](#sbcpon) | 0x30    | `uint8_t` | RW     | SBC power-on        | The desired state of the single-board computer power rail enumerated as described [here][mycelium_state]. |
+| [SBCSON](#sbcson) | 0x31    | `uint8_t` | RW     | SBC soft-on         | The desired state of the single-board computer enumerated as described [here][mycelium_state].            |
+| [FANMOD](#fanmod) | 0x32    | `uint8_t` | RW     | Fan control mode    | The mode used to control the fan enumerated as described [here](#fanmod).                                 |
+| [FANFDB](#fanfdb) | 0x33    | `uint8_t` | RW     | Fan feedback source | The feedback source of the automatic fan control mode as described [here](#fanfdb).                       |
+| [FANSET](#fanfdb) | 0x34    | `uint8_t` | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.                                  |
+| [DUTSET](#dutset) | 0x35    | `uint8_t` | RW     | Fan duty setpoint   | The duty setpoint for the fan in manual mode.                                                             |
 
 ### Telemetry registers
 
@@ -155,6 +155,10 @@ The fan setpoint configures the value at which the fan will run with full speed.
     ```
 
     By writing the value `76` to our [FANSET](#fanset) register, the fan will now run on full speed if the sensor reads 1.5A.
+
+### DUTSET
+
+Writing a value to this register will set the duty of the fan if the fan mode ([FANMOD](#fanmod)) is set to _Manual_. `0` corresponds to a duty of 0%, while `255` corresponds to 100%. Any value between `0` and `255` is valid.
 
 ### ACTPCY
 
