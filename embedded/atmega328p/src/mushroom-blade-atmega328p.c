@@ -45,7 +45,7 @@ mushroom_uint8_t action_regs[3];
 void twi_receive(uint8_t data);
 void twi_send(void);
 
-int16_t main(void) {
+int main(void) {
   // Set pin 5 of PORTB for output.
   DDRB |= _BV(DDB5);
 

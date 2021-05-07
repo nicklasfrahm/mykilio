@@ -13,8 +13,7 @@
 #include "freertos/task.h"
 #include "sdkconfig.h"
 
-static const char *TAG = "bmc";
-static const uint8_t BLINK_PERIOD = 100;
+static const char* TAG = "bmc";
 
 // The I2C controller does not need any buffers.
 #define I2C_CONTROLLER_RX_BUF_LEN 0
@@ -40,35 +39,31 @@ static esp_err_t i2c_controller_configure(void) {
                             I2C_CONTROLLER_TX_BUF_LEN, 0);
 }
 
-static uint8_t led_reg = 0x01;
-static uint8_t led_state = 0x00;
-static uint8_t peripheral_address = 0x40;
+static esp_err_t ping_peripheral(uint8_t* address) {
+  // Send command to peripheral.
+  i2c_cmd_handle_t cmd = i2c_cmd_link_create();
+  i2c_master_start(cmd);
+  i2c_master_write_byte(cmd, (*address << 1) | I2C_MASTER_WRITE, 1);
+  i2c_master_write_byte(cmd, 0x00, 1);
+  i2c_master_write_byte(cmd, 0xFF, 1);
+  i2c_master_stop(cmd);
+  esp_err_t error =
+      i2c_master_cmd_begin(CONFIG_I2C_CONTROLLER_PORT_NUM, cmd, 0);
+  i2c_cmd_link_delete(cmd);
+
+  return error;
+}
 
 void app_main(void) {
   // Configure the I2C controller.
   i2c_controller_configure();
 
   while (1) {
-    // Send command to peripheral.
-    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
-    i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (peripheral_address << 1) | I2C_MASTER_WRITE, 1);
-    i2c_master_write_byte(cmd, led_reg, 1);
-    i2c_master_write_byte(cmd, led_state, 1);
-    i2c_master_stop(cmd);
-    esp_err_t ret =
-        i2c_master_cmd_begin(CONFIG_I2C_CONTROLLER_PORT_NUM, cmd, 0);
-    i2c_cmd_link_delete(cmd);
-
-    if (ret) {
-      ESP_LOGE(TAG, "Failed to send I2C command");
-    } else {
-      ESP_LOGI(TAG, "Setting LED state: %s", led_state ? "ON" : "OFF");
+    for (uint8_t address = 0x01; address < 0xFF; address++) {
+      esp_err_t error = ping_peripheral(&address);
+      if (error) {
+        ESP_LOGI(TAG, "Device found: %X", address);
+      }
     }
-
-    // Invert LED state.
-    led_state = ~led_state;
-
-    vTaskDelay(pdMS_TO_TICKS(BLINK_PERIOD));
   }
 }
