@@ -11,7 +11,7 @@
 #include <util/delay.h>
 
 #include "mushroom.h"
-#include "twi_server.h"
+#include "twi.h"
 
 mushroom_cursor_t cursor = MUSHROOM_CURSOR_INITIALIZER;
 

@@ -80,7 +80,7 @@ This register controls the power rail of the single-board computer. Writing a va
 
 <!-- prettier-ignore -->
 !!! danger "Danger: Potential data loss"
-    Interrupting power without shutting the single-board computer down may cause data loss, especially if the storage medium is an SD card. Please consider using the soft-on ([SBCSON]((#sbcson))) register instead.
+    Interrupting power without shutting the single-board computer down may cause data loss, especially if the storage medium is an SD card. Please consider using the soft-on ([SBCSON](#sbcson)) register instead.
 
 ### SBCSON
 
@@ -125,7 +125,7 @@ The fan setpoint configures the value at which the fan will run with full speed.
     The maximum sensor value is of this sensor is 100°C as described [here](#fanfdb). To determine the register value, we can use the following code:
 
     ```cpp linenums="1"
-    --8<-- "src/snippets/fanset_temperature.c"
+    --8<-- "examples/docs/fanset_temperature.c"
     ```
 
     Create a file called `calc.c`, paste the code above and run `gcc -o calc calc.c -lm && ./calc && rm calc`. You should get the following output:
@@ -144,7 +144,7 @@ The fan setpoint configures the value at which the fan will run with full speed.
     The maximum sensor value is of this sensor is 5A as described [here](#fanfdb). To determine the register value, we can use the following code:
 
     ```cpp linenums="1"
-    --8<-- "src/snippets/fanset_power.c"
+    --8<-- "examples/docs/fanset_power.c"
     ```
 
     Create a file called `calc.c`, paste the code above and run `gcc -o calc calc.c -lm && ./calc && rm calc`. You should get the following output:
@@ -207,4 +207,4 @@ To interface with the blade via the management bus interface, the following libr
 [mycelium_state]: mycelium-properties.md#state
 [mycelium_data_category]: mycelium-overview.md#data-category
 [rpi-gpio-shutdown]: https://github.com/raspberrypi/firmware/blob/master/boot/overlays/README#L1015
-[mushroom_h]: https://github.com/nicklasfrahm/mycelium/blob/main/src/include/mycelium.h
+[mushroom_h]: https://github.com/nicklasfrahm/mycelium/blob/main/embedded/lib/mushroom.h

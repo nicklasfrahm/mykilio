@@ -26,4 +26,4 @@ Below you may find instructions on how to use this property with your language o
 - **C / C++:** `m6m_state_t` in [`mycelium.h`][mycelium_h].
 
 [redfish]: https://www.dmtf.org/standards/redfish
-[mycelium_h]: https://github.com/nicklasfrahm/mycelium/blob/main/src/include/mycelium.h
+[mycelium_h]: https://github.com/nicklasfrahm/mycelium/blob/main/embedded/lib/mycelium.h

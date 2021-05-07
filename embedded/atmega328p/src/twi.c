@@ -2,7 +2,7 @@
 #define __AVR_ATmega328P__
 #endif
 
-#include "twi_server.h"
+#include "twi.h"
 
 #include <util/twi.h>
 

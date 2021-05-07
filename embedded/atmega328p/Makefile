@@ -6,33 +6,33 @@ BUILD		:= ./build
 OBJ_DIR		:= $(BUILD)/objects
 BIN_DIR		:= $(BUILD)/bin
 IMG_DIR		:= $(BUILD)/img
-INCLUDE_DIR	:= $(BUILD)/include
+LIB_DIR		:= $(BUILD)/lib
 VENDOR_DIR  := ./vendor
 TARGET		:= mushroom-blade-atmega328p
 BOOTLOADER  := optiboot_atmega328
 PROGRAMMER  := arduino_isp
-INCLUDE		:= -Iinclude/ -I../include/
 PORT		?= /dev/ttyUSB0
 BAUD        ?= 115200
-SRC			:= $(wildcard ../include/*.c) $(wildcard src/*.c)
-OBJ		:= $(SRC:%.c=$(OBJ_DIR)/%.o)
-DEPS	:= $(OBJ:.o=.d)
+SRC			:= $(wildcard ../lib/*.c) $(wildcard src/*.c)
+LIB			:= -I../lib/
+OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
+DEP			:= $(OBJ:.o=.d)
 
 all: $(IMG_DIR)/$(TARGET).hex
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	$(CC) $(CCFLAGS) $(INCLUDE) -c $< -MMD -o $@
+	$(CC) $(CCFLAGS) $(LIB) -c $< -MMD -o $@
 
-$(BIN_DIR)/$(TARGET).elf: $(OBJ)
+$(BIN_DIR)/$(TARGET).bin: $(OBJ)
 	@mkdir -p $(@D)
 	$(CC) $(CCFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(IMG_DIR)/$(TARGET).hex: $(BIN_DIR)/$(TARGET).elf
+$(IMG_DIR)/$(TARGET).hex: $(BIN_DIR)/$(TARGET).bin
 	@mkdir -p $(@D)
 	$(OC) -j .text -j .data -O ihex $^ $@
 
--include $(DEPS)
+-include $(DEP)
 
 .PHONY: all build clean flash burn isp infos
 
@@ -41,7 +41,7 @@ clean:
 	-@rm -rvf $(OBJ_DIR)/*
 	-@rm -rvf $(BIN_DIR)/*
 	-@rm -rvf $(IMG_DIR)/*
-	-@rm -rvf $(INCLUDE_DIR)/*
+	-@rm -rvf $(LIB_DIR)/*
 
 # Flash firmware via USB to serial to microcontroller. This requires a
 # bootloader to be installed on the microcontroller, preferrably Optiboot.
@@ -68,7 +68,8 @@ info:
 	@echo "[*] Image dir:       ${IMG_DIR}       "
 	@echo "[*] Binary dir:      ${BIN_DIR}       "
 	@echo "[*] Object dir:      ${OBJ_DIR}       "
+	@echo "[*] Library dir:     ${LIB_DIR}       "
 	@echo "[*] Vendor dir:      ${VENDOR_DIR}    "
 	@echo "[*] Sources:         ${SRC}           "
-	@echo "[*] Objects:         ${OBJECTS}       "
-	@echo "[*] Dependencies:    ${DEPENDENCIES}  "
+	@echo "[*] Objects:         ${OBJ}       "
+	@echo "[*] Dependencies:    ${DEP}  "
