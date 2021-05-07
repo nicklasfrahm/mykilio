@@ -14,13 +14,9 @@ PROGRAMMER  := arduino_isp
 INCLUDE		:= -Iinclude/ -I../include/
 PORT		?= /dev/ttyUSB0
 BAUD        ?= 115200
-SRC			:=					\
-	$(wildcard ../include/*.c)	\
-	$(wildcard src/*.c)			\
-
-OBJECTS		:= $(SRC:%.c=$(OBJ_DIR)/%.o)
-DEPENDENCIES \
-			:= $(OBJECTS:.o=.d)
+SRC			:= $(wildcard ../include/*.c) $(wildcard src/*.c)
+OBJ		:= $(SRC:%.c=$(OBJ_DIR)/%.o)
+DEPS	:= $(OBJ:.o=.d)
 
 all: $(IMG_DIR)/$(TARGET).hex
 
@@ -28,7 +24,7 @@ $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	$(CC) $(CCFLAGS) $(INCLUDE) -c $< -MMD -o $@
 
-$(BIN_DIR)/$(TARGET).elf: $(OBJECTS)
+$(BIN_DIR)/$(TARGET).elf: $(OBJ)
 	@mkdir -p $(@D)
 	$(CC) $(CCFLAGS) -o $@ $^ $(LDFLAGS)
 
@@ -36,7 +32,7 @@ $(IMG_DIR)/$(TARGET).hex: $(BIN_DIR)/$(TARGET).elf
 	@mkdir -p $(@D)
 	$(OC) -j .text -j .data -O ihex $^ $@
 
--include $(DEPENDENCIES)
+-include $(DEPS)
 
 .PHONY: all build clean flash burn isp infos
 
