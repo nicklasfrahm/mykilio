@@ -4,15 +4,22 @@
 #include <stddef.h>
 #include <stdint.h>
 
+// The address of the first metadata register.
+#define REG_METADATA 0x00
+// The address of the first status register.
+#define REG_STATUS 0x10
+// The address of the first specification register.
+#define REG_SPECIFICATION 0x30
+// The address of the first telemetry register.
+#define REG_TELEMETRY 0x50
+// The address of the first action register.
+#define REG_ACTION 0x70
+
 typedef enum mushroom_register {
-  REG_NONE = 0x00,
   // Metadata registers.
-  REG_ADRPTR = 0x01,
+  REG_ADRPTR = REG_METADATA,
   // Status registers.
-  REG_BMCCPU = 0x10,
-  REG_BMCFWN,
-  REG_BMCFWV,
-  REG_BMCSTA,
+  REG_BMCSTA = REG_STATUS,
   REG_SBCSTA,
   REG_PSUSTA,
   REG_FANDCC,
@@ -21,27 +28,59 @@ typedef enum mushroom_register {
   REG_FANMAX,
   REG_DUTMIN,
   REG_DUTMAX,
+  REG_BMCCPU,
+  REG_BMCFWN,
+  REG_BMCFWV,
   // Specification registers.
-  REG_SBCPON = 0x30,
+  REG_SBCPON = REG_SPECIFICATION,
   REG_SBCSON,
   REG_FANMOD,
   REG_FANFDB,
   REG_FANSET,
   REG_DUTSET,
   // Telemetry registers.
-  REG_BMCVOL = 0x50,
+  REG_FANSPD = REG_TELEMETRY,
+  REG_FANDUT,
+  REG_BMCVOL,
   REG_BMCCUR,
   REG_SBCVOL,
   REG_SBCCUR,
   REG_TMPAMB,
   REG_TMPPSU,
-  REG_FANSPD,
-  REG_FANDUT,
   // Action registers.
-  REG_ACTPCY = 0x70,
+  REG_ACTPCY = REG_ACTION,
   REG_ACTREB,
   REG_ACTENU,
 } mushroom_register_t;
+
+// IMPORTANT: If new registers are added,
+// the values below need to be updated as well.
+// These registers are important for the range
+// checks to prevent memory leaks and segmentation
+// faults.
+
+#define REG_METADATA_LAST REG_ADRPTR
+#define REG_STATUS_LAST REG_DUTMAX
+#define REG_STATUS_STRING REG_BMCCPU
+#define REG_STATUS_STRING_LAST REG_BMCFWV
+#define REG_SPECIFICATION_LAST REG_DUTSET
+#define REG_TELEMETRY_LAST REG_FANDUT
+#define REG_TELEMETRY_FLOAT REG_BMCVOL
+#define REG_TELEMETRY_FLOAT_LAST REG_TMPPSU
+#define REG_ACTION_LAST REG_ACTENU
+
+#define IS_METADATA(address) \
+  (address >= REG_METADATA && address <= REG_METADATA_LAST)
+#define IS_STATUS(address) (address >= REG_STATUS && address <= REG_STATUS_LAST)
+#define IS_STATUS_STRING(address) \
+  (address >= REG_STATUS_STRING && address <= REG_STATUS_STRING_LAST)
+#define IS_SPECIFICATION(address) \
+  (address >= REG_SPECIFICATION && address <= REG_SPECIFICATION_LAST)
+#define IS_TELEMETRY(address) \
+  (address >= REG_TELEMETRY && address <= REG_TELEMETRY_LAST)
+#define IS_TELEMETRY_FLOAT(address) \
+  (address >= REG_TELEMETRY_FLOAT && address <= REG_TELEMETRY_FLOAT_LAST)
+#define IS_ACTION(address) (address >= REG_ACTION && address <= REG_ACTION_LAST)
 
 // Metadata register.
 #define REG_ADRPTR_LEN (size_t)1
@@ -79,7 +118,7 @@ typedef enum mushroom_register {
 #define REG_ACTREB_LEN (size_t)1
 #define REG_ACTENU_LEN (size_t)1
 
-// Returns the
+// Returns the length of a given register.
 size_t mushroom_register_len(mushroom_register_t address);
 
 // Fan mode for the FANMOD register.
@@ -100,24 +139,22 @@ typedef enum mushroom_fan_feedback {
   FANFDB_SBCCUR,
 } mushroom_fan_feedback_t;
 
-// A datatype to parse floats from several bytes.
-union mushroom_float_t {
+// A datatype to translate a uint8_t to bytes and vice-versa.
+typedef union mushroom_uint8 {
+  uint8_t bytes[1];
+  uint8_t value;
+} mushroom_uint8_t;
+
+// A datatype to translate a 16 character char array to bytes and vice-versa.
+typedef union mushroom_string {
+  uint8_t bytes[16];
+  char value[16];
+} mushroom_string_t;
+
+// A datatype to translate a 32-bit float to bytes and vice-versa.
+typedef union mushroom_float {
   uint8_t bytes[4];
   float value;
-};
-
-// A cursor to manage the location of read and write operations via TWI.
-typedef struct mushroom_cursor {
-  mushroom_register_t address;
-  size_t length;
-  uint8_t index;
-} mushroom_cursor_t;
-
-// A macro to initialize a cursor with the default values.
-#define MUSHROOM_CURSOR_INITIALIZER \
-  { 0x00, 1, 0 }
-
-// A method to initializes a cursor with the default values.
-void mushroom_cursor_init(mushroom_cursor_t* cursor);
+} mushroom_float_t;
 
 #endif

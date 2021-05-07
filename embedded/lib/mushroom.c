@@ -1,12 +1,6 @@
 #include "mushroom.h"
 
-void mushroom_cursor_init(mushroom_cursor_t* cursor) {
-  cursor->address = REG_NONE;
-  cursor->length = 1;
-  cursor->index = 0;
-}
-
-size_t mushroom_register_len(mushroom_register_t address) {
+inline size_t mushroom_register_len(mushroom_register_t address) {
   switch (address) {
     case REG_BMCCPU:
     case REG_BMCFWN:

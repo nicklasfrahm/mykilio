@@ -1,5 +1,5 @@
-#ifndef TWI_SERVER_H
-#define TWI_SERVER_H
+#ifndef TWI_H
+#define TWI_H
 
 #include <avr/interrupt.h>
 #include <stdint.h>

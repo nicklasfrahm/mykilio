@@ -13,62 +13,62 @@ All registers are addressed via 8-bit addresses, which follow a common scheme as
 
 ## Register overview
 
-This section describes all available register addresses that are part of the interface to access the blade's BMC[^1]. The _Access_ column specifies the access to the register, which can be either **RW** indicating _read-write_ access or **RO** indicating _read-only_ access. The _Datatype_ column indirectly specifies the register length in **bytes** via the datatype expected to be read from or written to the specified register. All registers use most significant byte first byte ordering.
+This section describes all available register addresses that are part of the interface. The _Access_ column specifies the access to the register, which can be either **RW** indicating _read-write_ access or **RO** indicating _read-only_ access. The _Datatype_ column indirectly specifies the register length in **bytes** via the datatype expected to be read from or written to the specified register. All registers use most significant byte first byte ordering.
 
 ### Metadata registers
 
-| Register | Address | Datatype  | Access | Name            | Description                                               |
-| -------- | ------- | --------- | ------ | --------------- | --------------------------------------------------------- |
-| ADRPTR   | 0x01    | `uint8_t` | RW     | Address pointer | The register address of the next read or write operation. |
+| Register | Address | Datatype | Access | Name            | Description                                               |
+| -------- | ------- | -------- | ------ | --------------- | --------------------------------------------------------- |
+| ADRPTR   | 0x00    | `uint8`  | RW     | Address pointer | The register address of the next read or write operation. |
 
 ### Status registers
 
 | Register | Address | Datatype   | Access | Name                 | Description                                                                                      |
 | -------- | ------- | ---------- | ------ | -------------------- | ------------------------------------------------------------------------------------------------ |
-| BMCCPU   | 0x10    | `char[16]` | RO     | BMC CPU[^2]          | A string providing the CPU name of the BMC.                                                      |
-| BMCFWN   | 0x11    | `char[16]` | RO     | BMC firmware name    | A string providing the name of the installed firmware.                                           |
-| BMCFWV   | 0x12    | `char[16]` | RO     | BMC firmware version | A string providing the semantic version of the firmware.                                         |
-| BMCSTA   | 0x13    | `uint8_t`  | RO     | BMC state            | The state of the baseboard management controller enumerated as described [here][mycelium_state]. |
-| SBCSTA   | 0x14    | `uint8_t`  | RO     | SBC[^3] state        | The state of the single board controller enumerated as described [here][mycelium_state].         |
-| PSUSTA   | 0x15    | `uint8_t`  | RO     | PSU[^4] state        | The state of the external power supply enumerated as described [here][mycelium_state].           |
-| FANDCC   | 0x16    | `uint8_t`  | RO     | DC[^5] fan state     | The state of the DC controlled fan enumerated as described [here][mycelium_state].               |
-| FANPWM   | 0x17    | `uint8_t`  | RO     | PWM[^6] fan state    | The state of the PWM controlled fan enumerated as described [here][mycelium_state].              |
-| FANMIN   | 0x18    | `uint8_t`  | RO     | Minimum fan speed    | The minimum rotational speed of the fan in Hertz before entering the stop band.                  |
-| FANMAX   | 0x19    | `uint8_t`  | RO     | Maximum fan speed    | The maximum rotational speed of the fan in Hertz at full power.                                  |
-| DUTMIN   | 0x20    | `uint8_t`  | RO     | Minimum fan duty     | The minimum duty cycle of the fan control signal before entering the stop band.                  |
-| DUTMAX   | 0x21    | `uint8_t`  | RO     | Maximum fan duty     | The maximum duty cycle of the fan control signal at full power.                                  |
+| BMCSTA   | 0x10    | `uint8`    | RO     | BMC[^1] state        | The state of the baseboard management controller enumerated as described [here][mycelium_state]. |
+| SBCSTA   | 0x11    | `uint8`    | RO     | SBC[^2] state        | The state of the single board controller enumerated as described [here][mycelium_state].         |
+| PSUSTA   | 0x12    | `uint8`    | RO     | PSU[^3] state        | The state of the external power supply enumerated as described [here][mycelium_state].           |
+| FANDCC   | 0x13    | `uint8`    | RO     | DC[^4] fan state     | The state of the DC controlled fan enumerated as described [here][mycelium_state].               |
+| FANPWM   | 0x14    | `uint8`    | RO     | PWM[^5] fan state    | The state of the PWM controlled fan enumerated as described [here][mycelium_state].              |
+| FANMIN   | 0x15    | `uint8`    | RO     | Minimum fan speed    | The minimum rotational speed of the fan in Hertz before entering the stop band.                  |
+| FANMAX   | 0x16    | `uint8`    | RO     | Maximum fan speed    | The maximum rotational speed of the fan in Hertz at full power.                                  |
+| DUTMIN   | 0x17    | `uint8`    | RO     | Minimum fan duty     | The minimum duty cycle of the fan control signal before entering the stop band.                  |
+| DUTMAX   | 0x18    | `uint8`    | RO     | Maximum fan duty     | The maximum duty cycle of the fan control signal at full power.                                  |
+| BMCCPU   | 0x19    | `char[16]` | RO     | BMC CPU[^6]          | A string providing the CPU name of the BMC.                                                      |
+| BMCFWN   | 0x20    | `char[16]` | RO     | BMC firmware name    | A string providing the name of the installed firmware.                                           |
+| BMCFWV   | 0x21    | `char[16]` | RO     | BMC firmware version | A string providing the semantic version of the firmware.                                         |
 
 ### Specification registers
 
-| Register          | Address | Datatype  | Access | Name                | Description                                                                                               |
-| ----------------- | ------- | --------- | ------ | ------------------- | --------------------------------------------------------------------------------------------------------- |
-| [SBCPON](#sbcpon) | 0x30    | `uint8_t` | RW     | SBC power-on        | The desired state of the single-board computer power rail enumerated as described [here][mycelium_state]. |
-| [SBCSON](#sbcson) | 0x31    | `uint8_t` | RW     | SBC soft-on         | The desired state of the single-board computer enumerated as described [here][mycelium_state].            |
-| [FANMOD](#fanmod) | 0x32    | `uint8_t` | RW     | Fan control mode    | The mode used to control the fan enumerated as described [here](#fanmod).                                 |
-| [FANFDB](#fanfdb) | 0x33    | `uint8_t` | RW     | Fan feedback source | The feedback source of the automatic fan control mode as described [here](#fanfdb).                       |
-| [FANSET](#fanfdb) | 0x34    | `uint8_t` | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.                                  |
-| [DUTSET](#dutset) | 0x35    | `uint8_t` | RW     | Fan duty setpoint   | The duty setpoint for the fan in manual mode.                                                             |
+| Register          | Address | Datatype | Access | Name                | Description                                                                                               |
+| ----------------- | ------- | -------- | ------ | ------------------- | --------------------------------------------------------------------------------------------------------- |
+| [SBCPON](#sbcpon) | 0x30    | `uint8`  | RW     | SBC power-on        | The desired state of the single-board computer power rail enumerated as described [here][mycelium_state]. |
+| [SBCSON](#sbcson) | 0x31    | `uint8`  | RW     | SBC soft-on         | The desired state of the single-board computer enumerated as described [here][mycelium_state].            |
+| [FANMOD](#fanmod) | 0x32    | `uint8`  | RW     | Fan control mode    | The mode used to control the fan enumerated as described [here](#fanmod).                                 |
+| [FANFDB](#fanfdb) | 0x33    | `uint8`  | RW     | Fan feedback source | The feedback source of the automatic fan control mode as described [here](#fanfdb).                       |
+| [FANSET](#fanfdb) | 0x34    | `uint8`  | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.                                  |
+| [DUTSET](#dutset) | 0x35    | `uint8`  | RW     | Fan duty setpoint   | The duty setpoint for the fan in manual mode.                                                             |
 
 ### Telemetry registers
 
-| Register | Address | Datatype  | Access | Name                | Description                                                                              |
-| -------- | ------- | --------- | ------ | ------------------- | ---------------------------------------------------------------------------------------- |
-| BMCVOL   | 0x50    | `float`   | RO     | BMC voltage         | The current drawn by the baseboard management controller and all other electronics.      |
-| BMCCUR   | 0x51    | `float`   | RO     | BMC current         | The voltage supplied to the baseboard management controller and all other electronics.   |
-| SBCVOL   | 0x52    | `float`   | RO     | SBC voltage         | The current drawn by the single-board computer.                                          |
-| SBCCUR   | 0x53    | `float`   | RO     | SBC current         | The voltage supplied to the single-board computer.                                       |
-| TMPAMB   | 0x54    | `float`   | RO     | Ambient temperature | The ambient temperature.                                                                 |
-| TMPPSU   | 0x55    | `float`   | RO     | PSU temperature     | The temperature of the power supply or the VIN rail trace and is based on the backplane. |
-| FANSPD   | 0x56    | `uint8_t` | RO     | Fan speed           | The current fan speed in Hertz.                                                          |
-| FANDUT   | 0x57    | `uint8_t` | RO     | Fan duty cycle      | The current fan duty cycle.                                                              |
+| Register | Address | Datatype | Access | Name                | Description                                                                              |
+| -------- | ------- | -------- | ------ | ------------------- | ---------------------------------------------------------------------------------------- |
+| FANSPD   | 0x50    | `uint8`  | RO     | Fan speed           | The current fan speed in Hertz.                                                          |
+| FANDUT   | 0x51    | `uint8`  | RO     | Fan duty cycle      | The current fan duty cycle.                                                              |
+| BMCVOL   | 0x52    | `float`  | RO     | BMC voltage         | The current drawn by the baseboard management controller and all other electronics.      |
+| BMCCUR   | 0x53    | `float`  | RO     | BMC current         | The voltage supplied to the baseboard management controller and all other electronics.   |
+| SBCVOL   | 0x54    | `float`  | RO     | SBC voltage         | The current drawn by the single-board computer.                                          |
+| SBCCUR   | 0x55    | `float`  | RO     | SBC current         | The voltage supplied to the single-board computer.                                       |
+| TMPAMB   | 0x56    | `float`  | RO     | Ambient temperature | The ambient temperature.                                                                 |
+| TMPPSU   | 0x57    | `float`  | RO     | PSU temperature     | The temperature of the power supply or the VIN rail trace and is based on the backplane. |
 
 ### Action registers
 
-| Register          | Address | Datatype  | Access | Name                        | Description                                                                        |
-| ----------------- | ------- | --------- | ------ | --------------------------- | ---------------------------------------------------------------------------------- |
-| [ACTPCY](#actpcy) | 0x70    | `uint8_t` | RW     | Power-cycle action          | Power-cycle the single-board computer by disconnecting and reconnecting the power. |
-| [ACTREB](#actreb) | 0x71    | `uint8_t` | RW     | Reboot action               | Reboot the single-board computer by halting it via GPIO[^7] and restarting it.     |
-| [ACTENU](#actenu) | 0x72    | `uint8_t` | RW     | Hardware enumeration action | Enumerate the connected hardware and update the status.                            |
+| Register          | Address | Datatype | Access | Name                        | Description                                                                        |
+| ----------------- | ------- | -------- | ------ | --------------------------- | ---------------------------------------------------------------------------------- |
+| [ACTPCY](#actpcy) | 0x70    | `uint8`  | RW     | Power-cycle action          | Power-cycle the single-board computer by disconnecting and reconnecting the power. |
+| [ACTREB](#actreb) | 0x71    | `uint8`  | RW     | Reboot action               | Reboot the single-board computer by halting it via GPIO[^7] and restarting it.     |
+| [ACTENU](#actenu) | 0x72    | `uint8`  | RW     | Hardware enumeration action | Enumerate the connected hardware and update the status.                            |
 
 ## Register description
 
@@ -187,11 +187,11 @@ To interface with the blade via the management bus interface, the following libr
 - **C / C++:** [`mushroom.h`][mushroom_h].
 
 [^1]: **BMC:** [baseboard management controller][bmc]
-[^2]: **CPU:** [central processing unit][cpu]
-[^3]: **SBC:** [single-board computer][sbc]
-[^4]: **PSU:** [power supply unit][psu]
-[^5]: **DC:** [direct current][dc]
-[^6]: **PWM:** [pulse-width modulation][pwm]
+[^2]: **SBC:** [single-board computer][sbc]
+[^3]: **PSU:** [power supply unit][psu]
+[^4]: **DC:** [direct current][dc]
+[^5]: **PWM:** [pulse-width modulation][pwm]
+[^6]: **CPU:** [central processing unit][cpu]
 [^7]: **GPIO:** [general-purpose input/output][gpio]
 
 <!-- Glossary -->

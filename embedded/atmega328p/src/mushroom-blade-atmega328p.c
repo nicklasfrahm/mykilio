@@ -10,45 +10,51 @@
 #include <stdint.h>
 #include <util/delay.h>
 
+#include "cursor.h"
 #include "mushroom.h"
 #include "twi.h"
 
-mushroom_cursor_t cursor = MUSHROOM_CURSOR_INITIALIZER;
+// Read a register byte from an array of registers.
+#define REG_RB(offset, registers, cursor) \
+  registers[cursor.address - offset].bytes[cursor.index]
+// Write a register byte from an array of registers.
+#define REG_WB(offset, registers, cursor, data) \
+  registers[cursor.address - offset].bytes[cursor.index] = data
 
-void receive(uint8_t data) {
-  // Configure the address to be written to.
-  if (cursor.address == REG_NONE) {
-    cursor.address = data;
-    cursor.length = mushroom_register_len(cursor.address);
-  }
+// A cursor to store the information about the current TWI register operation.
+cursor_t cursor = CURSOR_INITIALIZER;
 
-  // TODO: Stream data in.
-}
+// An array that contains all uint8-typed status registers.
+mushroom_uint8_t status_regs[9];
 
-void send(void) {
-  // Return zero data if no register is selected for reading.
-  if (cursor.address == REG_NONE) {
-    twi_server_send(0x00);
-    return;
-  }
+// An array that contains all string-typed status registers.
+mushroom_string_t status_regs_string[3];
 
-  // TODO: Stream data out.
+// An array that contains all uint8-typed specification registers.
+mushroom_uint8_t specification_regs[6];
 
-  if (cursor.index == cursor.length) {
-    mushroom_cursor_init(&cursor);
-  }
-}
+// An array that contains all uint8-typed telemetry registers.
+mushroom_uint8_t telemetry_regs[2];
+
+// An array that contains all float-typed telemetry registers.
+mushroom_float_t telemetry_regs_float[6];
+
+// An array that contains all uint8-typed action registers.
+mushroom_uint8_t action_regs[3];
+
+void twi_receive(uint8_t data);
+void twi_send(void);
 
 int16_t main(void) {
   // Set pin 5 of PORTB for output.
   DDRB |= _BV(DDB5);
 
   // Configure TWI server.
-  twi_server_configure(receive, send);
+  twi_server_configure(twi_receive, twi_send);
   twi_server_start(0x40);
 
   while (1) {
-    if (cursor.address != REG_NONE) {
+    if (cursor.address != REG_ADRPTR) {
       // Set pin 5 high to turn led on.
       PORTB |= _BV(PORTB5);
     } else {
@@ -58,4 +64,54 @@ int16_t main(void) {
   }
 
   return 0;
+}
+
+void twi_receive(uint8_t data) {
+  if (cursor.idle) {
+    // This is the start of a new TWI transaction, so we initialize our cursor.
+    cursor.idle = CURSOR_BUSY;
+    cursor.address = data;
+    cursor.length = mushroom_register_len(cursor.address);
+    return;
+  }
+
+  if (cursor.address == REG_ADRPTR) {
+    // Write the register address pointer for a read operation.
+    cursor.address = data;
+  } else if (IS_ACTION(cursor.address)) {
+    REG_WB(REG_ACTION, action_regs, cursor, data);
+  } else if (IS_SPECIFICATION(cursor.address)) {
+    REG_WB(REG_SPECIFICATION, specification_regs, cursor, data);
+  }
+
+  cursor_update(&cursor);
+}
+
+void twi_send(void) {
+  // Update the cursor.
+  if (cursor.idle) {
+    cursor.idle = CURSOR_BUSY;
+  }
+
+  if (cursor.address == REG_ADRPTR) {
+    // This is kind of pointless, because it would just return
+    // its own address, but let's keep it for the sake of completeness.
+    twi_server_send(cursor.address);
+  } else if (IS_ACTION(cursor.address)) {
+    twi_server_send(REG_RB(REG_ACTION, action_regs, cursor));
+  } else if (IS_TELEMETRY_FLOAT(cursor.address)) {
+    twi_server_send(REG_RB(REG_TELEMETRY_FLOAT, telemetry_regs_float, cursor));
+  } else if (IS_TELEMETRY(cursor.address)) {
+    twi_server_send(REG_RB(REG_TELEMETRY, telemetry_regs, cursor));
+  } else if (IS_SPECIFICATION(cursor.address)) {
+    twi_server_send(REG_RB(REG_SPECIFICATION, specification_regs, cursor));
+  } else if (IS_STATUS_STRING(cursor.address)) {
+    twi_server_send(REG_RB(REG_STATUS_STRING, status_regs_string, cursor));
+  } else if (IS_STATUS(cursor.address)) {
+    twi_server_send(REG_RB(REG_STATUS, status_regs, cursor));
+  } else {
+    twi_server_send(0x00);
+  }
+
+  cursor_update(&cursor);
 }
