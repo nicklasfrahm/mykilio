@@ -14,33 +14,37 @@
 #include "mushroom.h"
 #include "twi.h"
 
+#define TWI_ADDRESS 0x40
+
 // Read a register byte from an array of registers.
 #define REG_RB(offset, registers, cursor) \
   registers[cursor.address - offset].bytes[cursor.index]
 // Write a register byte from an array of registers.
 #define REG_WB(offset, registers, cursor, data) \
   registers[cursor.address - offset].bytes[cursor.index] = data
+// Read a register value from an array of registers.
+#define REG_RV(offset, registers, address) registers[address - offset].value
 
 // A cursor to store the information about the current TWI register operation.
-cursor_t cursor = CURSOR_INITIALIZER;
+volatile cursor_t cursor = CURSOR_INITIALIZER;
 
 // An array that contains all uint8-typed status registers.
-mushroom_uint8_t status_regs[9];
+volatile mushroom_uint8_t status_regs[9];
 
 // An array that contains all string-typed status registers.
-mushroom_string_t status_regs_string[3];
+volatile mushroom_string_t status_regs_string[3];
 
 // An array that contains all uint8-typed specification registers.
-mushroom_uint8_t specification_regs[6];
+volatile mushroom_uint8_t specification_regs[10];
 
 // An array that contains all uint8-typed telemetry registers.
-mushroom_uint8_t telemetry_regs[2];
+volatile mushroom_uint8_t telemetry_regs[2];
 
 // An array that contains all float-typed telemetry registers.
-mushroom_float_t telemetry_regs_float[6];
+volatile mushroom_float_t telemetry_regs_float[6];
 
 // An array that contains all uint8-typed action registers.
-mushroom_uint8_t action_regs[3];
+volatile mushroom_uint8_t action_regs[3];
 
 void twi_receive(uint8_t data);
 void twi_send(void);
@@ -51,16 +55,21 @@ int main(void) {
 
   // Configure TWI server.
   twi_server_configure(twi_receive, twi_send);
-  twi_server_start(0x40);
+  twi_server_start(TWI_ADDRESS);
 
   while (1) {
-    if (cursor.address != REG_ADRPTR) {
+    cli();
+    uint8_t led = REG_RV(REG_SPECIFICATION, specification_regs, REG_LEDMAN);
+    sei();
+
+    if (led) {
       // Set pin 5 high to turn led on.
       PORTB |= _BV(PORTB5);
     } else {
       // Set pin 5 low to turn led off.
       PORTB &= ~_BV(PORTB5);
     }
+    _delay_ms(10);
   }
 
   return 0;

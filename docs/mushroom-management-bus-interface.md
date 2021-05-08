@@ -46,8 +46,12 @@ This section describes all available register addresses that are part of the int
 | [SBCSON](#sbcson) | 0x31    | `uint8`  | RW     | SBC soft-on         | The desired state of the single-board computer enumerated as described [here][mycelium_state].            |
 | [FANMOD](#fanmod) | 0x32    | `uint8`  | RW     | Fan control mode    | The mode used to control the fan enumerated as described [here](#fanmod).                                 |
 | [FANFDB](#fanfdb) | 0x33    | `uint8`  | RW     | Fan feedback source | The feedback source of the automatic fan control mode as described [here](#fanfdb).                       |
-| [FANSET](#fanfdb) | 0x34    | `uint8`  | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.                                  |
-| [DUTSET](#dutset) | 0x35    | `uint8`  | RW     | Fan duty setpoint   | The duty setpoint for the fan in manual mode.                                                             |
+| [FANSET](#fanset) | 0x34    | `uint8`  | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.                                  |
+| [FANMAN](#fanman) | 0x35    | `uint8`  | RW     | Fan manual setpoint | The duty setpoint for the fan in manual mode.                                                             |
+| [LEDMOD](#ledmod) | 0x36    | `uint8`  | RW     | LED control mode    | The mode used to control the LED enumerated as described [here](#ledmod).                                 |
+| [LEDFDB](#fanfdb) | 0x37    | `uint8`  | RW     | LED feedback source | The feedback source of the automatic LED control mode as described [here](#ledfdb).                       |
+| [LEDSET](#fanset) | 0x38    | `uint8`  | RW     | LED setpoint        | The sensor range percentage at which the LED should light up with full brightness.                        |
+| [LEDMAN](#fanman) | 0x39    | `uint8`  | RW     | LED manual setpoint | The duty setpoint for the LED in manual mode.                                                             |
 
 ### Telemetry registers
 
@@ -94,14 +98,14 @@ This register controls the system state of the single board computer via a GPIO.
 
 The fan control mode of the fan can be automatic, where `x` is the feedback signal as configured by [FANFDB](#fanfdb) and `a` is automatically calculated based on the configuration of the fan setpoint ([FANSET](#fanset)) register.
 
-| Mode        | Value | Description                                                         |
-| ----------- | ----- | ------------------------------------------------------------------- |
-| Off         | 0     | The fan is disabled.                                                |
-| Manual      | 1     | The fan is controlled by writing a value to the `DTYSET` register.  |
-| Linear      | 2     | The fan is controlled according to the function `f(x) = a*x`.       |
-| SquareRoot  | 3     | The fan is controlled according to the function `f(x) = a*sqrt(x)`. |
-| Quadratic   | 4     | The fan is controlled according to the function `f(x) = a*x^2`.     |
-| Exponential | 5     | The fan is controlled according to the function `f(x) = a*e^x`.     |
+| Mode        | Value | Description                                                                 |
+| ----------- | ----- | --------------------------------------------------------------------------- |
+| Off         | 0     | The fan is disabled.                                                        |
+| Manual      | 1     | The fan is controlled by writing a value to the [FANMAN](#fanman) register. |
+| Linear      | 2     | The fan is controlled according to the function `f(x) = a*x`.               |
+| SquareRoot  | 3     | The fan is controlled according to the function `f(x) = a*sqrt(x)`.         |
+| Quadratic   | 4     | The fan is controlled according to the function `f(x) = a*x^2`.             |
+| Exponential | 5     | The fan is controlled according to the function `f(x) = a*e^x`.             |
 
 ### FANFDB
 
@@ -156,9 +160,25 @@ The fan setpoint configures the value at which the fan will run with full speed.
 
     By writing the value `76` to our [FANSET](#fanset) register, the fan will now run on full speed if the sensor reads 1.5A.
 
-### DUTSET
+### FANMAN
 
 Writing a value to this register will set the duty of the fan if the fan mode ([FANMOD](#fanmod)) is set to _Manual_. `0` corresponds to a duty of 0%, while `255` corresponds to 100%. Any value between `0` and `255` is valid.
+
+### LEDMOD
+
+Please use the [FANMOD](#fanmod) register configuration reference as the LED control mode register accepts the same options.
+
+### LEDFDB
+
+Please use the [FANFDB](#fanfdb) register configuration reference as the LED feedback source register accepts the same options.
+
+### LEDSET
+
+Please use the [FANSET](#fanset) register configuration reference as the LED setpoint register accepts the same options.
+
+### LEDMAN
+
+Please use the [FANMAN](#fanman) register configuration reference as the LED manual override register accepts the same options.
 
 ### ACTPCY
 

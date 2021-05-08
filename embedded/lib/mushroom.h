@@ -37,7 +37,11 @@ typedef enum mushroom_register {
   REG_FANMOD,
   REG_FANFDB,
   REG_FANSET,
-  REG_DUTSET,
+  REG_FANMAN,
+  REG_LEDMOD,
+  REG_LEDFDB,
+  REG_LEDSET,
+  REG_LEDMAN,
   // Telemetry registers.
   REG_FANSPD = REG_TELEMETRY,
   REG_FANDUT,
@@ -63,7 +67,7 @@ typedef enum mushroom_register {
 #define REG_STATUS_LAST REG_DUTMAX
 #define REG_STATUS_STRING REG_BMCCPU
 #define REG_STATUS_STRING_LAST REG_BMCFWV
-#define REG_SPECIFICATION_LAST REG_DUTSET
+#define REG_SPECIFICATION_LAST REG_LEDMAN
 #define REG_TELEMETRY_LAST REG_FANDUT
 #define REG_TELEMETRY_FLOAT REG_BMCVOL
 #define REG_TELEMETRY_FLOAT_LAST REG_TMPPSU
@@ -121,23 +125,23 @@ typedef enum mushroom_register {
 // Returns the length of a given register.
 size_t mushroom_register_len(mushroom_register_t address);
 
-// Fan mode for the FANMOD register.
-typedef enum mushroom_fan_mode {
-  FANMOD_OFF,
-  FANMOD_MANUAL,
-  FANMOD_LINEAR,
-  FANMOD_SQUARE_ROOT,
-  FANMOD_QUADRATIC,
-  FANMOD_EXPONENTIAL,
-} mushroom_fan_mode_t;
+// The control mode of a fan or an LED.
+typedef enum mushroom_control_mode {
+  MOD_OFF,
+  MOD_MANUAL,
+  MOD_LINEAR,
+  MOD_SQUARE_ROOT,
+  MOD_QUADRATIC,
+  MOD_EXPONENTIAL,
+} mushroom_control_mode_t;
 
-// Fan feedback source for the FANFDB register.
-typedef enum mushroom_fan_feedback {
-  FANFDB_TMPAMB,
-  FANFDB_TMPPSU,
-  FANFDB_BMCCUR,
-  FANFDB_SBCCUR,
-} mushroom_fan_feedback_t;
+// The feedback source for automatic control of a fan or an LED.
+typedef enum mushroom_feedback_source {
+  FDB_TMPAMB,
+  FDB_TMPPSU,
+  FDB_BMCCUR,
+  FDB_SBCCUR,
+} mushroom_feedback_source_t;
 
 // A datatype to translate a uint8_t to bytes and vice-versa.
 typedef union mushroom_uint8 {

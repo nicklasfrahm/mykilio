@@ -6,6 +6,7 @@
 */
 #include <stdio.h>
 
+#include "../../lib/mushroom.h"
 #include "driver/gpio.h"
 #include "driver/i2c.h"
 #include "esp_log.h"
@@ -39,13 +40,14 @@ static esp_err_t i2c_controller_configure(void) {
                             I2C_CONTROLLER_TX_BUF_LEN, 0);
 }
 
-static esp_err_t ping_peripheral(uint8_t* address) {
+static esp_err_t peripheral_write_register(uint8_t* address, uint8_t reg,
+                                           uint8_t* data) {
   // Send command to peripheral.
   i2c_cmd_handle_t cmd = i2c_cmd_link_create();
   i2c_master_start(cmd);
   i2c_master_write_byte(cmd, (*address << 1) | I2C_MASTER_WRITE, 1);
-  i2c_master_write_byte(cmd, 0x00, 1);
-  i2c_master_write_byte(cmd, 0xFF, 1);
+  i2c_master_write_byte(cmd, reg, 1);
+  i2c_master_write_byte(cmd, *data, 1);
   i2c_master_stop(cmd);
   esp_err_t error =
       i2c_master_cmd_begin(CONFIG_I2C_CONTROLLER_PORT_NUM, cmd, 0);
@@ -58,12 +60,19 @@ void app_main(void) {
   // Configure the I2C controller.
   i2c_controller_configure();
 
+  uint8_t data = 0x01;
+
   while (1) {
-    for (uint8_t address = 0x01; address < 0xFF; address++) {
-      esp_err_t error = ping_peripheral(&address);
-      if (error) {
+    for (uint8_t address = 1; address < 127; address++) {
+      esp_err_t error = peripheral_write_register(&address, REG_ADRPTR, &data);
+      if (!error) {
         ESP_LOGI(TAG, "Device found: %X", address);
+        peripheral_write_register(&address, REG_LEDMAN, &data);
+        vTaskDelay(pdMS_TO_TICKS(100));
       }
     }
+
+    // Toggle data.
+    data = data ? 0x00 : 0x01;
   }
 }

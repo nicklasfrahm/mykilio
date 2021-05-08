@@ -23,7 +23,7 @@ typedef struct cursor {
   { 0x00, 0, 0, CURSOR_IDLE }
 
 // Increment cursor index and release the cursor if all data was written.
-void cursor_update(cursor_t* cursor);
+void cursor_update(volatile cursor_t* cursor);
 
 // Write to an array of registers.
 #define REG_WRITE(offset, registers, cursor, data) \
