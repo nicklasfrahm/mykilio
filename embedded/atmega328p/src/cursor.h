@@ -25,11 +25,4 @@ typedef struct cursor {
 // Increment cursor index and release the cursor if all data was written.
 void cursor_update(volatile cursor_t* cursor);
 
-// Write to an array of registers.
-#define REG_WRITE(offset, registers, cursor, data) \
-  registers[cursor.address - offset].bytes[cursor.index] = data
-// Read from an array of registers.
-#define REG_READ(offset, registers, cursor) \
-  registers[cursor.address - offset].bytes[cursor.index]
-
 #endif

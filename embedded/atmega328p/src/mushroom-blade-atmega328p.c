@@ -26,28 +26,28 @@
 #define REG_RV(offset, registers, address) registers[address - offset].value
 
 // A cursor to store the information about the current TWI register operation.
-volatile cursor_t cursor = CURSOR_INITIALIZER;
+static volatile cursor_t cursor = CURSOR_INITIALIZER;
 
 // An array that contains all uint8-typed status registers.
-volatile mushroom_uint8_t status_regs[9];
+static volatile mushroom_uint8_t status_regs[9];
 
 // An array that contains all string-typed status registers.
-volatile mushroom_string_t status_regs_string[3];
+static volatile mushroom_string_t status_regs_string[3];
 
 // An array that contains all uint8-typed specification registers.
-volatile mushroom_uint8_t specification_regs[10];
+static volatile mushroom_uint8_t specification_regs[10];
 
 // An array that contains all uint8-typed telemetry registers.
-volatile mushroom_uint8_t telemetry_regs[2];
+static volatile mushroom_uint8_t telemetry_regs[2];
 
 // An array that contains all float-typed telemetry registers.
-volatile mushroom_float_t telemetry_regs_float[6];
+static volatile mushroom_float_t telemetry_regs_float[6];
 
 // An array that contains all uint8-typed action registers.
-volatile mushroom_uint8_t action_regs[3];
+static volatile mushroom_uint8_t action_regs[3];
 
-void twi_receive(uint8_t data);
-void twi_send(void);
+static void twi_receive(uint8_t data);
+static void twi_send(void);
 
 int main(void) {
   // Set pin 5 of PORTB for output.
@@ -69,13 +69,15 @@ int main(void) {
       // Set pin 5 low to turn led off.
       PORTB &= ~_BV(PORTB5);
     }
-    _delay_ms(10);
+
+    // TODO: Remove this. It is only useful for debugging.
+    // _delay_ms(10);
   }
 
   return 0;
 }
 
-void twi_receive(uint8_t data) {
+static void twi_receive(uint8_t data) {
   if (cursor.idle) {
     // This is the start of a new TWI transaction, so we initialize our cursor.
     cursor.idle = CURSOR_BUSY;
@@ -96,7 +98,7 @@ void twi_receive(uint8_t data) {
   cursor_update(&cursor);
 }
 
-void twi_send(void) {
+static void twi_send(void) {
   // Update the cursor.
   if (cursor.idle) {
     cursor.idle = CURSOR_BUSY;
