@@ -11,6 +11,42 @@ All registers are addressed via 8-bit addresses, which follow a common scheme as
 | [7:4] | Data&nbsp;category    | A 4-bit identifier that corresponds to a [data category][mycelium_data_category]. |
 | [3:0] | Register&nbsp;address | A 4-bit address for a register within a [data category][mycelium_data_category].  |
 
+## Data framing
+
+The reader is expected to have basic familiarity with the principles and bus states of TWI. SDA is the serial data line, while SCL is the serial clock line.
+
+A _signal_ is a bus event, such as **START** or **ACK**, whereas an _operation_ is the combination of signals between **two START signals** or the **last START** and the **STOP signal**. A _transaction_ in contrast is the combination of signals between the **first START** and **STOP signal**.
+
+Independent of the fact if it is a read or a write _transaction_, the following operations are performed to interact with remote register via TWI.
+
+1.  The client sends **START** signal by pulling SDA low, while SCL is high.
+
+1.  The client writes the _server address byte_ to the bus, which specifies the server it would like to address. The least significant bit of this byte is the **R/W bit**. If it is set to `1` it indicates a read _operation_, whereas if it is set to `0`, it indicates a write _operation_.
+
+1.  The server acknowledges the receival by pulling SDA low when SCL is high and therefore sending an **ACK** signal.
+
+1.  The client sends the _register address byte_ to the bus, which indicates the register address it wants to write to. This **must** be `0x00` if a read _transaction_ is to be performed. Writing to register address `0x00`sets the \_ _address pointer_ on the server and thus indicating the location of the next read _operation_.
+
+1.  The server sends an **ACK** signal.
+
+a. If it is a _write transaction_, the following steps are performed after step 5:
+
+6. The client sends `n` more **data bytes**, which are each acknowlegded by the server.
+
+7. The client sends a **STOP** condition by releasing the SDA line to a high signal, while SCL is high.
+
+b. In contrast, if it is a _read transaction_, the following step are further performed after step 5:
+
+6. The client sends a single **data byte** containing the register address to be read to the server and the server sends an **ACK** signal.
+
+7. The client sends another **START** signal, often also referred to as **REPEATED START** by pulling SDA low while SCL is high.
+8. The client sends the _address byte_ with the **R/W** bit set to `1` to indicate a read operation.
+9. The server sends an **ACK** signal.
+
+10. Now the server sends `n` **data bytes**, which are each acknowlegded by the server with an **ACK** signal.
+
+11. The _transaction_ is ended by the client sending a **NACK** signal to request the server to release the bus. This is then followed up by the client sending a **STOP** condition.
+
 ## Register overview
 
 This section describes all available register addresses that are part of the interface. The _Access_ column specifies the access to the register, which can be either **RW** indicating _read-write_ access or **RO** indicating _read-only_ access. The _Datatype_ column indirectly specifies the register length in **bytes** via the datatype expected to be read from or written to the specified register. All registers use most significant byte first byte ordering.
