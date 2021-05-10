@@ -46,7 +46,7 @@ For this example, we will use two Arduino Nanos with an ATmega328P, because this
 
 Begin by wiring up the ICSP headers of the Arduinos as shown in the diagram below.
 
-![Connection between Arduino Nano ICSP headers for bootloader burning](assets/img/bootloader-burning-connection.jpg)
+![Connection between Arduino Nano ICSP headers for bootloader burning](https://media.githubusercontent.com/media/nicklasfrahm/mycelium/docs/assets/img/bootloader-burning-connection.jpg)
 
 The first command will install the [Arduino ISP programmer firmware](https://github.com/arduino/arduino-examples/blob/main/examples/11.ArduinoISP/ArduinoISP/ArduinoISP.ino) on the programmer Arduino.
 
