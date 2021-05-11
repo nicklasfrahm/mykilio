@@ -4,7 +4,7 @@
 
 #define F_CPU 16000000UL
 #define USART_BAUD 1000000
-#define TWI_ADDRESS 0x40
+#define TWI_BASE_ADDRESS 0x10
 
 #include <avr/io.h>
 #include <stdint.h>
@@ -51,15 +51,17 @@ static void twi_send(void);
 int main(void) {
   // Configure UART.
   usart_configure(F_CPU, USART_BAUD);
-  printf("Configured subsystem: UART\n");
+
+  // Configure user LED.
+  DDRD |= _BV(DDD5);
+  // Configure TWI address input.
+  DDRB &= ~(_BV(DDB5) | _BV(DDB4) | _BV(DDB3) | _BV(DDB2));
 
   // Configure TWI server.
+  uint8_t twi_address = TWI_BASE_ADDRESS | ((PINB >> 2) & 0x0F);
   twi_server_configure(twi_receive, twi_send);
-  twi_server_start(TWI_ADDRESS);
-  printf("Configured subsystem: TWI\n");
-
-  // Configure GPIOs.
-  DDRD |= _BV(DDD5);  // Configure pin 5 of PORTD as an output.
+  twi_server_start(twi_address);
+  printf("TWI address: 0x%X\n", twi_address);
 
   uint32_t idle_time = 0;
   while (1) {
