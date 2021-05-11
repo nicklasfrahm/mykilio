@@ -58,7 +58,7 @@ int main(void) {
   printf("Configured subsystem: TWI\n");
 
   // Configure GPIOs.
-  DDRB |= _BV(DDB5);  // Set pin 5 of PORTB for output.
+  DDRD |= _BV(DDD5);  // Configure pin 5 of PORTD as an output.
 
   uint32_t idle_time = 0;
   while (1) {
@@ -68,11 +68,11 @@ int main(void) {
 
     if (led) {
       idle_time = 0;
-      // Set pin 5 high to turn led on.
-      PORTB |= _BV(PORTB5);
+      // Turn LED on.
+      PORTD |= _BV(PORTD5);
     } else {
-      // Set pin 5 low to turn led off.
-      PORTB &= ~_BV(PORTB5);
+      // Turn LED off.
+      PORTD &= ~_BV(PORTD5);
     }
 
     // TODO: Remove this. It is only useful for debugging.
