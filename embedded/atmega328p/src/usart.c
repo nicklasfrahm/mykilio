@@ -6,13 +6,6 @@
 
 #include <avr/io.h>
 
-#ifndef F_CPU
-#define F_CPU 16000000UL
-#endif
-
-#define UART_BAUD 1000000
-#define UBRR_VALUE (((F_CPU / (UART_BAUD * 16UL))) - 1)
-
 // Sends a single byte via USART.
 static int usart_snd(char byte, __attribute__((unused)) FILE* stream) {
   while (!(UCSR0A & (1 << UDRE0))) {
@@ -44,10 +37,12 @@ static int usart_rcv(FILE* stream) {
 static FILE uart0_fd = FDEV_SETUP_STREAM(usart_snd, usart_rcv, _FDEV_SETUP_RW);
 
 // Configure the UART transceiver.
-void usart_configure(void) {
+void usart_configure(uint32_t cpu_freq, uint32_t baud) {
+  // Calculate required register value for desired BAUD.
+  uint32_t ubbr_reg = ((cpu_freq / (baud * 16))) - 1;
   // Configure baud rate.
-  UBRR0H = UBRR_VALUE >> 8;
-  UBRR0L = UBRR_VALUE;
+  UBRR0H = (uint8_t)(ubbr_reg >> 8);
+  UBRR0L = (uint8_t)(ubbr_reg);
   // Set frame format to 8 data bits, no parity, 1 stop bit.
   UCSR0C |= (1 << UCSZ01) | (1 << UCSZ00);
   // Enable transmission and reception.

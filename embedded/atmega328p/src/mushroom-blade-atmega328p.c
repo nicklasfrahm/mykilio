@@ -3,6 +3,7 @@
 #endif
 
 #define F_CPU 16000000UL
+#define USART_BAUD 1000000
 #define TWI_ADDRESS 0x40
 
 #include <avr/io.h>
@@ -49,7 +50,7 @@ static void twi_send(void);
 
 int main(void) {
   // Configure UART.
-  usart_configure();
+  usart_configure(F_CPU, USART_BAUD);
   printf("Configured subsystem: UART\n");
 
   // Configure TWI server.

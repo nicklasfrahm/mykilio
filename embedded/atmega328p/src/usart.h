@@ -8,6 +8,6 @@
 // https://embedds.com/using-standard-io-streams-in-avr-gcc/
 
 // Initializes the USART transceiver.
-void usart_configure(void);
+void usart_configure(uint32_t cpu_freq, uint32_t baud);
 
 #endif
