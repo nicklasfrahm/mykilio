@@ -2,9 +2,8 @@
 #define __AVR_ATmega328P__
 #endif
 
-#ifndef F_CPU
 #define F_CPU 16000000UL
-#endif
+#define TWI_ADDRESS 0x40
 
 #include <avr/io.h>
 #include <stdint.h>
@@ -13,8 +12,7 @@
 #include "cursor.h"
 #include "mushroom.h"
 #include "twi.h"
-
-#define TWI_ADDRESS 0x40
+#include "usart.h"
 
 // Read a register byte from an array of registers.
 #define REG_RB(offset, registers, cursor) \
@@ -50,19 +48,26 @@ static void twi_receive(uint8_t data);
 static void twi_send(void);
 
 int main(void) {
-  // Set pin 5 of PORTB for output.
-  DDRB |= _BV(DDB5);
+  // Configure UART.
+  usart_configure();
+  printf("Configured subsystem: UART\n");
 
   // Configure TWI server.
   twi_server_configure(twi_receive, twi_send);
   twi_server_start(TWI_ADDRESS);
+  printf("Configured subsystem: TWI\n");
 
+  // Configure GPIOs.
+  DDRB |= _BV(DDB5);  // Set pin 5 of PORTB for output.
+
+  uint32_t idle_time = 0;
   while (1) {
     cli();
     uint8_t led = REG_RV(REG_SPECIFICATION, specification_regs, REG_LEDMAN);
     sei();
 
     if (led) {
+      idle_time = 0;
       // Set pin 5 high to turn led on.
       PORTB |= _BV(PORTB5);
     } else {
@@ -72,6 +77,9 @@ int main(void) {
 
     // TODO: Remove this. It is only useful for debugging.
     // _delay_ms(10);
+
+    printf("\rIdle: %lus", idle_time++);
+    _delay_ms(1000);
   }
 
   return 0;

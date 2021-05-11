@@ -1,6 +1,6 @@
 CC			:= -avr-gcc
 CCFLAGS		:= -g -mmcu=atmega328p -Os -std=c11 -pedantic-errors -Wall -Wextra -Werror
-LDFLAGS		:= -L/usr/lib/avr/include/ -lm
+LDFLAGS		:= -L/usr/lib/avr/include/ -Wl,-u,vfprintf -lprintf_min -lm
 OC			:= -avr-objcopy
 BUILD		:= ./build
 OBJ_DIR		:= $(BUILD)/objects
