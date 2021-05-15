@@ -27,7 +27,7 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v2
 
-      - name: Check SSH connection
+      - name: Deploy k3s and prepare kubeconfig for extraction
         uses: appleboy/ssh-action@master
         with:
           script_stop: true
@@ -40,4 +40,22 @@ jobs:
           proxy_host: ${{ secrets.SSH_PROXY_HOST }}
           proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
           script: |
-            curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--advertise-address $(host -t a edgerouterx-0.optrin.net) --tls-san edgerouterx-0.optrin.net" sudo sh -s -
+            curl -sfL https://get.k3s.io | \
+              INSTALL_K3S_EXEC="--advertise-address $(host -t a edgerouterx-0.optrin.net) --tls-san edgerouterx-0.optrin.net --" \
+              K3S_KUBECONFIG_MODE="644" \
+              sudo sh -s -
+
+      - name: Download kubeconfig
+        uses: nicklasfrahm/scp-action@main
+        with:
+          direction: download
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_TARGET_HOST }}
+          fingerprint: ${{ secrets.SSH_TARGET_FINGERPRINT }}
+          proxy_username: ${{ secrets.SSH_USER }}
+          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_host: ${{ secrets.SSH_PROXY_HOST }}
+          proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
+          source: /etc/rancher/k3s/k3s.yaml
+          target: /tmp
