@@ -1,0 +1,43 @@
+name: infrastructure
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/infrastructure.yml
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/infrastructure.yml
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: infrastructure
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Check SSH connection
+        uses: appleboy/ssh-action@master
+        with:
+          script_stop: yes
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ env.SSH_TARGET_HOST }}
+          fingerprint: ${{ secrets.SSH_TARGET_FINGERPRINT }}
+          proxy_username: ${{ secrets.SSH_USER }}
+          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_host: ${{ secrets.SSH_PROXY_HOST }}
+          proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
+          script: |
+            ls -lah
