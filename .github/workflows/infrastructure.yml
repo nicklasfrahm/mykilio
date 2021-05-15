@@ -33,11 +33,11 @@ jobs:
           script_stop: true
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          host: ${{ env.SSH_TARGET_HOST }}
-          fingerprint: ${{ secrets.SSH_TARGET_FINGERPRINT }}
-          proxy_username: ${{ secrets.SSH_USER }}
-          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          proxy_host: ${{ secrets.SSH_PROXY_HOST }}
-          proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
+          host: ${{ env.SSH_PROXY_HOST }}
+          fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
+          # proxy_username: ${{ secrets.SSH_USER }}
+          # proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # proxy_host: ${{ secrets.SSH_PROXY_HOST }}
+          # proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
           script: |
             ls -lah
