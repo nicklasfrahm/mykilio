@@ -40,4 +40,4 @@ jobs:
           proxy_host: ${{ secrets.SSH_PROXY_HOST }}
           proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
           script: |
-            ls -lah
+            curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--advertise-address $(host -t a edgerouterx-0.optrin.net) --tls-san edgerouterx-0.optrin.net" sudo sh -s -
