@@ -30,7 +30,7 @@ jobs:
       - name: Check SSH connection
         uses: appleboy/ssh-action@master
         with:
-          script_stop: yes
+          script_stop: true
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           host: ${{ env.SSH_TARGET_HOST }}
