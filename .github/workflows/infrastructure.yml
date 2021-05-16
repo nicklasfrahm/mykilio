@@ -58,4 +58,4 @@ jobs:
           proxy_host: ${{ secrets.SSH_PROXY_HOST }}
           proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
           source: /etc/rancher/k3s/k3s.yaml
-          target: /tmp
+          target: /tmp/kubeconfig.yml
