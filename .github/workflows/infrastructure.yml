@@ -59,3 +59,14 @@ jobs:
           proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
           source: /etc/rancher/k3s/k3s.yaml
           target: /tmp/kubeconfig.yml
+
+      - name: Adjust API server URL
+        run: sed -i s/127.0.0.1/${{ secrets.SSH_PROXY_HOST }}/g /tmp/kubeconfig.yml
+
+      - name: Create kubeconfig secret
+        uses: nicklasfrahm/file-secret-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          scope: ${{ env.GITHUB_REPOSITORY }}
+          secret: KUBECONFIG
+          file: /tmp/kubeconfig.yml
