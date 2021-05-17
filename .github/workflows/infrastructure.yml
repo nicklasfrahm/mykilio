@@ -18,7 +18,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  k3s:
+  kubernetes:
+    name: Kubernetes
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
@@ -41,7 +42,7 @@ jobs:
           proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
           script: |
             curl -sfL https://get.k3s.io | \
-              INSTALL_K3S_EXEC="--advertise-address $(host -t a edgerouterx-0.optrin.net) --tls-san edgerouterx-0.optrin.net --" \
+              INSTALL_K3S_EXEC="--advertise-address $(host -t a edgerouterx-0.optrin.net) --tls-san edgerouterx-0.optrin.net --disable traefik" \
               K3S_KUBECONFIG_MODE="644" \
               sudo sh -s -
 
