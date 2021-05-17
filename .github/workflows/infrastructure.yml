@@ -40,15 +40,12 @@ jobs:
           proxy_host: ${{ secrets.SSH_PROXY_HOST }}
           proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
           script: |
-            curl -sfL https://get.k3s.io | \
-              INSTALL_K3S_EXEC=" \
-                --advertise-address $(host -t a edgerouterx-0.optrin.net) \
-                --tls-san edgerouterx-0.optrin.net \
-                --disable traefik \
-                --selinux \
-                --write-kubeconfig-mode '0644'\
-              " \
-              sudo sh -s -
+            curl -sfL https://get.k3s.io | sudo sh -s - \
+              --advertise-address $(host -t a ${{ secrets.SSH_PROXY_HOST }}) \
+              --tls-san ${{ secrets.SSH_PROXY_HOST }} \
+              --disable traefik \
+              --write-kubeconfig-mode 644 \
+              --selinux
 
       - name: Download kubeconfig
         uses: nicklasfrahm/scp-action@main
