@@ -69,14 +69,14 @@ Connection ~ 2000 2350
 $Comp
 L Device:R R7
 U 1 1 60438F9F
-P 4000 2500
-F 0 "R7" H 4070 2546 50  0000 L CNN
-F 1 "240k" H 4070 2455 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 3930 2500 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/Uniroyal-Elec-0603WAF2403T5E_C4197.pdf" H 4000 2500 50  0001 C CNN
-F 4 "C4197" H 4000 2500 50  0001 C CNN "LCSC"
-	1    4000 2500
-	1    0    0    -1  
+P 4500 2500
+F 0 "R7" H 4570 2546 50  0000 L CNN
+F 1 "240k" H 4570 2455 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 4430 2500 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Uniroyal-Elec-0603WAF2403T5E_C4197.pdf" H 4500 2500 50  0001 C CNN
+F 4 "C4197" H 4500 2500 50  0001 C CNN "LCSC"
+	1    4500 2500
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
 	2500 1850 3000 1850
@@ -293,14 +293,14 @@ FB
 $Comp
 L Device:R R8
 U 1 1 604CC2CB
-P 4000 3100
-F 0 "R8" H 4070 3146 50  0000 L CNN
-F 1 "3.9k" H 4070 3055 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 3930 3100 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/Uniroyal-Elec-0603WAF3901T5E_C23018.pdf" H 4000 3100 50  0001 C CNN
-F 4 "C23018" H 4000 3100 50  0001 C CNN "LCSC"
-	1    4000 3100
-	1    0    0    -1  
+P 4500 3150
+F 0 "R8" H 4570 3196 50  0000 L CNN
+F 1 "3.9k" H 4570 3105 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 4430 3150 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Uniroyal-Elec-0603WAF3901T5E_C23018.pdf" H 4500 3150 50  0001 C CNN
+F 4 "C23018" H 4500 3150 50  0001 C CNN "LCSC"
+	1    4500 3150
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
 	4000 3450 4000 3350
@@ -324,8 +324,6 @@ Wire Wire Line
 	3500 3350 4000 3350
 Connection ~ 4000 3350
 Wire Wire Line
-	4000 3350 4000 3250
-Wire Wire Line
 	3500 2650 3500 2800
 Wire Wire Line
 	3500 2800 3850 2800
@@ -334,10 +332,6 @@ Wire Wire Line
 Connection ~ 3500 2800
 Wire Wire Line
 	3500 2800 3500 2950
-Wire Wire Line
-	4000 2150 4000 2350
-Wire Wire Line
-	4000 2650 4000 2950
 $Comp
 L Device:R R13
 U 1 1 6044DF40
@@ -12081,12 +12075,12 @@ Wire Wire Line
 Text GLabel 5500 2300 2    50   Input ~ 0
 FB
 $Comp
-L Mycelium:TPS54561 U1
+L mykilio:TPS54561 U1
 U 1 1 608FD74F
 P 5000 2000
 F 0 "U1" H 5000 1527 50  0000 C CNN
 F 1 "TPS54561" H 5000 1436 50  0000 C CNN
-F 2 "Mycelium:WSON-10-1EP_4x4mm_P0.8_EP2.6x3.0mm" H 4650 1750 50  0001 C CNN
+F 2 "mykilio:WSON-10-1EP_4x4mm_P0.8_EP2.6x3.0mm" H 4650 1750 50  0001 C CNN
 F 3 "https://datasheet.lcsc.com/lcsc/1809032041_Texas-Instruments-TPS54561DPRR_C180369.pdf" H 4650 1750 50  0001 C CNN
 F 4 "C180369" H 5000 2000 50  0001 C CNN "LCSC"
 	1    5000 2000
@@ -12120,21 +12114,27 @@ NoConn ~ 5450 1700
 $Comp
 L Device:C C9
 U 1 1 60A08A9D
-P 4500 3000
-F 0 "C9" H 4615 3046 50  0000 L CNN
-F 1 "10nF" H 4615 2955 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0402_1005Metric" H 4538 2850 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/Samsung-Electro-Mechanics-CL05B103KB5NNNC_C15195.pdf" H 4500 3000 50  0001 C CNN
-F 4 "C15195" H 4500 3000 50  0001 C CNN "LCSC"
-	1    4500 3000
+P 4000 2825
+F 0 "C9" H 4115 2871 50  0000 L CNN
+F 1 "10nF" H 4115 2780 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 4038 2675 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Samsung-Electro-Mechanics-CL05B103KB5NNNC_C15195.pdf" H 4000 2825 50  0001 C CNN
+F 4 "C15195" H 4000 2825 50  0001 C CNN "LCSC"
+	1    4000 2825
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	4000 3350 4500 3350
 Wire Wire Line
-	4500 3350 4500 3150
-Wire Wire Line
-	4500 2850 4500 2300
-Wire Wire Line
 	4500 2300 4550 2300
+Wire Wire Line
+	4000 2150 4000 2675
+Wire Wire Line
+	4000 2975 4000 3350
+Wire Wire Line
+	4500 3350 4500 3300
+Wire Wire Line
+	4500 2350 4500 2300
+Wire Wire Line
+	4500 2650 4500 3000
 $EndSCHEMATC

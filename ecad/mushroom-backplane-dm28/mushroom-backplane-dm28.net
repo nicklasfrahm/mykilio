@@ -1,7 +1,7 @@
 (export (version D)
   (design
-    (source \\wsl$\Ubuntu-18.04\home\ubuntu\repos\nicklasfrahm\mycelium\ecad\mushroom-backplane-dm28\mushroom-backplane-dm28.sch)
-    (date "30/04/2021 22:41:28")
+    (source B:\home\nicklasfrahm\repos\mykilio\ecad\mushroom-backplane-dm28\mushroom-backplane-dm28.sch)
+    (date "17/05/2021 10:55:03")
     (tool "Eeschema (5.1.9)-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -189,7 +189,7 @@
     (comp (ref U1)
       (value DM28)
       (footprint Mycelium:DM28)
-      (libsource (lib Mycelium) (part DM28) (description ""))
+      (libsource (lib mykilio) (part DM28) (description ""))
       (sheetpath (names /) (tstamps /))
       (tstamp 605EF217)))
   (libparts
@@ -323,15 +323,6 @@
         (pin (num 2) (name +) (type passive))
         (pin (num 3) (name Tacho) (type passive))
         (pin (num 4) (name PWM) (type input))))
-    (libpart (lib Mycelium) (part DM28)
-      (fields
-        (field (name Reference) U)
-        (field (name Value) DM28))
-      (pins
-        (pin (num 1) (name VO-) (type power_out))
-        (pin (num 2) (name VO+) (type power_out))
-        (pin (num 3) (name VIN-) (type power_in))
-        (pin (num 4) (name VIN+) (type power_in))))
     (libpart (lib Transistor_FET) (part BSS138)
       (aliases
         (alias 2N7002)
@@ -407,7 +398,16 @@
       (pins
         (pin (num 1) (name G) (type input))
         (pin (num 2) (name S) (type passive))
-        (pin (num 3) (name D) (type passive)))))
+        (pin (num 3) (name D) (type passive))))
+    (libpart (lib mykilio) (part DM28)
+      (fields
+        (field (name Reference) U)
+        (field (name Value) DM28))
+      (pins
+        (pin (num 1) (name VO-) (type power_out))
+        (pin (num 2) (name VO+) (type power_out))
+        (pin (num 3) (name VIN-) (type power_in))
+        (pin (num 4) (name VIN+) (type power_in)))))
   (libraries
     (library (logical Connector_Generic)
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Connector_Generic.lib"))
@@ -415,10 +415,10 @@
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Device.lib"))
     (library (logical Motor)
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Motor.lib"))
-    (library (logical Mycelium)
-      (uri B:/home/ubuntu/repos/nicklasfrahm/mycelium/ecad/Mycelium.lib))
     (library (logical Transistor_FET)
-      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Transistor_FET.lib")))
+      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Transistor_FET.lib"))
+    (library (logical mykilio)
+      (uri B:/home/nicklasfrahm/repos/mykilio/ecad/mykilio.lib)))
   (nets
     (net (code 1) (name +12V)
       (node (ref J2) (pin 2))

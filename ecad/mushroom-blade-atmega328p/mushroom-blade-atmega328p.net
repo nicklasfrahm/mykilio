@@ -1,7 +1,7 @@
 (export (version D)
   (design
-    (source \\wsl$\Ubuntu-18.04\home\ubuntu\repos\nicklasfrahm\mycelium\ecad\mushroom-blade-atmega328p\mushroom-blade-atmega328p.sch)
-    (date "30/04/2021 22:43:31")
+    (source B:\home\nicklasfrahm\repos\mykilio\ecad\mushroom-blade-atmega328p\mushroom-blade-atmega328p.sch)
+    (date "17/05/2021 11:01:37")
     (tool "Eeschema (5.1.9)-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block

@@ -1,7 +1,7 @@
 (export (version D)
   (design
-    (source \\wsl$\Ubuntu-18.04\home\ubuntu\repos\nicklasfrahm\mycelium\ecad\mushroom-backplane-tps54560\mushroom-backplane-tps54560.sch)
-    (date "30/04/2021 22:40:06")
+    (source B:\home\nicklasfrahm\repos\mykilio\ecad\mushroom-backplane-tps54560\mushroom-backplane-tps54560.sch)
+    (date "17/05/2021 10:49:59")
     (tool "Eeschema (5.1.9)-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -39,7 +39,7 @@
       (datasheet https://datasheet.lcsc.com/szlcsc/Texas-Instruments-TI-TPS54560DDAR_C31966.pdf)
       (fields
         (field (name LCSC) C344010))
-      (libsource (lib Mycelium) (part TPS54560) (description ""))
+      (libsource (lib mykilio) (part TPS54560) (description ""))
       (sheetpath (names /) (tstamps /))
       (tstamp 604192B7))
     (comp (ref R4)
@@ -538,23 +538,6 @@
         (pin (num 2) (name +) (type passive))
         (pin (num 3) (name Tacho) (type passive))
         (pin (num 4) (name PWM) (type input))))
-    (libpart (lib Mycelium) (part TPS54560)
-      (docs https://datasheet.lcsc.com/lcsc/1810131310_Texas-Instruments-TPS54560DDAR_C31966.pdf)
-      (fields
-        (field (name Reference) U)
-        (field (name Value) TPS54560)
-        (field (name Footprint) Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm_ThermalVias)
-        (field (name LCSC) C31966))
-      (pins
-        (pin (num 1) (name BOOT) (type output))
-        (pin (num 2) (name VIN) (type power_in))
-        (pin (num 3) (name EN) (type input))
-        (pin (num 4) (name RT/CLK) (type input))
-        (pin (num 5) (name FB) (type input))
-        (pin (num 6) (name COMP) (type output))
-        (pin (num 7) (name GND) (type passive))
-        (pin (num 8) (name SW) (type input))
-        (pin (num 9) (name THPAD) (type passive))))
     (libpart (lib Transistor_FET) (part BSS138)
       (aliases
         (alias 2N7002)
@@ -630,7 +613,24 @@
       (pins
         (pin (num 1) (name G) (type input))
         (pin (num 2) (name S) (type passive))
-        (pin (num 3) (name D) (type passive)))))
+        (pin (num 3) (name D) (type passive))))
+    (libpart (lib mykilio) (part TPS54560)
+      (docs https://datasheet.lcsc.com/lcsc/1810131310_Texas-Instruments-TPS54560DDAR_C31966.pdf)
+      (fields
+        (field (name Reference) U)
+        (field (name Value) TPS54560)
+        (field (name Footprint) Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm_ThermalVias)
+        (field (name LCSC) C31966))
+      (pins
+        (pin (num 1) (name BOOT) (type output))
+        (pin (num 2) (name VIN) (type power_in))
+        (pin (num 3) (name EN) (type input))
+        (pin (num 4) (name RT/CLK) (type input))
+        (pin (num 5) (name FB) (type input))
+        (pin (num 6) (name COMP) (type output))
+        (pin (num 7) (name GND) (type passive))
+        (pin (num 8) (name SW) (type input))
+        (pin (num 9) (name THPAD) (type passive)))))
   (libraries
     (library (logical Connector_Generic)
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Connector_Generic.lib"))
@@ -638,10 +638,10 @@
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Device.lib"))
     (library (logical Motor)
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Motor.lib"))
-    (library (logical Mycelium)
-      (uri B:/home/ubuntu/repos/nicklasfrahm/mycelium/ecad/Mycelium.lib))
     (library (logical Transistor_FET)
-      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Transistor_FET.lib")))
+      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Transistor_FET.lib"))
+    (library (logical mykilio)
+      (uri B:/home/nicklasfrahm/repos/mykilio/ecad/mykilio.lib)))
   (nets
     (net (code 1) (name +12V)
       (node (ref R12) (pin 1))

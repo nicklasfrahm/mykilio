@@ -779,7 +779,7 @@ Wire Notes Line
 Wire Notes Line
 	8350 3850 9000 3850
 $Comp
-L Mycelium:DM28 U1
+L mykilio:DM28 U1
 U 1 1 605EF217
 P 4500 2500
 F 0 "U1" H 4750 3165 50  0000 C CNN
