@@ -41,7 +41,7 @@ jobs:
           proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
           script: |
             curl -sfL https://get.k3s.io | sudo sh -s - \
-              --advertise-address $(host -t a ${{ secrets.SSH_PROXY_HOST }}) \
+              --advertise-address $(host -t a ${{ secrets.SSH_PROXY_HOST }} | cut -d ' ' -f4) \
               --tls-san ${{ secrets.SSH_PROXY_HOST }} \
               --disable traefik \
               --write-kubeconfig-mode 644 \
