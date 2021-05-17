@@ -41,8 +41,13 @@ jobs:
           proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
           script: |
             curl -sfL https://get.k3s.io | \
-              INSTALL_K3S_EXEC="--advertise-address $(host -t a edgerouterx-0.optrin.net) --tls-san edgerouterx-0.optrin.net --disable traefik --selinux" \
-              K3S_KUBECONFIG_MODE="644" \
+              INSTALL_K3S_EXEC=" \
+                --advertise-address $(host -t a edgerouterx-0.optrin.net) \
+                --tls-san edgerouterx-0.optrin.net \
+                --disable traefik \
+                --selinux \
+                --write-kubeconfig-mode '0644'\
+              " \
               sudo sh -s -
 
       - name: Download kubeconfig
