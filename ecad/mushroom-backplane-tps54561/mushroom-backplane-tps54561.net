@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source B:\home\nicklasfrahm\repos\mykilio\ecad\mushroom-backplane-tps54561\mushroom-backplane-tps54561.sch)
-    (date "17/05/2021 10:46:37")
+    (date "17/05/2021 11:17:15")
     (tool "Eeschema (5.1.9)-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -652,7 +652,7 @@
     (library (logical Transistor_FET)
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library/Transistor_FET.lib"))
     (library (logical mykilio)
-      (uri B:/home/nicklasfrahm/repos/mykilio/ecad/mykilio.lib)))
+      (uri B:\home\nicklasfrahm\repos\mykilio\ecad\mushroom-backplane-tps54561/../mykilio.lib)))
   (nets
     (net (code 1) (name "Net-(M1-Pad3)")
       (node (ref R11) (pin 1))
