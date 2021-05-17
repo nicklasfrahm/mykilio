@@ -280,7 +280,11 @@ Thumbs.db
 sdkconfig*
 
 # track symbol library
-!Mycelium.lib
+!mykilio.lib
+
+# ignore annoying KiCAD files
+*-bak
+*-cache*
 
 # exclude build outputs
 build/
