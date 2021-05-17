@@ -208,87 +208,87 @@ Management bus connection
 $Comp
 L Connector_Generic:Conn_02x07_Odd_Even J3
 U 1 1 60925081
-P 10100 1650
-F 0 "J3" H 10150 1125 50  0000 C CNN
-F 1 "BACKPLANE" H 10150 1216 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_2x07_P2.54mm_Vertical" H 10100 1650 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/2010160403_CJT-Changjiang-Connectors-A2541HWV-2x7P_C239347.pdf" H 10100 1650 50  0001 C CNN
-F 4 "C239347" H 10100 1650 50  0001 C CNN "LCSC"
-	1    10100 1650
-	1    0    0    1   
+P 10050 1650
+F 0 "J3" H 10100 1125 50  0000 C CNN
+F 1 "BACKPLANE" H 10100 1216 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_2x07_P2.54mm_Vertical" H 10050 1650 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/2010160403_CJT-Changjiang-Connectors-A2541HWV-2x7P_C239347.pdf" H 10050 1650 50  0001 C CNN
+F 4 "C239347" H 10050 1650 50  0001 C CNN "LCSC"
+	1    10050 1650
+	1    0    0    -1  
 $EndComp
-Text Notes 9800 850  0    50   ~ 0
+Text Notes 9700 850  0    50   ~ 0
 Backplane connector
 $Comp
 L power:GND #PWR0117
 U 1 1 60A751A5
-P 9700 1950
-F 0 "#PWR0117" H 9700 1700 50  0001 C CNN
-F 1 "GND" V 9705 1822 50  0000 R CNN
-F 2 "" H 9700 1950 50  0001 C CNN
-F 3 "" H 9700 1950 50  0001 C CNN
-	1    9700 1950
-	0    1    1    0   
+P 10550 1950
+F 0 "#PWR0117" H 10550 1700 50  0001 C CNN
+F 1 "GND" V 10555 1822 50  0000 R CNN
+F 2 "" H 10550 1950 50  0001 C CNN
+F 3 "" H 10550 1950 50  0001 C CNN
+	1    10550 1950
+	0    -1   1    0   
 $EndComp
-Text GLabel 9700 1750 0    50   Output ~ 0
+Text GLabel 10550 1750 2    50   Output ~ 0
 FANPWM
-Text GLabel 10600 1550 2    50   Output ~ 0
+Text GLabel 9650 1550 0    50   Output ~ 0
 FANDCC
-Text GLabel 9700 1650 0    50   Input ~ 0
+Text GLabel 10550 1650 2    50   Input ~ 0
 FANFDB
 Wire Wire Line
-	10600 1550 10400 1550
+	9650 1550 9850 1550
 Wire Wire Line
-	9700 1750 9900 1750
+	10550 1750 10350 1750
 Wire Wire Line
-	9700 1650 9900 1650
-Text GLabel 10600 1850 2    50   Input ~ 0
+	10550 1650 10350 1650
+Text GLabel 9650 1850 0    50   Input ~ 0
 VIN
 Wire Wire Line
-	9700 1950 9900 1950
+	10550 1950 10350 1950
 $Comp
 L power:GND #PWR0119
 U 1 1 60514268
-P 10600 1350
-F 0 "#PWR0119" H 10600 1100 50  0001 C CNN
-F 1 "GND" V 10605 1222 50  0000 R CNN
-F 2 "" H 10600 1350 50  0001 C CNN
-F 3 "" H 10600 1350 50  0001 C CNN
-	1    10600 1350
-	0    -1   -1   0   
+P 9650 1350
+F 0 "#PWR0119" H 9650 1100 50  0001 C CNN
+F 1 "GND" V 9655 1222 50  0000 R CNN
+F 2 "" H 9650 1350 50  0001 C CNN
+F 3 "" H 9650 1350 50  0001 C CNN
+	1    9650 1350
+	0    1    -1   0   
 $EndComp
 Wire Wire Line
-	10600 1350 10400 1350
+	9650 1350 9850 1350
 Wire Wire Line
-	9700 1350 9900 1350
+	10550 1350 10350 1350
 Wire Wire Line
-	10600 1950 10400 1950
+	9650 1950 9850 1950
 Wire Wire Line
-	10600 1850 10400 1850
-Text GLabel 9700 1450 0    50   Input ~ 0
+	9650 1850 9850 1850
+Text GLabel 10550 1450 2    50   Input ~ 0
 VIN
 Wire Wire Line
-	9700 1450 9900 1450
-Text GLabel 10600 1650 2    50   Input ~ 0
+	10550 1450 10350 1450
+Text GLabel 9650 1650 0    50   Input ~ 0
 POWTMP
 Wire Wire Line
-	10600 1650 10400 1650
-Text GLabel 10600 1450 2    50   Input ~ 0
+	9650 1650 9850 1650
+Text GLabel 9650 1450 0    50   Input ~ 0
 SCL
-Text GLabel 9700 1850 0    50   BiDi ~ 0
+Text GLabel 10550 1850 2    50   BiDi ~ 0
 SDA
-Text GLabel 9700 1550 0    50   Input ~ 0
+Text GLabel 10550 1550 2    50   Input ~ 0
 SRX
-Text GLabel 10600 1750 2    50   Output ~ 0
+Text GLabel 9650 1750 0    50   Output ~ 0
 STX
 Wire Wire Line
-	9700 1550 9900 1550
+	10550 1550 10350 1550
 Wire Wire Line
-	10400 1450 10600 1450
+	9850 1450 9650 1450
 Wire Wire Line
-	10600 1750 10400 1750
+	9650 1750 9850 1750
 Wire Wire Line
-	9900 1850 9700 1850
+	10350 1850 10550 1850
 Text Notes 9600 2700 0    50   ~ 0
 Power supply thermal probe
 Wire Notes Line
@@ -354,9 +354,9 @@ Text GLabel 4250 2400 0    50   Output ~ 0
 5VSMPS
 Wire Notes Line
 	9000 4250 9000 500 
-Text GLabel 9700 1350 0    50   Input ~ 0
+Text GLabel 10550 1350 2    50   Input ~ 0
 5VSMPS
-Text GLabel 10600 1950 2    50   Input ~ 0
+Text GLabel 9650 1950 0    50   Input ~ 0
 5VSMPS
 Wire Wire Line
 	9900 5100 9900 5200
