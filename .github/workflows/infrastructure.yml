@@ -60,6 +60,26 @@ jobs:
           source: /etc/rancher/k3s/k3s.yaml
           target: /tmp/kubeconfig.yml
 
+      - name: Download kubeconfig
+        uses: nicklasfrahm/scp-action@main
+        with:
+          direction: download
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_TARGET_HOST }}
+          fingerprint: ${{ secrets.SSH_TARGET_FINGERPRINT }}
+          proxy_username: ${{ secrets.SSH_USER }}
+          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_host: ${{ secrets.SSH_PROXY_HOST }}
+          proxy_fingerprint: ${{ secrets.SSH_PROXY_FINGERPRINT }}
+          source: /etc/rancher/k3s/k3s.yaml
+          target: kubeconfig.yml
+
+      - name: Display folder contents
+        run: |
+          ls -lah /tmp
+          ls -lah
+
       - name: Adjust API server URL
         run: sed -i s/127.0.0.1/${{ secrets.SSH_PROXY_HOST }}/g /tmp/kubeconfig.yml
 
