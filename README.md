@@ -2,6 +2,7 @@
 
 [![docs](https://github.com/nicklasfrahm/mykilio/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/nicklasfrahm/mykilio/actions/workflows/docs.yml)
 [![ecad](https://github.com/nicklasfrahm/mykilio/actions/workflows/ecad.yml/badge.svg?branch=main)](https://github.com/nicklasfrahm/mykilio/actions/workflows/ecad.yml)
+[![infrastructure](https://github.com/nicklasfrahm/mykilio/actions/workflows/infrastructure.yml/badge.svg?branch=main)](https://github.com/nicklasfrahm/mykilio/actions/workflows/infrastructure.yml)
 
 :warning: **Experimental**: This repository is under active development. Usage in production is not advised, but any kind of feedback is welcome.
 
