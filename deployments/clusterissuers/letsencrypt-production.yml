@@ -5,6 +5,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
+    preferredChain: ISRG Root X1
     email: nicklas.frahm@gmail.com
     privateKeySecretRef:
       name: letsencrypt-production-clusterissuer-key
