@@ -12,16 +12,16 @@ Mykilio is the proposal for a new Living Standard with the goal to reimagine inf
 
 The documentation can be found at https://mykil.io.
 
-## 📉 Stats
+## 📊 Statistics
 
 Here are some statistics to document my learnings throughout the development process.
 
-| 💣 Fault         | 📈 Occurrence | 😅 Poor excuse                                                                                          |
-| ---------------- | ------------- | ------------------------------------------------------------------------------------------------------- |
-| Reverse polarity | 1             | Maybe purple and dark grey were not the best choice for +24V and GND.                                   |
-| Overvoltage      | 1             | I have shaky hands and why does everything have to be so small?!                                        |
-| Short-circuit    | 1             | Next time I am going to solder proper connectors. Promise!                                              |
-| Wrong footprint  | 2             | Why do TQFP and DIP have a different pin numbering!?<br/>It was late and SS/TR is very close to RT/CLK. |
+| 💣 Fault         | 📈 Occurrences | 😅 Poor excuse                                                                                          |
+| ---------------- | -------------- | ------------------------------------------------------------------------------------------------------- |
+| Reverse polarity | 1              | Maybe purple and dark grey were not the best choice for +24V and GND.                                   |
+| Overvoltage      | 1              | I have shaky hands and why does everything have to be so small?!                                        |
+| Short-circuit    | 1              | Next time I am going to solder proper connectors. Promise!                                              |
+| Wrong footprint  | 2              | Why do TQFP and DIP have a different pin numbering!?<br/>It was late and SS/TR is very close to RT/CLK. |
 
 ## 📄 License
 
