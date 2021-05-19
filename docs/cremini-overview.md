@@ -1,6 +1,6 @@
-# Mushroom
+# Cremini
 
-Mushroom is a open source, open hardware blade server. It can take several single board computers that are pin-compatible with the Raspberry Pi and follow the hardware dimensions of the Model B variant of the Raspberry Pi.
+Mushroom is an open source, open hardware blade server. It can take several single board computers that are pin-compatible with the Raspberry Pi and follow the hardware dimensions of the Model B variant of the Raspberry Pi.
 
 ## Features ✨
 
@@ -31,7 +31,7 @@ The blade server is used as a hardware platform for the reference implementation
 
 - **Blade:** A board that is attached directly to the GPIO header of the single board computer. It monitors power usage, controls the power state and can be controlled via TWI (I<sup>2</sup>C). Currently the following variants of the blade are available:
 
-  - [Blade (ATmega328P)](mushroom-blade-atmega328p.md)
+  - [Blade (ATmega328P)](cremini-blade-atmega328p.md)
 
 - **Backplane:** A board to supply the blade and the single board computers with power and connect them to a management bus. The backplane is available in the following variants:
 

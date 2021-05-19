@@ -1,21 +1,25 @@
-site_name: Mycelium
+site_name: Mykilio
 site_dir: public
-site_url: https://mycelium.optrin.io
-repo_url: https://github.com/nicklasfrahm/mycelium
-repo_name: nicklasfrahm/mycelium
+site_url: https://mykil.io
+repo_url: https://github.com/nicklasfrahm/mykilio
+repo_name: nicklasfrahm/mykilio
 edit_uri: edit/main/docs/
 strict: yes
 use_directory_urls: no
 nav:
   - Home: index.md
-  - Mycelium:
-      - Overview: mycelium-overview.md
-      - Properties: mycelium-properties.md
-      - Miscellaneous: mycelium-miscellaneous.md
-  - Mushroom:
-      - Overview: mushroom-overview.md
-      - Management bus interface: mushroom-management-bus-interface.md
-      - Blade (ATmega328P): mushroom-blade-atmega328p.md
+  - Mykilio:
+      - Overview: mykilio-overview.md
+      - Architecture: mykilio-architecture.md
+      - Resource properties: mykilio-resource-properties.md
+      - Baremetal API: mykilio-baremetal-api.md
+      - Miscellaneous: mykilio-miscellaneous.md
+  - Cremini:
+      - Overview: cremini-overview.md
+      - Management bus interface: cremini-management-bus-interface.md
+      - Blade (ATmega328P): cremini-blade-atmega328p.md
+  - Primo:
+      - Overview: primo-overview.md
 theme:
   name: material
   custom_dir: web/template
@@ -23,7 +27,6 @@ theme:
     - navigation.instant
     - navigation.tabs
     - navigation.top
-    - toc.integrate
   palette:
     primary: teal
 markdown_extensions:
@@ -31,6 +34,7 @@ markdown_extensions:
   - attr_list
   - footnotes
   - mdx_truly_sane_lists
+  - pymdownx.details
   - pymdownx.highlight
   - pymdownx.snippets
   - pymdownx.superfences

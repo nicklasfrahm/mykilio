@@ -6,10 +6,10 @@ With the default open-source firmware the individual blades can be controlled vi
 
 All registers are addressed via 8-bit addresses, which follow a common scheme as described in the table below.
 
-| Bits  | Name                  | Description                                                                       |
-| ----- | --------------------- | --------------------------------------------------------------------------------- |
-| [7:4] | Data&nbsp;category    | A 4-bit identifier that corresponds to a [data category][mycelium_data_category]. |
-| [3:0] | Register&nbsp;address | A 4-bit address for a register within a [data category][mycelium_data_category].  |
+| Bits  | Name                  | Description                                                                      |
+| ----- | --------------------- | -------------------------------------------------------------------------------- |
+| [7:4] | Data&nbsp;category    | A 4-bit identifier that corresponds to a [data category][mykilio_data_category]. |
+| [3:0] | Register&nbsp;address | A 4-bit address for a register within a [data category][mykilio_data_category].  |
 
 ## Data framing
 
@@ -59,35 +59,35 @@ This section describes all available register addresses that are part of the int
 
 ### Status registers
 
-| Register | Address | Datatype   | Access | Name                 | Description                                                                                      |
-| -------- | ------- | ---------- | ------ | -------------------- | ------------------------------------------------------------------------------------------------ |
-| BMCSTA   | 0x10    | `uint8`    | RO     | BMC[^1] state        | The state of the baseboard management controller enumerated as described [here][mycelium_state]. |
-| SBCSTA   | 0x11    | `uint8`    | RO     | SBC[^2] state        | The state of the single board controller enumerated as described [here][mycelium_state].         |
-| PSUSTA   | 0x12    | `uint8`    | RO     | PSU[^3] state        | The state of the external power supply enumerated as described [here][mycelium_state].           |
-| FANDCC   | 0x13    | `uint8`    | RO     | DC[^4] fan state     | The state of the DC controlled fan enumerated as described [here][mycelium_state].               |
-| FANPWM   | 0x14    | `uint8`    | RO     | PWM[^5] fan state    | The state of the PWM controlled fan enumerated as described [here][mycelium_state].              |
-| FANMIN   | 0x15    | `uint8`    | RO     | Minimum fan speed    | The minimum rotational speed of the fan in Hertz before entering the stop band.                  |
-| FANMAX   | 0x16    | `uint8`    | RO     | Maximum fan speed    | The maximum rotational speed of the fan in Hertz at full power.                                  |
-| DUTMIN   | 0x17    | `uint8`    | RO     | Minimum fan duty     | The minimum duty cycle of the fan control signal before entering the stop band.                  |
-| DUTMAX   | 0x18    | `uint8`    | RO     | Maximum fan duty     | The maximum duty cycle of the fan control signal at full power.                                  |
-| BMCCPU   | 0x19    | `char[16]` | RO     | BMC CPU[^6]          | A string providing the CPU name of the BMC.                                                      |
-| BMCFWN   | 0x20    | `char[16]` | RO     | BMC firmware name    | A string providing the name of the installed firmware.                                           |
-| BMCFWV   | 0x21    | `char[16]` | RO     | BMC firmware version | A string providing the semantic version of the firmware.                                         |
+| Register | Address | Datatype   | Access | Name                 | Description                                                                                     |
+| -------- | ------- | ---------- | ------ | -------------------- | ----------------------------------------------------------------------------------------------- |
+| BMCSTA   | 0x10    | `uint8`    | RO     | BMC[^1] state        | The state of the baseboard management controller enumerated as described [here][mykilio_state]. |
+| SBCSTA   | 0x11    | `uint8`    | RO     | SBC[^2] state        | The state of the single board controller enumerated as described [here][mykilio_state].         |
+| PSUSTA   | 0x12    | `uint8`    | RO     | PSU[^3] state        | The state of the external power supply enumerated as described [here][mykilio_state].           |
+| FANDCC   | 0x13    | `uint8`    | RO     | DC[^4] fan state     | The state of the DC controlled fan enumerated as described [here][mykilio_state].               |
+| FANPWM   | 0x14    | `uint8`    | RO     | PWM[^5] fan state    | The state of the PWM controlled fan enumerated as described [here][mykilio_state].              |
+| FANMIN   | 0x15    | `uint8`    | RO     | Minimum fan speed    | The minimum rotational speed of the fan in Hertz before entering the stop band.                 |
+| FANMAX   | 0x16    | `uint8`    | RO     | Maximum fan speed    | The maximum rotational speed of the fan in Hertz at full power.                                 |
+| DUTMIN   | 0x17    | `uint8`    | RO     | Minimum fan duty     | The minimum duty cycle of the fan control signal before entering the stop band.                 |
+| DUTMAX   | 0x18    | `uint8`    | RO     | Maximum fan duty     | The maximum duty cycle of the fan control signal at full power.                                 |
+| BMCCPU   | 0x19    | `char[16]` | RO     | BMC CPU[^6]          | A string providing the CPU name of the BMC.                                                     |
+| BMCFWN   | 0x20    | `char[16]` | RO     | BMC firmware name    | A string providing the name of the installed firmware.                                          |
+| BMCFWV   | 0x21    | `char[16]` | RO     | BMC firmware version | A string providing the semantic version of the firmware.                                        |
 
 ### Specification registers
 
-| Register          | Address | Datatype | Access | Name                | Description                                                                                               |
-| ----------------- | ------- | -------- | ------ | ------------------- | --------------------------------------------------------------------------------------------------------- |
-| [SBCPON](#sbcpon) | 0x30    | `uint8`  | RW     | SBC power-on        | The desired state of the single-board computer power rail enumerated as described [here][mycelium_state]. |
-| [SBCSON](#sbcson) | 0x31    | `uint8`  | RW     | SBC soft-on         | The desired state of the single-board computer enumerated as described [here][mycelium_state].            |
-| [FANMOD](#fanmod) | 0x32    | `uint8`  | RW     | Fan control mode    | The mode used to control the fan enumerated as described [here](#fanmod).                                 |
-| [FANFDB](#fanfdb) | 0x33    | `uint8`  | RW     | Fan feedback source | The feedback source of the automatic fan control mode as described [here](#fanfdb).                       |
-| [FANSET](#fanset) | 0x34    | `uint8`  | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.                                  |
-| [FANMAN](#fanman) | 0x35    | `uint8`  | RW     | Fan manual setpoint | The duty setpoint for the fan in manual mode.                                                             |
-| [LEDMOD](#ledmod) | 0x36    | `uint8`  | RW     | LED control mode    | The mode used to control the LED enumerated as described [here](#ledmod).                                 |
-| [LEDFDB](#fanfdb) | 0x37    | `uint8`  | RW     | LED feedback source | The feedback source of the automatic LED control mode as described [here](#ledfdb).                       |
-| [LEDSET](#fanset) | 0x38    | `uint8`  | RW     | LED setpoint        | The sensor range percentage at which the LED should light up with full brightness.                        |
-| [LEDMAN](#fanman) | 0x39    | `uint8`  | RW     | LED manual setpoint | The duty setpoint for the LED in manual mode.                                                             |
+| Register          | Address | Datatype | Access | Name                | Description                                                                                              |
+| ----------------- | ------- | -------- | ------ | ------------------- | -------------------------------------------------------------------------------------------------------- |
+| [SBCPON](#sbcpon) | 0x30    | `uint8`  | RW     | SBC power-on        | The desired state of the single-board computer power rail enumerated as described [here][mykilio_state]. |
+| [SBCSON](#sbcson) | 0x31    | `uint8`  | RW     | SBC soft-on         | The desired state of the single-board computer enumerated as described [here][mykilio_state].            |
+| [FANMOD](#fanmod) | 0x32    | `uint8`  | RW     | Fan control mode    | The mode used to control the fan enumerated as described [here](#fanmod).                                |
+| [FANFDB](#fanfdb) | 0x33    | `uint8`  | RW     | Fan feedback source | The feedback source of the automatic fan control mode as described [here](#fanfdb).                      |
+| [FANSET](#fanset) | 0x34    | `uint8`  | RW     | Fan setpoint        | The sensor range percentage at which the fan should run with full speed.                                 |
+| [FANMAN](#fanman) | 0x35    | `uint8`  | RW     | Fan manual setpoint | The duty setpoint for the fan in manual mode.                                                            |
+| [LEDMOD](#ledmod) | 0x36    | `uint8`  | RW     | LED control mode    | The mode used to control the LED enumerated as described [here](#ledmod).                                |
+| [LEDFDB](#fanfdb) | 0x37    | `uint8`  | RW     | LED feedback source | The feedback source of the automatic LED control mode as described [here](#ledfdb).                      |
+| [LEDSET](#fanset) | 0x38    | `uint8`  | RW     | LED setpoint        | The sensor range percentage at which the LED should light up with full brightness.                       |
+| [LEDMAN](#fanman) | 0x39    | `uint8`  | RW     | LED manual setpoint | The duty setpoint for the LED in manual mode.                                                            |
 
 ### Telemetry registers
 
@@ -260,7 +260,7 @@ To interface with the blade via the management bus interface, the following libr
 [dc]: https://en.wikipedia.org/wiki/Direct_current
 [pwm]: https://en.wikipedia.org/wiki/Pulse-width_modulation
 [gpio]: https://en.wikipedia.org/wiki/General-purpose_input/output
-[mycelium_state]: mycelium-properties.md#state
-[mycelium_data_category]: mycelium-overview.md#data-category
+[mykilio_state]: mykilio-resource-properties.md#state
+[mykilio_data_category]: mykilio-overview.md#data-category
 [rpi-gpio-shutdown]: https://github.com/raspberrypi/firmware/blob/master/boot/overlays/README#L1015
-[mushroom_h]: https://github.com/nicklasfrahm/mycelium/blob/main/embedded/lib/mushroom.h
+[mushroom_h]: https://github.com/nicklasfrahm/mykilio/blob/main/embedded/lib/mushroom.h

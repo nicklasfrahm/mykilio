@@ -4,7 +4,7 @@ This variant of the blade is based on the very popular ATmega328P microcontrolle
 
 ## Electronics
 
-The electronic schematic of the PCB can be found [here](https://github.com/nicklasfrahm/mycelium/blob/main/docs/mushroom-blade-atmega328p.pdf).
+The electronic schematic of the PCB can be found [here](https://github.com/nicklasfrahm/mykilio/blob/main/docs/schematics/mushroom-blade-atmega328p.pdf).
 
 ## Firmware
 
@@ -30,7 +30,7 @@ make clean
 
 ### Connection issues
 
-If you are not able to flash the firmware to the device, this may have several reasons. One potential cause can be missing, bricked or outdated bootloader. Make sure you are using the most recent bootloader by having a look at the [bootloader section](#bootloader).
+If you are not able to flash the firmware to the device, this may have several reasons. One potential cause can be a missing, bricked or outdated bootloader. Make sure you are using the most recent bootloader by having a look at the [bootloader section](#bootloader).
 
 If you don't feel comfortable updating the bootloader and you are sure that the board has a bootloader installed, the issue could be caused by a BAUD mismatch of the bootloader and the programmer. By default the `Makefile` will use a BAUD of `115200` to be compatible with the bootloader that is part of this repository. Some older devices however come with an old bootloader that only supports a BAUD of `57600`. You can adjust the BAUD by changing the command to:
 
@@ -46,7 +46,7 @@ For this example, we will use two Arduino Nanos with an ATmega328P, because this
 
 Begin by wiring up the ICSP headers of the Arduinos as shown in the diagram below.
 
-![Connection between Arduino Nano ICSP headers for bootloader burning](https://media.githubusercontent.com/media/nicklasfrahm/mycelium/docs/assets/img/bootloader-burning-connection.jpg)
+![Connection between Arduino Nano ICSP headers for bootloader burning](https://media.githubusercontent.com/media/nicklasfrahm/mykilio/docs/assets/img/bootloader-burning-connection.jpg)
 
 The first command will install the [Arduino ISP programmer firmware](https://github.com/arduino/arduino-examples/blob/main/examples/11.ArduinoISP/ArduinoISP/ArduinoISP.ino) on the programmer Arduino.
 
