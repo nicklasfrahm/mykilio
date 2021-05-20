@@ -1,0 +1,71 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: emqx
+  namespace: $NAMESPACE
+spec:
+  entryPoints:
+    - mqttsecure
+  routes:
+    - match: HostSNI(`$DOMAIN`)
+      services:
+        - name: emqx
+          port: 1883
+          weight: 10
+  tls:
+    secretName: $NAMESPACE-tls
+    domains:
+      - main: $DOMAIN
+    options:
+      name: emqx
+      namespace: $NAMESPACE
+    passthrough: no
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: TLSOption
+metadata:
+  name: emqx
+  namespace: $NAMESPACE
+spec:
+  minVersion: VersionTLS12
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: emqx
+  namespace: $NAMESPACE
+  labels:
+    app.kubernetes.io/name: emqx
+    app.kubernetes.io/instance: emqx-$NAMESPACE
+    app.kubernetes.io/component: broker
+    app.kubernetes.io/part-of: $NAMESPACE
+    app.kubernetes.io/managed-by: kubectl
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.middlewares: $NAMESPACE-emqx-replacepath@kubernetescrd
+spec:
+  tls:
+    - hosts:
+        - $DOMAIN
+      secretName: $NAMESPACE-tls
+  rules:
+    - host: $DOMAIN
+      http:
+        paths:
+          - pathType: Prefix
+            path: /apis/hooks.mykil.io/v1alpha1/mqtt
+            backend:
+              service:
+                name: emqx
+                port:
+                  number: 8083
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: emqx-replacepath
+  namespace: $NAMESPACE
+spec:
+  replacePathRegex:
+    regex: /apis/hooks.mykil.io/v[a-z0-9]+/mqtt
+    replacement: /mqtt
