@@ -21,16 +21,11 @@ ports:
     expose: yes
     exposedPort: 80
     protocol: TCP
-    redirectTo: websecure
+    # redirectTo: websecure
   websecure:
     port: 8443
     expose: yes
     exposedPort: 443
-    protocol: TCP
-  mqtt:
-    port: 1883
-    expose: yes
-    exposedPort: 1883
     protocol: TCP
   mqttsecure:
     port: 8883
