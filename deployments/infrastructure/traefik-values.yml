@@ -21,8 +21,7 @@ ports:
     expose: yes
     exposedPort: 80
     protocol: TCP
-    ### This is temporarily disabled as hairpin NAT is not available in the current network.
-    # redirectTo: websecure
+    redirectTo: websecure
   websecure:
     port: 8443
     expose: yes
