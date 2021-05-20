@@ -21,7 +21,7 @@ on:
 
 jobs:
   tls:
-    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: alpha
@@ -41,6 +41,7 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
           chmod 600 ~/.kube/config
 
-      - name: Provision TLS certificate
+      - name: Provision namespace and TLS certificate
         run: |
+          kubectl create ns $NAMESPACE || true
           cat deployments/alpha/certificate-manifests.yml | envsubst | kubectl apply -f -
