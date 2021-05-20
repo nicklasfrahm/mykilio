@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: $NAMESPACE
+  namespace: $NAMESPACE
+spec:
+  secretName: $NAMESPACE-tls
+  dnsNames:
+    - $DOMAIN
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+    group: cert-manager.io
