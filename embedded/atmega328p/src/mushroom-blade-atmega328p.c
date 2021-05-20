@@ -54,6 +54,10 @@ int main(void) {
 
   // Configure user LED.
   DDRD |= _BV(DDD5);
+  // Configure SBC connection input.
+  DDRD &= ~_BV(DDD7);
+  // Configure SBC power-on and soft-on output.
+  DDRB |= _BV(DDB0) | _BV(DDB1);
   // Configure TWI address input.
   DDRB &= ~(_BV(DDB5) | _BV(DDB4) | _BV(DDB3) | _BV(DDB2));
 
@@ -64,6 +68,8 @@ int main(void) {
   printf("TWI address: 0x%X\n", twi_address);
 
   uint32_t idle_time = 0;
+  uint8_t on = 0;
+  uint8_t sbc_con = 0;
   while (1) {
     cli();
     uint8_t led = REG_RV(REG_SPECIFICATION, specification_regs, REG_LEDMAN);
@@ -78,10 +84,21 @@ int main(void) {
       PORTD &= ~_BV(PORTD5);
     }
 
+    // The SBCCON signal is low-active as the signal is pulled low when the
+    // microcontroller is connected.
+    sbc_con = PIND & _BV(PIND7) ? 0 : 1;
+
+    if (on) {
+      PORTB |= _BV(PORTB0);
+    } else {
+      PORTB &= ~_BV(PORTB0);
+    }
+    on = on ? 0 : 1;
+
     // TODO: Remove this. It is only useful for debugging.
     // _delay_ms(10);
 
-    printf("\rIdle: %lus", idle_time++);
+    printf("\rSBC (%d)\t\tIdle (%lus)", sbc_con, idle_time++);
     _delay_ms(1000);
   }
 
