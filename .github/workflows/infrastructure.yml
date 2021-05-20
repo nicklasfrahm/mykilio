@@ -19,10 +19,12 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
+defaults:
+  if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+  runs-on: ubuntu-latest
+
 jobs:
   k3s:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
     environment:
       name: infrastructure
     steps:
@@ -76,8 +78,6 @@ jobs:
           file: kubeconfig.yml
 
   traefik:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
     needs:
       - k3s
     steps:
@@ -104,8 +104,6 @@ jobs:
           helm upgrade traefik traefik/traefik --atomic -i -n traefik -f deployments/infrastructure/traefik-values.yml
 
   cert-manager:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
     needs:
       - k3s
     steps:
@@ -129,5 +127,10 @@ jobs:
           kubectl create namespace cert-manager || true
           helm repo add jetstack https://charts.jetstack.io
           helm repo update
-          helm upgrade cert-manager jetstack/cert-manager --atomic -i -n cert-manager --set installCRDs=true
+          helm upgrade \
+            --install \
+            --atomic \
+            --namespace cert-manager \
+            --set installCRDs=true \
+            cert-manager jetstack/cert-manager
           kubectl apply -f deployments/infrastructure/cert-manager-manifests.yml
