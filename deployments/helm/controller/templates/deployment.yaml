@@ -39,8 +39,8 @@ spec:
       initContainers:
         - name: permissions
           image: busybox
-          command: ["/bin/sh", "-c"]
-          args: chown -vR 65532:65532 /certs
+          command: [ "/bin/sh", "-c" ]
+          args: [ "chown -vR 65532:65532 /certs" ]
           volumeMounts:
             - name: certs
               mountPath: "/certs"
