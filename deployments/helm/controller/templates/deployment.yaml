@@ -36,6 +36,16 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         helm.sh/chart: {{ .Chart.Name | quote }}
     spec:
+      initContainers:
+        - name: permissions
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args: chown -vR 65532:65532 /certs
+          volumeMounts:
+            - name: certs
+              mountPath: "/certs"
+          securityContext:
+            runAsUser: 0
       containers:
         - name: {{ .Chart.Name | quote }}
           image: {{ printf "%s/%s:%s" .Values.container.registry .Values.container.repository .Values.container.tag | quote }}
@@ -78,4 +88,8 @@ spec:
         - name: certs
           secret:
             secretName: {{ printf "%s-certs" .Release.Name | quote }}
-            defaultMode: 0400
+            defaultMode: 0600
+      securityContext:
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
