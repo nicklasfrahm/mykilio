@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql-credentials
+  namespace: $NAMESPACE
+type: Opaque
+stringData:
+  postgresql-password: "$POSTGRESQL_ADMIN_PASSWORD"
+  postgresql-postgres-password: "$POSTGRESQL_ADMIN_PASSWORD"
+  postgresql-replication-password: "$POSTGRESQL_REPLICATION_PASSWORD"
+#FIXME: Add secret with postgresql connection URI.

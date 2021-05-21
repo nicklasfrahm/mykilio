@@ -1,0 +1,6 @@
+image:
+  registry: docker.io
+  repository: library/postgres
+  tag: latest
+
+existingSecret: postgresql-credentials
