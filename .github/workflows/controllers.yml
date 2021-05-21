@@ -66,7 +66,7 @@ jobs:
       - name: Build and push container image
         uses: docker/build-push-action@v2
         with:
-          file: deployments/docker/Dockerfile
+          file: deployments/container/Dockerfile
           cache-from: type=registry,ref=${{ env.REPOSITORY }}-${{ matrix.controller }}:main
           cache-to: type=inline
           platforms: ${{ env.PLATFORMS }}
