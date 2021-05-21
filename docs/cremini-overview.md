@@ -1,8 +1,8 @@
 # Cremini
 
-Mushroom is an open source, open hardware blade server. It can take several single board computers that are pin-compatible with the Raspberry Pi and follow the hardware dimensions of the Model B variant of the Raspberry Pi.
+Cremini is an open source, open hardware blade server. It can take several single board computers that are pin-compatible with the Raspberry Pi and follow the hardware dimensions of the Model B variant of the Raspberry Pi.
 
-## Features ✨
+## Features
 
 - Flexibility
   - **Modular design:** Start with a single node and scale up to 16
@@ -25,7 +25,7 @@ Mushroom is an open source, open hardware blade server. It can take several sing
   - USB backpower protection
   - ICSP header for bootloader flashing
 
-## Components 📦
+## Components
 
 The blade server is used as a hardware platform for the reference implementation of the Mycelium API and it consists of the following components:
 
@@ -39,7 +39,7 @@ The blade server is used as a hardware platform for the reference implementation
   - Backplane (TPS54561)
   - Backplane (DM28)
 
-## Roadmap 🔮
+## Roadmap
 
 - **Manager card**: An ESP32 based PCB that connects to the backplane management bus and implements the Mycelium API for the blades.
 - **Redundant power supply backplane**: A PCB that connects to the backplane management bus and allows to connect two redundant power supplies to be connected and controlled via the controller board.

@@ -11,7 +11,3 @@ This API covers most of the features that are required to manage physical infras
 ```
 
 ### Manager
-
-```yaml
---8<-- "examples/baremetal-api/manager-enclosure.yml"
-```

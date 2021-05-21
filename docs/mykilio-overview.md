@@ -16,7 +16,7 @@ _Mykilio_ follows the guiding principles outlined in this section, which are ins
 
 ### Eventual consistency
 
-As the aforementioned connected physical objects, further described as replicas, form a distributed system one also needs to analyze the consistency model of the system. Considering a set of **_0 &leq; n &leq; N_** replicas with a shared state **_S_** there are two possible choices for the architect of the system. They can either design the system for:
+As the aforementioned connected physical objects, further described as replicas, form a distributed system one also needs to analyze the consistency model of the system. Considering a set of **_0 &lt; n &leq; N_** replicas with a shared state **_S_** there are two possible choices for the architect of the system. They can either design the system for:
 
 - **strong consistency**, where _S(1) = S(n) = S(N)_. This system is only strongly consistent and fault tolerant and if and only if the state is replicated synchronously and the system enters a read-only mode upon the failure of a single replica.
 

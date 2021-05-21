@@ -12,6 +12,7 @@ nav:
       - Overview: mykilio-overview.md
       - Architecture: mykilio-architecture.md
       - Resource properties: mykilio-resource-properties.md
+      - Core API: mykilio-core-api.md
       - Baremetal API: mykilio-baremetal-api.md
       - Miscellaneous: mykilio-miscellaneous.md
   - Cremini:
