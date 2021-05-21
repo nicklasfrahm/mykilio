@@ -33,7 +33,6 @@ clean:
 test: $(SRCS)
 	@touch test
 	go test ./... -cover -v
-	exit ${PIPESTATUS[0]}
 
 # Compile the given controller and ensure that it has a valid keypair.
 $(TARGETS): $(BIN_DIR)/%: $(SRCS) $(CERT_DIR)/%/curve.openssl $(CERT_DIR)/%/private.pem $(CERT_DIR)/%/public.pem
