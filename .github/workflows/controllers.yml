@@ -39,6 +39,8 @@ jobs:
       matrix:
         controller:
           - hooks
+          - core
+          - baremetal
     steps:
       - name: Clone repository
         uses: actions/checkout@v2

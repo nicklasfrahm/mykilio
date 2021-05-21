@@ -5,10 +5,10 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/nicklasfrahm/mycelium/pkg/config"
-	"github.com/nicklasfrahm/mycelium/pkg/middleware"
-	"github.com/nicklasfrahm/mycelium/pkg/model"
-	"github.com/nicklasfrahm/mycelium/pkg/util"
+	"github.com/nicklasfrahm/mykilio/pkg/config"
+	"github.com/nicklasfrahm/mykilio/pkg/middleware"
+	"github.com/nicklasfrahm/mykilio/pkg/model"
+	"github.com/nicklasfrahm/mykilio/pkg/util"
 )
 
 var health *model.Health

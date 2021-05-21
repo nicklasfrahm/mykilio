@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog/log"
 
-	"github.com/nicklasfrahm/mycelium/pkg/util"
+	"github.com/nicklasfrahm/mykilio/pkg/util"
 )
 
 // Error returns a middleware to handler errors during requests.

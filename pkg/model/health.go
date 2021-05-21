@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/nicklasfrahm/mycelium/pkg/config"
+	"github.com/nicklasfrahm/mykilio/pkg/config"
 )
 
 // Health provides information about the application server health.
@@ -14,5 +14,5 @@ type Health struct {
 
 // HealthResponse is the server response with the health resource.
 type HealthResponse struct {
-	Data Health `json:"data"`
+	Data Health `json:"datas"`
 }

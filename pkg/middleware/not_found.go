@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/nicklasfrahm/mycelium/pkg/util"
+	"github.com/nicklasfrahm/mykilio/pkg/util"
 )
 
 // NotFound returns a middlware for endpoints that do not exist.

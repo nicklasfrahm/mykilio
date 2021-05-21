@@ -64,7 +64,13 @@ type Identity struct {
 
 // NewIdentity loads the keypair and the curve information.
 func NewIdentity() *Identity {
+	// Get certificate directory.
 	certDir := os.Getenv("CERT_DIR")
+	if certDir == "" {
+		certDir = "certs"
+	}
+
+	// Configure file paths.
 	curveNameFile := path.Join(certDir, "curve.openssl")
 	privateKeyFile := path.Join(certDir, "private.pem")
 	publicKeyFile := path.Join(certDir, "public.pem")

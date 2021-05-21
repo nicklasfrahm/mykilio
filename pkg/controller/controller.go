@@ -1,17 +1,13 @@
 package controller
 
 import (
-	// Standard library dependencies.
 	"os"
 	"time"
 
-	// External dependencies.
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-
-	// Project-internal dependencies.
 
 	"github.com/nicklasfrahm/mykilio/pkg/middleware"
 )
