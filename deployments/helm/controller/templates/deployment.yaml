@@ -40,11 +40,11 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ printf "%s/%s:%s" .Values.container.registry .Values.container.repository .Values.container.tag }}
           ports:
-            - containerPort: 8080
+            - containerPort: {{ .Values.container.port }}
               name: http
           env:
             - name: PORT
-              value: {{ .Values.container.port }}
+              value: {{ .Values.container.port | toString }}
             - name: DATABASE_URI
               valueFrom:
                 secretKeyRef:
