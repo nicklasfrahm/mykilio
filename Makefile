@@ -19,14 +19,14 @@ SRCS		:= $(shell find -iname *.go)
 CURVE		?= secp521r1
 
 .PHONY: all clean
+.PRECIOUS: $(CERT_DIR)/%/curve.openssl $(CERT_DIR)/%/private.pem
 
 all: $(TARGETS)
 
 clean:
 	-@rm -rvf $(BIN_DIR)/*
 	-@rm -rvf $(CERT_DIR)/*
-	-@rm test
-
+	-@rm -vf test
 
 # Creates a cookie file that prevents running tests again if the
 # sources didn't change.

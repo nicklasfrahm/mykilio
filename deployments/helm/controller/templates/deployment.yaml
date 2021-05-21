@@ -1,0 +1,80 @@
+{{/* vim: set filetype=mustache: */}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.controller.apiGroup }}
+    app.kubernetes.io/instance: {{ printf "%s-%s" .Values.controller.name .Release.Namespace  }}
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/part-of: {{ .Release.Namespace }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Release.Replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  minReadySeconds: 15
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.controller.apiGroup }}
+      app.kubernetes.io/instance: {{ printf "%s-%s" .Values.controller.name .Release.Namespace  }}
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/part-of: {{ .Release.Namespace }}
+      app.kubernetes.io/managed-by: {{ .Release.Service }}
+      helm.sh/chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.controller.apiGroup }}
+        app.kubernetes.io/instance: {{ printf "%s-%s" .Values.controller.name .Release.Namespace  }}
+        app.kubernetes.io/component: controller
+        app.kubernetes.io/part-of: {{ .Release.Namespace }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        helm.sh/chart: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ printf "%s/%s:%s" .Values.container.registry .Values.container.repository .Values.container.tag }}
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: PORT
+              value: {{ .Values.container.port }}
+            - name: DATABASE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-database
+                  key: DATABASE_URI
+            - name: BROKER_URI
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-broker
+                  key: BROKER_URI
+          volumeMounts:
+            - name: certs
+              mountPath: "/certs"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: 1
+            periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: 12
+            periodSeconds: 5
+      volumes:
+        - name: certs
+          secret:
+            secretName: {{ .Release.Name }}-certs
+            defaultMode: 0400
+      securityContext:
+        runAsNonRoot: true
+        readOnlyRootFilesystem: true

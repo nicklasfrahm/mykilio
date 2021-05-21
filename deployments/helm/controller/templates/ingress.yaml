@@ -1,0 +1,35 @@
+{{/* vim: set filetype=mustache: */}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.controller.apiGroup }}
+    app.kubernetes.io/instance: {{ printf "%s-%s" .Values.controller.name .Release.Namespace  }}
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/part-of: {{ .Release.Namespace }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.common.publicDomain }}
+      secretName: {{ printf "%s-tls" .Release.Namespace }}
+  rules:
+    - host: {{ .Values.common.publicDomain }}
+      http:
+        paths:
+          - pathType: Prefix
+            path: {{ printf "/apis/%s" .Values.controller.apiGroup }}
+            backend:
+              service:
+                name: {{ .Release.Name }}
+                port:
+                  number: {{ .Values.container.port }}

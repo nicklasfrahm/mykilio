@@ -1,0 +1,14 @@
+common:
+  publicDomain: example.com
+
+controller:
+  name: hooks
+  apiGroup: hooks.mykil.io
+  replicaCount: 1
+
+container:
+  port: 8080
+  registry: ghcr.io
+  repository: nicklasfrahm/mykilio-hooks
+  tag: main
+  pullPolicy: Always

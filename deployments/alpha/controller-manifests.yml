@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $CONTROLLER-database
+  namespace: $NAMESPACE
+type: Opaque
+stringData:
+  DATABASE_URI: postgres://postgres:$POSTGRES_ADMIN_PASSWORD@postgresql.$NAMESPACE.svc/$CONTROLLER?sslmode=disable
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $CONTROLLER-broker
+  namespace: $NAMESPACE
+stringData:
+  BROKER_URI: mqtts://$DOMAIN:8883
