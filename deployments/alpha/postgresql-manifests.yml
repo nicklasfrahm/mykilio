@@ -8,4 +8,3 @@ stringData:
   postgresql-password: "$POSTGRESQL_ADMIN_PASSWORD"
   postgresql-postgres-password: "$POSTGRESQL_ADMIN_PASSWORD"
   postgresql-replication-password: "$POSTGRESQL_REPLICATION_PASSWORD"
-#FIXME: Add secret with postgresql connection URI.
