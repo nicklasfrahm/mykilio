@@ -75,4 +75,4 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ github.sha }}
-            CONTROLLER=${{ matrix.controller }}
+            CONTROLLER=${{ matrix.controller }}.mykil.io
