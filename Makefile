@@ -1,6 +1,7 @@
 VERSION		?= dev
 REMOTE		:= github.com
 NAMESPACE	:= nicklasfrahm/mykilio
+API_VERSION	:= v1alpha1
 
 GOBUILD		:= go build
 BIN_DIR		:= ./bin
@@ -9,6 +10,14 @@ CERT_DIR	:= ./certs
 TARGETS		:= $(addprefix $(BIN_DIR)/,$(patsubst $(CMD_DIR)/%/,%,$(dir $(wildcard $(CMD_DIR)/*/))))
 SRCS		:= $(shell find -iname *.go)
 
+# Configure the desired OpenSSL curve. For compatibility reasons
+# the curves outlined in RFC7518, section 3.1 are recommended:
+# - P-256: prime256v1
+# - P-384: secp384r1
+# - P-521: secp521r1
+# To obtain a full list of all curves run: openssl ecparam -list_curves
+CURVE		?= secp521r1
+
 .PHONY: all clean
 
 all: $(TARGETS)
@@ -16,16 +25,29 @@ all: $(TARGETS)
 clean:
 	-@rm -rvf $(BIN_DIR)/*
 	-@rm -rvf $(CERT_DIR)/*
+	-@rm test
+
+
+# Creates a cookie file that prevents running tests again if the
+# sources didn't change.
+test: $(SRCS)
+	@touch test
+	go test ./... -cover -v
+	exit ${PIPESTATUS[0]}
 
 # Compile the given controller and ensure that it has a valid keypair.
-$(TARGETS): $(BIN_DIR)/%: $(CERT_DIR)/%-public.pem $(CERT_DIR)/%-private.pem $(SRCS)
-	CGO_ENABLED=0 $(GOBUILD) -o $@ -ldflags "-X main.apiGroup=$(@F)/$(VERSION)" cmd/$(@F)/main.go
+$(TARGETS): $(BIN_DIR)/%: $(SRCS) $(CERT_DIR)/%/curve.openssl $(CERT_DIR)/%/private.pem $(CERT_DIR)/%/public.pem
+	CGO_ENABLED=0 $(GOBUILD) -o $@ -ldflags "-X main.apiVersion=$(@F)/$(API_VERSION) -X main.version=$(VERSION)" cmd/$(@F)/main.go
+
+# Save curve type.
+$(CERT_DIR)/%/curve.openssl:
+	@mkdir -p $(@D)
+	echo $(CURVE) > $(@D)/curve.openssl
 
 # Generate a new private key to be used as part of the controller identity.
-$(CERT_DIR)/%-private.pem:
-	@mkdir -p $(@D)
-	openssl ecparam -genkey -name prime256v1 -noout -out $@ 2> /dev/null
+$(CERT_DIR)/%/private.pem: $(CERT_DIR)/%/curve.openssl
+	openssl ecparam -genkey -name $(CURVE) -noout -out $@ 2> /dev/null
 
 # Generate a new public key to be used as part of the controller identity.
-$(CERT_DIR)/%-public.pem: $(CERT_DIR)/%-private.pem
+$(CERT_DIR)/%/public.pem: $(CERT_DIR)/%/private.pem
 	openssl ec -in $^ -pubout -out $@ 2> /dev/null

@@ -1,0 +1,44 @@
+name: controllers
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - go.mod
+      - go.sum
+      - Makefile
+      - deployments/docker/**
+      - .github/workflows/controllers.yml
+      - "**/**.go"
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - main
+    paths:
+      - go.mod
+      - go.sum
+      - Makefile
+      - deployments/docker/**
+      - .github/workflows/controllers.yml
+      - "**/**.go"
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  hooks.mykil.io:
+    runs-on: ubuntu-latest
+    env:
+      CONTROLLER: hooks.mykil.io
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Build container image
+        uses: nicklasfrahm/container-action@main
+        with:
+          file: deployments/docker/Dockerfile
+          repo: ${{ github.repository_owner }}/${{ env.CONTROLLER }}
+          build-args: VERSION=${{ github.sha }},CONTROLLER=${{ env.CONTROLLER }}

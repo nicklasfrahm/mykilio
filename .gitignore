@@ -273,6 +273,9 @@ Thumbs.db
 # ignore environment configuration
 .env
 
+# ingnore test log
+test
+
 # track gomodules file
 !go.mod
 
