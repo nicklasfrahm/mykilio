@@ -51,7 +51,7 @@ jobs:
       - name: Provision namespace and TLS certificate
         run: |
           kubectl create ns $NAMESPACE || true
-          cat deployments/alpha/certificate-manifests.yml | envsubst | kubectl apply -f -
+          cat deployments/alpha/tls-manifests.yml | envsubst | kubectl apply -f -
 
   emqx:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && github.event.workflow_run.conclusion != 'failure'
