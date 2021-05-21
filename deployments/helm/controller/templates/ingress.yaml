@@ -2,30 +2,30 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name | quote }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
-    app.kubernetes.io/name: {{ .Values.controller.apiGroup }}
-    app.kubernetes.io/instance: {{ printf "%s-%s" .Values.controller.name .Release.Namespace  }}
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/part-of: {{ .Release.Namespace }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    helm.sh/chart: {{ .Chart.Name }}
+    app.kubernetes.io/name: {{ .Values.controller.apiGroup | quote }}
+    app.kubernetes.io/instance: {{ printf "%s-%s" .Values.controller.name .Release.Namespace | quote }}
+    app.kubernetes.io/component: {{ .Chart.Name | quote }}
+    app.kubernetes.io/part-of: {{ .Release.Namespace | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    helm.sh/chart: {{ .Chart.Name | quote }}
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
 spec:
   tls:
     - hosts:
-        - {{ .Values.common.publicDomain }}
-      secretName: {{ printf "%s-tls" .Release.Namespace }}
+        - {{ .Values.common.publicDomain | quote }}
+      secretName: {{ printf "%s-tls" .Release.Namespace | quote }}
   rules:
-    - host: {{ .Values.common.publicDomain }}
+    - host: {{ .Values.common.publicDomain | quote }}
       http:
         paths:
           - pathType: Prefix
-            path: {{ printf "/apis/%s" .Values.controller.apiGroup }}
+            path: {{ printf "/apis/%s" .Values.controller.apiGroup | quote }}
             backend:
               service:
-                name: {{ .Release.Name }}
+                name: {{ .Release.Name | quote }}
                 port:
                   number: {{ .Values.container.port }}
