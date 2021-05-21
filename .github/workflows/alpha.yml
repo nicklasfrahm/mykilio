@@ -17,11 +17,18 @@ on:
       - .github/workflows/alpha.yml
   schedule:
     - cron: "0 0 * * *"
+  workflow_run:
+    workflows:
+      - controllers
+    branches:
+      - main
+    types:
+      - completed
   workflow_dispatch:
 
 jobs:
   tls:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && github.event.workflow_run.conclusion != 'failure'
     runs-on: ubuntu-latest
     environment:
       name: alpha
@@ -47,7 +54,7 @@ jobs:
           cat deployments/alpha/certificate-manifests.yml | envsubst | kubectl apply -f -
 
   emqx:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && github.event.workflow_run.conclusion != 'failure'
     runs-on: ubuntu-latest
     needs:
       - tls
