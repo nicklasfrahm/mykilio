@@ -28,7 +28,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  hooks.mykil.io:
+  hooks:
     runs-on: ubuntu-latest
     env:
       CONTROLLER: hooks.mykil.io
