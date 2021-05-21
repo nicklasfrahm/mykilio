@@ -70,11 +70,12 @@ spec:
               port: http
             failureThreshold: 12
             periodSeconds: 5
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
       volumes:
         - name: certs
           secret:
             secretName: {{ .Release.Name }}-certs
             defaultMode: 0400
-      securityContext:
-        runAsNonRoot: true
-        readOnlyRootFilesystem: true
