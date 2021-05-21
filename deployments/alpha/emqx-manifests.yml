@@ -52,7 +52,7 @@ spec:
     - host: $DOMAIN
       http:
         paths:
-          - pathType: Prefix
+          - pathType: Exact
             path: /apis/hooks.mykil.io/v1alpha1/mqtt
             backend:
               service:
