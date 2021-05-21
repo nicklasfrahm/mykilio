@@ -10,6 +10,6 @@ ADD pkg /app/pkg
 ADD internal /app/internal
 RUN VERSION=$VERSION make bin/$CONTROLLER && mv bin/$CONTROLLER app
 
-FROM gcr.io/distroless/base AS run
+FROM gcr.io/distroless/base:nonroot AS run
 COPY --from=build /app/app /
-ENTRYPOINT [ "./app" ]
+ENTRYPOINT [ "/app" ]
