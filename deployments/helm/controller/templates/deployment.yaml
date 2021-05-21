@@ -37,13 +37,22 @@ spec:
         helm.sh/chart: {{ .Chart.Name | quote }}
     spec:
       initContainers:
+        # Reference: https://github.com/kubernetes/kubernetes/issues/81089#issuecomment-716804648
         - name: permissions
           image: busybox
           command: [ "/bin/sh", "-c" ]
-          args: [ "chown -vR 65532:65532 /certs" ]
+          args:
+            - cp -RL /etc/certs-secret/* /etc/certs-data;
+              chown -R 65532:65532 /etc/certs-data/;
+              find /etc/certs-data -type d -exec chmod 700 {} \;
+              find /etc/certs-data -type f -exec chmod 600 {} \;
+              ls -laL /etc/certs-data/;
+              ls -laL /etc/certs-secret/;
           volumeMounts:
-            - name: certs
-              mountPath: "/certs"
+            - name: certs-secret
+              mountPath: /etc/certs-secret
+            - name: certs-data
+              mountPath: /etc/certs-data
           securityContext:
             runAsUser: 0
       containers:
@@ -53,6 +62,8 @@ spec:
             - containerPort: {{ .Values.container.port }}
               name: http
           env:
+            - name: CERT_DIR
+              value: /etc/certs
             - name: PORT
               value: {{ .Values.container.port | quote }}
             - name: DATABASE_URI
@@ -66,8 +77,8 @@ spec:
                   name: {{ printf "%s-broker" .Release.Name | quote }}
                   key: BROKER_URI
           volumeMounts:
-            - name: certs
-              mountPath: "/certs"
+            - name: certs-data
+              mountPath: /etc/certs
           livenessProbe:
             httpGet:
               path: /
@@ -85,10 +96,13 @@ spec:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
       volumes:
-        - name: certs
+        - name: certs-secret
           secret:
             secretName: {{ printf "%s-certs" .Release.Name | quote }}
             defaultMode: 0600
+            medium: Memory
+        - name: certs-data
+          emptyDir: {}
       securityContext:
         runAsUser: 65532
         runAsGroup: 65532
