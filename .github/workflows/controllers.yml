@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         controller:
-          - "hooks"
+          - hooks
     steps:
       - name: Clone repository
         uses: actions/checkout@v2
@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ${{ env.REPOSITORY }}-${{ matrix.repo }}
+          images: ${{ env.REPOSITORY }}-${{ matrix.controller }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
