@@ -100,7 +100,6 @@ spec:
           secret:
             secretName: {{ printf "%s-certs" .Release.Name | quote }}
             defaultMode: 0600
-            medium: Memory
         - name: certs-data
           emptyDir: {}
       securityContext:
