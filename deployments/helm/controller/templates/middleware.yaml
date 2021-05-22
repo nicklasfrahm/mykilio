@@ -1,0 +1,9 @@
+{{/* vim: set filetype=mustache: */}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ printf "%s-replacepathregex" .Release.Name | quote }}
+spec:
+  replacePathRegex:
+    regex: {{ printf "^/apis/%s/(.*)" .Values.controller.apiGroup | quote }}
+    replacement: /$1
