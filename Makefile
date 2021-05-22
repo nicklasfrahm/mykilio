@@ -1,7 +1,6 @@
 VERSION		?= dev
 REMOTE		:= github.com
 NAMESPACE	:= nicklasfrahm/mykilio
-API_VERSION	:= v1alpha1
 
 GOBUILD		:= go build
 BIN_DIR		:= ./bin
@@ -36,7 +35,7 @@ test: $(SRCS)
 
 # Compile the given controller and ensure that it has a valid keypair.
 $(TARGETS): $(BIN_DIR)/%: $(SRCS) $(CERT_DIR)/%/curve.openssl $(CERT_DIR)/%/private.pem $(CERT_DIR)/%/public.pem
-	CGO_ENABLED=0 $(GOBUILD) -o $@ -ldflags "-X main.apiVersion=$(@F)/$(API_VERSION) -X main.version=$(VERSION)" cmd/$(@F)/main.go
+	CGO_ENABLED=0 $(GOBUILD) -o $@ -ldflags "-X $(REMOTE)/$(NAMESPACE)/pkg/controller.apiGroup=$(@F) -X $(REMOTE)/$(NAMESPACE)/pkg/controller.version=$(VERSION)" cmd/$(@F)/main.go
 
 # Save curve type.
 $(CERT_DIR)/%/curve.openssl:
