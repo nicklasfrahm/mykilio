@@ -35,6 +35,8 @@ spec:
         app.kubernetes.io/part-of: {{ .Release.Namespace | quote }}
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         helm.sh/chart: {{ .Chart.Name | quote }}
+      annotations:
+        lastUpdate: {{ now | quote }}
     spec:
       initContainers:
         # Reference: https://github.com/kubernetes/kubernetes/issues/81089#issuecomment-716804648
