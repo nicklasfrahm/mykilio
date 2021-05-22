@@ -5,5 +5,5 @@ metadata:
   name: {{ printf "%s-replacepathregex" .Release.Name | quote }}
 spec:
   replacePathRegex:
-    regex: {{ printf "^/apis/%s/(.*)" .Values.controller.apiGroup | quote }}
-    replacement: /$1
+    regex: {{ printf "^/apis/%s(.*)" .Values.controller.apiGroup | quote }}
+    replacement: $1
