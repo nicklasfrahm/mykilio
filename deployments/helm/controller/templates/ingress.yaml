@@ -13,7 +13,7 @@ metadata:
     helm.sh/chart: {{ .Chart.Name | quote }}
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: {{ printf "%s-%s-replacepathregex@kubernetescrd" .Release.Name .Release.Name | quote }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ printf "%s-%s-replacepathregex@kubernetescrd" .Release.Namespace .Release.Name | quote }}
 spec:
   tls:
     - hosts:
