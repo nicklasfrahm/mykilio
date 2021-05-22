@@ -1,9 +1,9 @@
 replicaCount: 1
 emqxConfig:
   EMQX_ALLOW_ANONYMOUS: "false"
-  EMQX_AUTH__HTTP__AUTH_REQ: https://$DOMAIN/apis/hooks.mykil.io/v1alpha1/authn
+  EMQX_AUTH__HTTP__AUTH_REQ__URL: https://$DOMAIN/apis/hooks.mykil.io/v1alpha1/authn
   EMQX_AUTH__HTTP__AUTH_REQ__METHOD: post
-  EMQX_AUTH__HTTP__AUTH_REQ__HEADERS_CONTENTTYPE: application/json
+  EMQX_AUTH__HTTP__AUTH_REQ__HEADERS_CONTENT_TYPE: application/json
   EMQX_AUTH__HTTP__AUTH_REQ__PARAMS: clientId=%c,username=%u,password=%P
 
 emqxLoadedPlugins: >
