@@ -178,6 +178,7 @@ jobs:
             --install \
             --atomic \
             --namespace $NAMESPACE \
+            --recreate-pods \
             --set common.publicDomain="$DOMAIN" \
             --set container.repository="${{ github.repository }}-$CONTROLLER" \
             --set controller.name="$CONTROLLER" \
