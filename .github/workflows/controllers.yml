@@ -8,7 +8,7 @@ on:
       - go.mod
       - go.sum
       - Makefile
-      - deployments/docker/**
+      - deployments/container/**
       - .github/workflows/controllers.yml
       - "**/**.go"
     tags:
@@ -20,7 +20,7 @@ on:
       - go.mod
       - go.sum
       - Makefile
-      - deployments/docker/**
+      - deployments/container/**
       - .github/workflows/controllers.yml
       - "**/**.go"
   schedule:
