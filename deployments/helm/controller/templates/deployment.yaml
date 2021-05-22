@@ -60,6 +60,7 @@ spec:
       containers:
         - name: {{ .Chart.Name | quote }}
           image: {{ printf "%s/%s:%s" .Values.container.registry .Values.container.repository .Values.container.tag | quote }}
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.container.port }}
               name: http
