@@ -7,7 +7,6 @@ RUN go mod download
 ADD Makefile /app
 ADD cmd /app/cmd
 ADD pkg /app/pkg
-ADD internal /app/internal
 RUN VERSION=$VERSION make bin/$CONTROLLER && mv bin/$CONTROLLER app
 
 FROM gcr.io/distroless/base:nonroot AS run

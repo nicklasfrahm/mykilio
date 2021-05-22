@@ -140,10 +140,16 @@ jobs:
       - postgresql
     environment:
       name: alpha
+    strategy:
+      matrix:
+        controller:
+          - hooks
+          - core
+          - baremetal
     env:
       DOMAIN: ${{ secrets.DOMAIN }}
       NAMESPACE: ${{ secrets.NAMESPACE }}
-      CONTROLLER: hooks
+      CONTROLLER: ${{ matrix.controller }}
       POSTGRESQL_ADMIN_PASSWORD: ${{ secrets.POSTGRESQL_ADMIN_PASSWORD }}
     steps:
       - name: Clone repository
@@ -172,7 +178,7 @@ jobs:
             --dry-run=client --output yaml | kubectl apply -f -
           cat deployments/alpha/controller-manifests.yml | envsubst | kubectl apply -f -
 
-      - name: Install ${{ env.CONTROLLER }}.mykil.io controller
+      - name: Install ${{ matrix.controller }}.mykil.io controller
         run: |
           helm upgrade \
             --install \
