@@ -88,12 +88,14 @@ spec:
               port: http
             failureThreshold: 1
             periodSeconds: 5
+            initialDelaySeconds: 10
           startupProbe:
             httpGet:
               path: /
               port: http
             failureThreshold: 12
             periodSeconds: 5
+            initialDelaySeconds: 10
           securityContext:
             runAsNonRoot: true
             readOnlyRootFilesystem: true
