@@ -11,8 +11,7 @@
 #include "esp_netif.h"
 
 static uint32_t netmask2prefix(const esp_ip4_addr_t *netmask) {
-  // TODO: Fix this.
-  return 32 - (uint32_t)round(log2((uint32_t)0xffffffff ^ netmask->addr));
+  return (uint32_t)round(log2(netmask->addr));
 }
 
 // Log ethernet status information.
