@@ -16,7 +16,12 @@
         ],
         "limitSymbolsToIncludedHeaders": false
       },
-      "intelliSenseMode": "linux-gcc-x86"
+      "intelliSenseMode": "linux-gcc-x86",
+      "defines": [
+        "CONFIG_MQTT_URI",
+        "CONFIG_MQTT_USERNAME",
+        "CONFIG_MQTT_PASSWORD"
+      ]
     }
   ],
   "version": 4

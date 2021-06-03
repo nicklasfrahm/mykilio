@@ -4,4 +4,6 @@
 cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-project(mushroom-controller-esp32)
+project(cremini-controller-esp32)
+
+target_add_binary_data(cremini-controller-esp32.elf "main/letsencrypt.pem" TEXT)
