@@ -24,6 +24,9 @@
 // Read a register value from an array of registers.
 #define REG_RV(offset, registers, address) registers[address - offset].value
 
+// Convert integer to boolean.
+#define BOOL(x) x ? 1 : 0
+
 // A cursor to store the information about the current TWI register operation.
 static volatile cursor_t cursor = CURSOR_INITIALIZER;
 
@@ -67,16 +70,15 @@ int main(void) {
   twi_server_start(twi_address);
   printf("TWI address: 0x%X\n", twi_address);
 
-  uint32_t idle_time = 0;
-  uint8_t on = 0;
-  uint8_t sbc_con = 0;
+  uint8_t sbccon = 0;
   while (1) {
     cli();
-    uint8_t led = REG_RV(REG_SPECIFICATION, specification_regs, REG_LEDMAN);
+    uint8_t ledman = REG_RV(REG_SPECIFICATION, specification_regs, REG_LEDMAN);
+    uint8_t sbcpon =
+        BOOL(REG_RV(REG_SPECIFICATION, specification_regs, REG_SBCPON));
     sei();
 
-    if (led) {
-      idle_time = 0;
+    if (ledman) {
       // Turn LED on.
       PORTD |= _BV(PORTD5);
     } else {
@@ -86,19 +88,19 @@ int main(void) {
 
     // The SBCCON signal is low-active as the signal is pulled low when the
     // microcontroller is connected.
-    sbc_con = PIND & _BV(PIND7) ? 0 : 1;
+    sbccon = PIND & _BV(PIND7) ? 0 : 1;
 
-    if (on) {
+    if (sbcpon) {
       PORTB |= _BV(PORTB0);
     } else {
       PORTB &= ~_BV(PORTB0);
     }
-    on = on ? 0 : 1;
 
     // TODO: Remove this. It is only useful for debugging.
     // _delay_ms(10);
 
-    printf("\rSBC (%d)\t\tIdle (%lus)", sbc_con, idle_time++);
+    printf("\r{\"sbccon\":%d,\"sbcpon\":%d,\"ledman\":%d}", sbccon, sbcpon,
+           ledman);
     _delay_ms(1000);
   }
 
