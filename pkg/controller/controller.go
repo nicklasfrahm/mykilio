@@ -1,11 +1,18 @@
 package controller
 
 import (
+	"database/sql"
 	"os"
+	"path"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
@@ -22,13 +29,10 @@ var (
 type Controller struct {
 	APIGroup    string
 	APIVersions []string `json:"apiVersions"`
+	DB          *sqlx.DB
 	Identity    *Identity
 	HTTPServer  *fiber.App
 	Version     string
-}
-
-// APIVersion stores information about an installed API version.
-type APIVersion struct {
 }
 
 type InstallHook func(c *Controller) string
@@ -63,6 +67,58 @@ func New() *Controller {
 	log.Info().Msgf("Version: %s", controller.Version)
 
 	return controller
+}
+
+func (c *Controller) ConnectDB() {
+	driverName := "postgres"
+
+	db, err := sql.Open(driverName, os.Getenv("DATABASE_URI"))
+	if err != nil {
+		log.Fatal().Msgf("Failed to open database: %v", err)
+	}
+	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	if err != nil {
+		log.Fatal().Msgf("Failed to initiate driver: %v", err)
+	}
+
+	// Get current working directory.
+	workingDirectory, err := os.Getwd()
+	if err != nil {
+		log.Fatal().Msgf("Failed to get current working directory: %v", err)
+	}
+
+	// Get migration directory.
+	migrationDir := os.Getenv("MIGRATION_DIR")
+	if migrationDir == "" {
+		migrationDir = "db"
+	}
+
+	// Initialize migration.
+	migrationPath := "file://" + path.Join(workingDirectory, os.Getenv("MIGRATION_DIR"))
+	m, err := migrate.NewWithDatabaseInstance(migrationPath, driverName, driver)
+	if err != nil {
+		log.Fatal().Msgf("Failed to initiate migration: %v", err)
+	}
+
+	// Run migration.
+	err = m.Up()
+	if err != nil && err != migrate.ErrNoChange {
+		log.Fatal().Msgf("Failed to run migration: %v", err)
+	}
+
+	// Check schema version.
+	schemaVersion, dirty, err := m.Version()
+	if err != nil {
+		log.Fatal().Msgf("Failed to read schema version: %v", err)
+	}
+	dirtyState := "clean"
+	if dirty {
+		dirtyState = "dirty"
+	}
+	log.Info().Msgf("Schema version: %d-%s", schemaVersion, dirtyState)
+	log.Info().Msgf("Connected to database: %s", c.APIGroup)
+
+	c.DB = sqlx.NewDb(db, driverName)
 }
 
 func (c *Controller) Start() {

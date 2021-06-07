@@ -5,6 +5,7 @@ WORKDIR /app
 COPY go.* .
 RUN go mod download
 ADD Makefile /app
+ADD db/$CONTROLLER /app/db
 ADD cmd /app/cmd
 ADD pkg /app/pkg
 RUN VERSION=$VERSION make bin/$CONTROLLER && mv bin/$CONTROLLER app

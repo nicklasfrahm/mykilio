@@ -143,7 +143,6 @@ jobs:
     strategy:
       matrix:
         controller:
-          - hooks
           - core
           - baremetal
     env:

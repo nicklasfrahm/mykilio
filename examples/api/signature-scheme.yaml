@@ -1,0 +1,10 @@
+apiVersion: core.mykil.io/v1alpha1
+kind: SignatureScheme
+metadata:
+  # A human readable unique identifier for the signature scheme.
+  name: ecdsa-secp521r1-sha2-512
+  # Namespace is ommitted as this is a global resource.
+spec:
+  algorithm: RSA
+  curve: ""
+  hash: SHA2-512

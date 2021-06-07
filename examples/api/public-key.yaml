@@ -1,0 +1,13 @@
+apiVersion: core.mykil.io/v1alpha1
+kind: PublicKey
+metadata:
+  name: dev
+  namespace: dev
+spec:
+  signatureScheme:
+    name: ecdsa-secp521r1-sha2-512
+  status: valid
+  pem: |
+    -----BEGIN PUBLIC KEY-----
+    thisisatest
+    -----END PUBLIC KEY-----

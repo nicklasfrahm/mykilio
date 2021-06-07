@@ -11,7 +11,7 @@ SRCS		:= $(shell find -iname *.go)
 
 # Configure the desired OpenSSL curve. For compatibility reasons
 # the curves outlined in RFC7518, section 3.1 are recommended:
-# - P-256: prime256v1
+# - P-256: secp256r1
 # - P-384: secp384r1
 # - P-521: secp521r1
 # To obtain a full list of all curves run: openssl ecparam -list_curves
