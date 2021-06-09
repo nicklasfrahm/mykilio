@@ -1,6 +1,7 @@
 VERSION		?= dev
 REMOTE		:= github.com
 NAMESPACE	:= nicklasfrahm/mykilio
+CONTROLLER	?= core.mykil.io
 
 GOBUILD		:= go build
 BIN_DIR		:= ./bin
@@ -17,10 +18,13 @@ SRCS		:= $(shell find -iname *.go)
 # To obtain a full list of all curves run: openssl ecparam -list_curves
 CURVE		?= secp521r1
 
-.PHONY: all clean
+.PHONY: all run clean
 .PRECIOUS: $(CERT_DIR)/%/curve.openssl $(CERT_DIR)/%/private.pem
 
 all: $(TARGETS)
+
+run: $(BIN_DIR)/$(CONTROLLER)
+	CERT_DIR=$(CERT_DIR)/$(CONTROLLER) MIGRATION_DIR=db/$(CONTROLLER) $^
 
 clean:
 	-@rm -rvf $(BIN_DIR)/*

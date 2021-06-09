@@ -34,7 +34,7 @@ func (s SignatureScheme) String() string {
 
 var (
 	// SchemeES256 is the equivalent of ES256 mentioned in RFC7518.
-	SchemeES256 SignatureScheme = SignatureScheme{"ECDSA", "prime256v1", "SHA-256"}
+	SchemeES256 SignatureScheme = SignatureScheme{"ECDSA", "secp256r1", "SHA-256"}
 	// SchemeES384 is the equivalent of ES384 mentioned in RFC7518.
 	SchemeES384 SignatureScheme = SignatureScheme{"ECDSA", "secp384r1", "SHA-384"}
 	// SchemeES512 is the equivalent of ES512 mentioned in RFC7518.

@@ -5,7 +5,7 @@ metadata:
   namespace: $NAMESPACE
 type: Opaque
 stringData:
-  DATABASE_URI: postgres://postgres:$POSTGRES_ADMIN_PASSWORD@postgresql.$NAMESPACE.svc/$CONTROLLER?sslmode=disable
+  DATABASE_URI: postgres://postgres:$POSTGRESQL_ADMIN_PASSWORD@postgresql.$NAMESPACE.svc/$CONTROLLER.mykil.io?sslmode=disable
 ---
 apiVersion: v1
 kind: Secret
