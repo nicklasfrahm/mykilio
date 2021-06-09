@@ -90,7 +90,7 @@ func (c *Controller) ConnectDB() {
 	// Get migration directory.
 	migrationDir := os.Getenv("MIGRATION_DIR")
 	if migrationDir == "" {
-		migrationDir = "db"
+		migrationDir = "/app/db"
 	}
 
 	// Initialize migration.
