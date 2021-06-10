@@ -20,7 +20,7 @@ func main() {
 	ctrl := controller.New()
 
 	// Connect to database.
-	// ctrl.ConnectDB()
+	ctrl.ConnectDB()
 
 	// Mount controller-specific routes and handlers.
 	ctrl.HTTPServer.Get("/", func(c *fiber.Ctx) error {

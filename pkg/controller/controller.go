@@ -53,34 +53,36 @@ func New() *Controller {
 	// Load environment variables from `.env` file.
 	godotenv.Load()
 
+	// Get current working directory.
+	workingDirectory, err := os.Getwd()
+	if err != nil {
+		log.Fatal().Msgf("Failed to get current working directory: %v", err)
+	}
+
+	// Get certificate directory.
+	certDir := os.Getenv("CERTIFICATE_DIR")
+	if certDir == "" {
+		certDir = path.Join(workingDirectory, "certs", apiGroup)
+	}
+
 	// Create new controller instance.
 	controller = &Controller{
 		APIGroup:    apiGroup,
 		APIVersions: make([]string, 0),
 		HTTPServer:  NewHTTPServer(),
-		Identity:    NewIdentity(),
+		Identity:    NewIdentity(certDir),
 		Version:     version,
 	}
 
 	// Log essential controller startup information.
 	log.Info().Msgf("Controller: %s", controller.APIGroup)
 	log.Info().Msgf("Version: %s", controller.Version)
+	log.Info().Msgf("Certificate directory: %s", certDir)
 
 	return controller
 }
 
 func (c *Controller) ConnectDB() {
-	driverName := "postgres"
-
-	db, err := sql.Open(driverName, os.Getenv("DATABASE_URI"))
-	if err != nil {
-		log.Fatal().Msgf("Failed to open database: %v", err)
-	}
-	driver, err := postgres.WithInstance(db, &postgres.Config{})
-	if err != nil {
-		log.Fatal().Msgf("Failed to initiate driver: %v", err)
-	}
-
 	// Get current working directory.
 	workingDirectory, err := os.Getwd()
 	if err != nil {
@@ -90,11 +92,24 @@ func (c *Controller) ConnectDB() {
 	// Get migration directory.
 	migrationDir := os.Getenv("MIGRATION_DIR")
 	if migrationDir == "" {
-		migrationDir = "/app/db"
+		migrationDir = path.Join(workingDirectory, "db", c.APIGroup)
 	}
+	log.Info().Msgf("Migration directory: %s", migrationDir)
+
+	// Initialize database connection.
+	driverName := "postgres"
+	db, err := sql.Open(driverName, os.Getenv("DATABASE_URI"))
+	if err != nil {
+		log.Fatal().Msgf("Failed to open database: %v", err)
+	}
+	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	if err != nil {
+		log.Fatal().Msgf("Failed to initiate driver: %v", err)
+	}
+	log.Info().Msgf("Database driver: %s", driverName)
 
 	// Initialize migration.
-	migrationPath := "file://" + path.Join(workingDirectory, os.Getenv("MIGRATION_DIR"))
+	migrationPath := "file://" + migrationDir
 	m, err := migrate.NewWithDatabaseInstance(migrationPath, driverName, driver)
 	if err != nil {
 		log.Fatal().Msgf("Failed to initiate migration: %v", err)
@@ -137,7 +152,7 @@ func (c *Controller) Start() {
 	log.Info().Msgf("HTTP server: 0.0.0.0:%s", localPort)
 
 	if err := c.HTTPServer.Listen(":" + localPort); err != nil {
-		log.Fatal().Msg("Starting ")
+		log.Fatal().Msgf("Failed to listen for connections: %v", err)
 	}
 }
 

@@ -1,5 +1,6 @@
 VERSION		?= dev
 REMOTE		:= github.com
+REGISTRY	:= ghcr.io
 NAMESPACE	:= nicklasfrahm/mykilio
 CONTROLLER	?= core.mykil.io
 
@@ -18,18 +19,25 @@ SRCS		:= $(shell find -iname *.go)
 # To obtain a full list of all curves run: openssl ecparam -list_curves
 CURVE		?= secp521r1
 
-.PHONY: all run clean
+.PHONY: all run clean container
 .PRECIOUS: $(CERT_DIR)/%/curve.openssl $(CERT_DIR)/%/private.pem
 
 all: $(TARGETS)
 
 run: $(BIN_DIR)/$(CONTROLLER)
-	CERT_DIR=$(CERT_DIR)/$(CONTROLLER) MIGRATION_DIR=db/$(CONTROLLER) $^
+	$^
 
 clean:
 	-@rm -rvf $(BIN_DIR)/*
 	-@rm -rvf $(CERT_DIR)/*
 	-@rm -vf test
+
+container: deployments/container/Dockerfile
+	docker build \
+		--build-arg "CONTROLLER=$(CONTROLLER)" \
+		--build-arg "VERSION=$(VERSION)" \
+		--tag $(REGISTRY)/$(NAMESPACE)-$(subst .mykil.io,,$(CONTROLLER)):$(VERSION) \
+		--file $^ .
 
 # Creates a cookie file that prevents running tests again if the
 # sources didn't change.

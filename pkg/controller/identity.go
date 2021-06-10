@@ -6,7 +6,6 @@ import (
 	"encoding/pem"
 	"errors"
 	"io/ioutil"
-	"os"
 	"path"
 	"strings"
 
@@ -63,13 +62,7 @@ type Identity struct {
 }
 
 // NewIdentity loads the keypair and the curve information.
-func NewIdentity() *Identity {
-	// Get certificate directory.
-	certDir := os.Getenv("CERT_DIR")
-	if certDir == "" {
-		certDir = "certs"
-	}
-
+func NewIdentity(certDir string) *Identity {
 	// Configure file paths.
 	curveNameFile := path.Join(certDir, "curve.openssl")
 	privateKeyFile := path.Join(certDir, "private.pem")
