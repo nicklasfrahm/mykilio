@@ -56,6 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: docs
+      url: https://${{ secrets.DOMAIN }}
     steps:
       - name: Download static bundle
         uses: actions/download-artifact@v2
