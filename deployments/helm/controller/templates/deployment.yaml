@@ -65,7 +65,7 @@ spec:
             - containerPort: {{ .Values.container.port }}
               name: http
           env:
-            - name: CERT_DIR
+            - name: CERTIFICATE_DIR
               value: {{ printf "/etc/%s/certs" .Values.controller.apiGroup | quote }}
             - name: PORT
               value: {{ .Values.container.port | quote }}
