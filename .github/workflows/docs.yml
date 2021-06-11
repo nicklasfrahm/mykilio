@@ -55,8 +55,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: docs
-      url: https://mykil.io
+      name: github-pages
     steps:
       - name: Download static bundle
         uses: actions/download-artifact@v2
