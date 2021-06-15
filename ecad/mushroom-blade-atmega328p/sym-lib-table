@@ -1,3 +1,0 @@
-(sym_lib_table
-  (lib (name mykilio)(type Legacy)(uri ${KIPRJMOD}/../mykilio.lib)(options "")(descr "The library for custom components used in this project."))
-)
