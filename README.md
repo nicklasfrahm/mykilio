@@ -14,6 +14,12 @@ Mykilio is the proposal for a new Living Standard with the goal to reimagine inf
 
 The documentation can be found at https://mykil.io.
 
+## 📂 Other files
+
+Tracking some files with Git is impractical, which is why these files can be found in this [Google Drive Folder](https://drive.google.com/drive/folders/1nM-uztG-QIkFoa5lGW787VEHX6BM3DAs?usp=sharing). Currently it contains the following content:
+
+- `mcad/` - FreeCAD assemblies and part files
+
 ## 📊 Statistics
 
 Here are some statistics to document my learnings throughout the development process.
