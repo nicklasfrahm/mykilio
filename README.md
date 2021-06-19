@@ -18,7 +18,8 @@ The documentation can be found at https://mykil.io.
 
 Tracking some files with Git is impractical, which is why these files can be found in this [Google Drive Folder](https://drive.google.com/drive/folders/1nM-uztG-QIkFoa5lGW787VEHX6BM3DAs?usp=sharing). Currently it contains the following content:
 
-- `mcad/` - FreeCAD assemblies and part files
+- `mcad/` - [FreeCAD](https://www.freecadweb.org/) assemblies and part files
+- `ecad/` - [CircuitJS1](https://lushprojects.com/circuitjs/) electronic circuit simulations
 
 ## 📊 Statistics
 
