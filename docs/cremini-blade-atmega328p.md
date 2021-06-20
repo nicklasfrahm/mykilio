@@ -4,7 +4,7 @@ This variant of the blade is based on the very popular ATmega328P microcontrolle
 
 ## Electronics
 
-The electronic schematic of the PCB can be found [here](https://github.com/nicklasfrahm/mykilio/blob/main/docs/schematics/mushroom-blade-atmega328p.pdf).
+The electronic schematic of the PCB can be found [here](https://media.githubusercontent.com/media/nicklasfrahm/mykilio/main/docs/schematics/cremini-blade-atmega328p.pdf).
 
 ## Firmware
 
