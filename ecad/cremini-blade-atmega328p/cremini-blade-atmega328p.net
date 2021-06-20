@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source B:\home\nicklasfrahm\repos\mykilio\ecad\cremini-blade-atmega328p\cremini-blade-atmega328p.sch)
-    (date "20/06/2021 13:16:12")
+    (date "20/06/2021 13:51:59")
     (tool "Eeschema (5.1.10)-1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -62,7 +62,7 @@
       (tstamp 605AC5A3))
     (comp (ref C5)
       (value 0.1uF)
-      (footprint Resistor_SMD:R_0402_1005Metric)
+      (footprint Capacitor_SMD:C_0402_1005Metric)
       (datasheet https://datasheet.lcsc.com/szlcsc/Samsung-Electro-Mechanics-CL05B104KO5NNNC_C1525.pdf)
       (fields
         (field (name LCSC) C1525))
@@ -440,7 +440,7 @@
       (tstamp 62FAF58B))
     (comp (ref SW1)
       (value SW_DIP_x06)
-      (footprint Mycelium:DIP_SW_x06)
+      (footprint mykilio:DIP_SW_x06)
       (datasheet https://datasheet.lcsc.com/szlcsc/1810191313_Dongguan-Guangzhu-Industrial-DSHP06TSGET_C40737.pdf)
       (fields
         (field (name LCSC) C40737))
