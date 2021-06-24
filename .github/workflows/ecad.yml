@@ -17,6 +17,7 @@ jobs:
       matrix:
         pcb:
           - cremini-blade-atmega328p
+          - cremini-backplane-lm2596
           - mushroom-backplane-dm28
           - mushroom-backplane-tps54560
           - mushroom-backplane-tps54561
