@@ -1,4 +1,4 @@
-package controller
+package util
 
 import (
 	"io/ioutil"
@@ -24,12 +24,12 @@ func Getenv(variable string) string {
 	// Attempt to read value from file.
 	bytes, err := ioutil.ReadFile(fileURL.Path)
 	if err != nil {
-		log.Fatal().Err(err).Msg("Reading environment file failed: " + value)
+		log.Fatal().Msgf("Failed to read environment file: %v", err)
 	}
 
 	fileValue := strings.TrimSpace(string(bytes))
 	if fileValue == "" {
-		log.Fatal().Msg("Empty environment file: " + value)
+		log.Fatal().Msgf("Failed to read environment variable: environment file empty: %s", value)
 	}
 
 	return fileValue
@@ -40,7 +40,7 @@ func Getenv(variable string) string {
 func GetenvMandatory(variable string) string {
 	value := Getenv(variable)
 	if value == "" {
-		log.Fatal().Msg("Empty environment variable: " + variable)
+		log.Fatal().Msgf("Failed to read environment variable: required variable must not be empty: %s", variable)
 	}
 
 	return value

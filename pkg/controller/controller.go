@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"net/http"
 	"os"
 	"path"
 	"time"
@@ -17,28 +18,31 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/nicklasfrahm/mykilio/pkg/middleware"
+	"github.com/nicklasfrahm/mykilio/pkg/util"
 )
 
-var (
-	version    = "dev"
-	apiGroup   = "test.mykil.io"
-	controller *Controller
-)
+var controller *Controller
+
+// Metadata contains information about the controller.
+type Metadata struct {
+	Version  string `json:"version"`
+	APIGroup string `json:"apiGroup"`
+}
 
 // Controller is the heart of the application that aggregates all functionality.
 type Controller struct {
-	APIGroup    string
-	APIVersions []string `json:"apiVersions"`
-	DB          *sqlx.DB
-	Identity    *Identity
-	HTTPServer  *fiber.App
-	Version     string
+	APIVersions      []string `json:"apiVersions"`
+	DB               *sqlx.DB
+	Identity         *Identity
+	HTTPServer       *fiber.App
+	Metadata         Metadata
+	WorkingDirectory string
 }
 
 type InstallHook func(c *Controller) string
 
 // New creates a new controller for the specified API group and version.
-func New() *Controller {
+func New(meta *Metadata) *Controller {
 	// Return the controller if it was already initialized.
 	if controller != nil {
 		return controller
@@ -60,45 +64,33 @@ func New() *Controller {
 	}
 
 	// Get certificate directory.
-	certDir := os.Getenv("CERTIFICATE_DIR")
-	if certDir == "" {
-		certDir = path.Join(workingDirectory, "certs", apiGroup)
-	}
+	certDir := util.GetenvOptional("CERTIFICATE_DIR", path.Join(workingDirectory, "certs"))
 
 	// Create new controller instance.
 	controller = &Controller{
-		APIGroup:    apiGroup,
-		APIVersions: make([]string, 0),
-		HTTPServer:  NewHTTPServer(),
-		Identity:    NewIdentity(certDir),
-		Version:     version,
+		APIVersions:      make([]string, 0),
+		HTTPServer:       NewHTTPServer(),
+		Identity:         NewIdentity(certDir),
+		Metadata:         *meta,
+		WorkingDirectory: workingDirectory,
 	}
 
 	// Log essential controller startup information.
-	log.Info().Msgf("Controller: %s", controller.APIGroup)
-	log.Info().Msgf("Version: %s", controller.Version)
+	log.Info().Msgf("Controller: %s", controller.Metadata.APIGroup)
+	log.Info().Msgf("Version: %s", controller.Metadata.Version)
 	log.Info().Msgf("Certificate directory: %s", certDir)
 
 	return controller
 }
 
-func (c *Controller) ConnectDB() {
-	// Get current working directory.
-	workingDirectory, err := os.Getwd()
-	if err != nil {
-		log.Fatal().Msgf("Failed to get current working directory: %v", err)
-	}
-
+func (c *Controller) ConnectDB() *Controller {
 	// Get migration directory.
-	migrationDir := os.Getenv("MIGRATION_DIR")
-	if migrationDir == "" {
-		migrationDir = path.Join(workingDirectory, "db", c.APIGroup)
-	}
+	migrationDir := util.GetenvOptional("MIGRATION_DIR", path.Join(c.WorkingDirectory, "db", c.Metadata.APIGroup))
 	log.Info().Msgf("Migration directory: %s", migrationDir)
 
 	// Initialize database connection.
 	driverName := "postgres"
-	db, err := sql.Open(driverName, os.Getenv("DATABASE_URI"))
+	db, err := sql.Open(driverName, util.GetenvMandatory("DATABASE_URI"))
 	if err != nil {
 		log.Fatal().Msgf("Failed to open database: %v", err)
 	}
@@ -131,14 +123,29 @@ func (c *Controller) ConnectDB() {
 		dirtyState = "dirty"
 	}
 	log.Info().Msgf("Schema version: %d-%s", schemaVersion, dirtyState)
-	log.Info().Msgf("Connected to database: %s", c.APIGroup)
+	log.Info().Msgf("Connected to database: %s", c.Metadata.APIGroup)
 
 	c.DB = sqlx.NewDb(db, driverName)
+
+	return c
 }
 
-func (c *Controller) Start() {
+func (ctrl *Controller) Start() {
+	// Mount controller-specific routes and handlers.
+	// api
+
+	ctrl.HTTPServer.Get("/", func(c *fiber.Ctx) error {
+		return c.Status(http.StatusOK).JSON(util.DataBody{
+			Data: struct {
+				Metadata
+			}{
+				ctrl.Metadata,
+			},
+		})
+	})
+
 	// Configure fallback route.
-	c.HTTPServer.Use(middleware.NotFound())
+	ctrl.HTTPServer.Use(middleware.NotFound())
 
 	// Get local port behind proxy.
 	localPort := os.Getenv("PORT")
@@ -151,12 +158,14 @@ func (c *Controller) Start() {
 	// Log status of HTTP server.
 	log.Info().Msgf("HTTP server: 0.0.0.0:%s", localPort)
 
-	if err := c.HTTPServer.Listen(":" + localPort); err != nil {
+	if err := ctrl.HTTPServer.Listen(":" + localPort); err != nil {
 		log.Fatal().Msgf("Failed to listen for connections: %v", err)
 	}
 }
 
-func (ctrl *Controller) Install(install InstallHook) {
+func (ctrl *Controller) Install(install InstallHook) *Controller {
 	// Install the API and store the API version.
 	ctrl.APIVersions = append(ctrl.APIVersions, install(ctrl))
+
+	return ctrl
 }

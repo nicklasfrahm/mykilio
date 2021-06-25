@@ -48,6 +48,9 @@ static volatile mushroom_float_t telemetry_regs_float[6];
 // An array that contains all uint8-typed action registers.
 static volatile mushroom_uint8_t action_regs[3];
 
+// Define register pointers.
+#define SBCPON (*REG_RV(REG_SPECIFICATION, specification_regs, REG_SBCPON))
+
 static void twi_receive(uint8_t data);
 static void twi_send(void);
 

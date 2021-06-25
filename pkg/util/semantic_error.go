@@ -25,7 +25,7 @@ var (
 	ReasonUnexpectedError = NewReason(500, "Unexpected Error")
 )
 
-// Reason describes why an HTTP call failed.
+// Reason describes why an error occurred.
 type Reason struct {
 	Title  string `json:"title"`
 	Status int    `json:"status"`
@@ -42,15 +42,15 @@ func NewReason(status int, reason string) Reason {
 }
 
 // Pagination describes the pagination parameters used for a query.
-type Pagination struct {
-	Next  string `json:"next"`
-	Limit int64  `json:"limit"`
+type Link struct {
+	Rel  string `json:"rel,omitempty"`
+	Href string `json:"href"`
 }
 
 // DataBody describes the HTTP response body when data is sent to the client.
 type DataBody struct {
-	Data       interface{} `json:"data"`
-	Pagination interface{} `json:"pagination,omitempty"`
+	Data  interface{} `json:"data"`
+	Links []Link      `json:"links,omitempty"`
 }
 
 // ErrorBody describes the HTTP response body when an error is sent to the client.
