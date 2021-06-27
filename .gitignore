@@ -294,3 +294,6 @@ build/
 public/
 bin/
 certs/
+
+# ignore FreeCAD backup files
+*.FCStd1
