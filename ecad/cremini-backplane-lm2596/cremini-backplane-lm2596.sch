@@ -41,8 +41,8 @@ F 4 "C239360" H 8700 5600 50  0001 C CNN "LCSC"
 $EndComp
 Text Notes 3100 4450 0    50   ~ 0
 Chassis fan control
-Text Notes 4050 700  0    50   ~ 0
-LM2596 switch-mode power supply
+Text Notes 4000 700  0    50   ~ 0
+LM2596 switched-mode power supply
 Text Notes 8400 4200 0    50   ~ 0
 Vin: 24V-9V\nVout: 5V\nIout: 3A\nη: >80%
 $Comp

@@ -4,9 +4,9 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title "mushroom-backplane-dm28"
-Date "2021-03-22"
-Rev "1.0"
+Title "cremini-backplane-dm28"
+Date "2021-06-27"
+Rev "v2.0"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -50,90 +50,14 @@ F 4 "C239360" H 8700 5600 50  0001 C CNN "LCSC"
 	1    8700 5600
 	-1   0    0    -1  
 $EndComp
-Text Notes 3100 4600 0    50   ~ 0
+Text Notes 3100 4450 0    50   ~ 0
 Chassis fan control
-Text GLabel 9100 6100 3    50   Output ~ 0
+Text GLabel 8900 6150 0    50   Output ~ 0
 VIN
-Text Notes 4200 1450 0    50   ~ 0
-Switched-mode power supply
+Text Notes 4200 700  0    50   ~ 0
+DM28 switched-mode power supply
 Text Notes 8400 4200 0    50   ~ 0
 Vin: 30V-7.5V\nVout: 5V\nIout: 4A\nη: >90%
-Wire Wire Line
-	8400 5400 8300 5400
-Wire Wire Line
-	8300 5400 8300 5500
-Wire Wire Line
-	8300 5700 8400 5700
-Wire Wire Line
-	8400 5600 8300 5600
-Connection ~ 8300 5600
-Wire Wire Line
-	8300 5600 8300 5700
-Wire Wire Line
-	8300 5500 8400 5500
-Connection ~ 8300 5500
-Wire Wire Line
-	8300 5500 8300 5600
-Wire Wire Line
-	8400 5800 8300 5800
-Wire Wire Line
-	8300 5800 8300 5700
-Connection ~ 8300 5700
-Wire Wire Line
-	8400 5900 8300 5900
-Wire Wire Line
-	8300 5900 8300 5800
-Connection ~ 8300 5800
-$Comp
-L power:GND #PWR0112
-U 1 1 6063BD5C
-P 8300 6100
-F 0 "#PWR0112" H 8300 5850 50  0001 C CNN
-F 1 "GND" H 8305 5927 50  0000 C CNN
-F 2 "" H 8300 6100 50  0001 C CNN
-F 3 "" H 8300 6100 50  0001 C CNN
-	1    8300 6100
-	1    0    0    -1  
-$EndComp
-Connection ~ 8300 5900
-Wire Wire Line
-	9800 5400 9900 5400
-Wire Wire Line
-	9900 5400 9900 5500
-Wire Wire Line
-	9900 5900 9800 5900
-Wire Wire Line
-	9800 5800 9900 5800
-Connection ~ 9900 5800
-Wire Wire Line
-	9800 5700 9900 5700
-Connection ~ 9900 5700
-Wire Wire Line
-	9900 5700 9900 5800
-Wire Wire Line
-	9800 5600 9900 5600
-Connection ~ 9900 5600
-Wire Wire Line
-	9900 5600 9900 5700
-Wire Wire Line
-	9800 5500 9900 5500
-Connection ~ 9900 5500
-Wire Wire Line
-	9900 5500 9900 5600
-Wire Wire Line
-	9900 5800 9900 5900
-Connection ~ 9900 5900
-$Comp
-L power:GND #PWR0113
-U 1 1 60662BFC
-P 9900 6100
-F 0 "#PWR0113" H 9900 5850 50  0001 C CNN
-F 1 "GND" H 9905 5927 50  0000 C CNN
-F 2 "" H 9900 6100 50  0001 C CNN
-F 3 "" H 9900 6100 50  0001 C CNN
-	1    9900 6100
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8900 5200 9250 5200
 Wire Wire Line
@@ -170,229 +94,153 @@ Wire Wire Line
 Connection ~ 9250 5200
 Wire Wire Line
 	9250 5200 9300 5200
-Wire Wire Line
-	8400 5200 8300 5200
-Wire Wire Line
-	8300 5200 8300 5300
-Wire Wire Line
-	8300 5300 8400 5300
 $Comp
 L power:+12V #PWR0114
 U 1 1 606B666F
-P 8300 5100
-F 0 "#PWR0114" H 8300 4950 50  0001 C CNN
-F 1 "+12V" H 8315 5273 50  0000 C CNN
-F 2 "" H 8300 5100 50  0001 C CNN
-F 3 "" H 8300 5100 50  0001 C CNN
-	1    8300 5100
+P 8350 5100
+F 0 "#PWR0114" H 8350 4950 50  0001 C CNN
+F 1 "+12V" H 8365 5273 50  0000 C CNN
+F 2 "" H 8350 5100 50  0001 C CNN
+F 3 "" H 8350 5100 50  0001 C CNN
+	1    8350 5100
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:+12V #PWR0115
 U 1 1 606B74AA
-P 9900 5100
-F 0 "#PWR0115" H 9900 4950 50  0001 C CNN
-F 1 "+12V" H 9915 5273 50  0000 C CNN
-F 2 "" H 9900 5100 50  0001 C CNN
-F 3 "" H 9900 5100 50  0001 C CNN
-	1    9900 5100
+P 9850 5100
+F 0 "#PWR0115" H 9850 4950 50  0001 C CNN
+F 1 "+12V" H 9865 5273 50  0000 C CNN
+F 2 "" H 9850 5100 50  0001 C CNN
+F 3 "" H 9850 5100 50  0001 C CNN
+	1    9850 5100
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8300 5100 8300 5200
-Connection ~ 8300 5200
 Wire Notes Line
 	7000 6450 7000 4250
-Text Notes 8550 4600 0    50   ~ 0
+Text Notes 8550 4450 0    50   ~ 0
 Management bus connection
 $Comp
 L Connector_Generic:Conn_02x07_Odd_Even J3
 U 1 1 60925081
-P 10050 1650
-F 0 "J3" H 10100 1125 50  0000 C CNN
-F 1 "BACKPLANE" H 10100 1216 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_2x07_P2.54mm_Vertical" H 10050 1650 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/2010160403_CJT-Changjiang-Connectors-A2541HWV-2x7P_C239347.pdf" H 10050 1650 50  0001 C CNN
-F 4 "C239347" H 10050 1650 50  0001 C CNN "LCSC"
-	1    10050 1650
+P 10050 1450
+F 0 "J3" H 10100 925 50  0000 C CNN
+F 1 "BACKPLANE" H 10100 1016 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_2x07_P2.54mm_Vertical" H 10050 1450 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/2010160403_CJT-Changjiang-Connectors-A2541HWV-2x7P_C239347.pdf" H 10050 1450 50  0001 C CNN
+F 4 "C239347" H 10050 1450 50  0001 C CNN "LCSC"
+	1    10050 1450
 	1    0    0    -1  
 $EndComp
-Text Notes 9700 850  0    50   ~ 0
+Text Notes 9700 700  0    50   ~ 0
 Backplane connector
 $Comp
 L power:GND #PWR0117
 U 1 1 60A751A5
-P 10550 1950
-F 0 "#PWR0117" H 10550 1700 50  0001 C CNN
-F 1 "GND" V 10555 1822 50  0000 R CNN
-F 2 "" H 10550 1950 50  0001 C CNN
-F 3 "" H 10550 1950 50  0001 C CNN
-	1    10550 1950
+P 10400 1750
+F 0 "#PWR0117" H 10400 1500 50  0001 C CNN
+F 1 "GND" V 10405 1622 50  0000 R CNN
+F 2 "" H 10400 1750 50  0001 C CNN
+F 3 "" H 10400 1750 50  0001 C CNN
+	1    10400 1750
 	0    -1   1    0   
 $EndComp
-Text GLabel 10550 1750 2    50   Output ~ 0
+Text GLabel 10400 1550 2    50   Output ~ 0
 FANPWM
-Text GLabel 9650 1550 0    50   Output ~ 0
+Text GLabel 9800 1350 0    50   Output ~ 0
 FANDCC
-Text GLabel 10550 1650 2    50   Input ~ 0
+Text GLabel 10400 1450 2    50   Input ~ 0
 FANFDB
-Wire Wire Line
-	9650 1550 9850 1550
-Wire Wire Line
-	10550 1750 10350 1750
-Wire Wire Line
-	10550 1650 10350 1650
-Text GLabel 9650 1850 0    50   Input ~ 0
-VIN
-Wire Wire Line
-	10550 1950 10350 1950
 $Comp
 L power:GND #PWR0119
 U 1 1 60514268
-P 9650 1350
-F 0 "#PWR0119" H 9650 1100 50  0001 C CNN
-F 1 "GND" V 9655 1222 50  0000 R CNN
-F 2 "" H 9650 1350 50  0001 C CNN
-F 3 "" H 9650 1350 50  0001 C CNN
-	1    9650 1350
+P 9800 1150
+F 0 "#PWR0119" H 9800 900 50  0001 C CNN
+F 1 "GND" V 9805 1022 50  0000 R CNN
+F 2 "" H 9800 1150 50  0001 C CNN
+F 3 "" H 9800 1150 50  0001 C CNN
+	1    9800 1150
 	0    1    -1   0   
 $EndComp
-Wire Wire Line
-	9650 1350 9850 1350
-Wire Wire Line
-	10550 1350 10350 1350
-Wire Wire Line
-	9650 1950 9850 1950
-Wire Wire Line
-	9650 1850 9850 1850
-Text GLabel 10550 1450 2    50   Input ~ 0
-VIN
-Wire Wire Line
-	10550 1450 10350 1450
-Text GLabel 9650 1650 0    50   Input ~ 0
+Text GLabel 9800 1450 0    50   Input ~ 0
 POWTMP
-Wire Wire Line
-	9650 1650 9850 1650
-Text GLabel 9650 1450 0    50   Input ~ 0
+Text GLabel 9800 1250 0    50   Input ~ 0
 SCL
-Text GLabel 10550 1850 2    50   BiDi ~ 0
+Text GLabel 10400 1650 2    50   BiDi ~ 0
 SDA
-Text GLabel 10550 1550 2    50   Input ~ 0
+Text GLabel 10400 1350 2    50   Input ~ 0
 SRX
-Text GLabel 9650 1750 0    50   Output ~ 0
+Text GLabel 9800 1550 0    50   Output ~ 0
 STX
-Wire Wire Line
-	10550 1550 10350 1550
-Wire Wire Line
-	9850 1450 9650 1450
-Wire Wire Line
-	9650 1750 9850 1750
-Wire Wire Line
-	10350 1850 10550 1850
-Text Notes 9600 2700 0    50   ~ 0
+Text Notes 9600 2550 0    50   ~ 0
 Power supply thermal probe
 Wire Notes Line
 	9000 2350 11200 2350
 Wire Wire Line
-	10250 3600 10250 3500
+	10150 3600 10150 3500
 Wire Wire Line
-	9950 3500 10250 3500
-Connection ~ 10250 3500
+	9850 3500 10150 3500
+Connection ~ 10150 3500
 Wire Wire Line
-	9950 3000 10250 3000
-Connection ~ 9950 3000
+	9850 3000 10150 3000
+Connection ~ 9850 3000
 Wire Wire Line
-	9800 3000 9950 3000
+	9700 3000 9850 3000
 Wire Wire Line
-	9950 3400 9950 3500
+	9850 3400 9850 3500
 Wire Wire Line
-	10250 3400 10250 3500
+	10150 3400 10150 3500
 Wire Wire Line
-	10250 3000 10250 3100
+	10150 3000 10150 3100
 Wire Wire Line
-	9950 3000 9950 3100
+	9850 3000 9850 3100
 $Comp
 L Device:Thermistor_NTC TH1
 U 1 1 6094B223
-P 10250 3250
-F 0 "TH1" H 10098 3204 50  0000 R CNN
-F 1 "CMFB103F3950FANT" H 10098 3295 50  0000 R CNN
-F 2 "Resistor_SMD:R_0805_2012Metric" H 10250 3300 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/Guangdong-Fenghua-Advanced-Tech-CMFB103F3950FANT_C51597.pdf" H 10250 3300 50  0001 C CNN
-F 4 "C51597" H 10250 3250 50  0001 C CNN "LCSC"
-	1    10250 3250
+P 10150 3250
+F 0 "TH1" H 9998 3204 50  0000 R CNN
+F 1 "CMFB103F3950FANT" H 9998 3295 50  0000 R CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" H 10150 3300 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Guangdong-Fenghua-Advanced-Tech-CMFB103F3950FANT_C51597.pdf" H 10150 3300 50  0001 C CNN
+F 4 "C51597" H 10150 3250 50  0001 C CNN "LCSC"
+	1    10150 3250
 	-1   0    0    1   
 $EndComp
 $Comp
 L power:GND #PWR0118
 U 1 1 6094B21C
-P 10250 3600
-F 0 "#PWR0118" H 10250 3350 50  0001 C CNN
-F 1 "GND" H 10255 3427 50  0000 C CNN
-F 2 "" H 10250 3600 50  0001 C CNN
-F 3 "" H 10250 3600 50  0001 C CNN
-	1    10250 3600
+P 10150 3600
+F 0 "#PWR0118" H 10150 3350 50  0001 C CNN
+F 1 "GND" H 10155 3427 50  0000 C CNN
+F 2 "" H 10150 3600 50  0001 C CNN
+F 3 "" H 10150 3600 50  0001 C CNN
+	1    10150 3600
 	1    0    0    -1  
 $EndComp
-Text GLabel 9800 3000 0    50   Output ~ 0
+Text GLabel 9700 3000 0    50   Output ~ 0
 POWTMP
 $Comp
 L Device:R R17
 U 1 1 6094B1F8
-P 9950 3250
-F 0 "R17" H 10020 3296 50  0000 L CNN
-F 1 "10k" H 10020 3205 50  0000 L CNN
-F 2 "Resistor_SMD:R_0402_1005Metric" V 9880 3250 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/Uniroyal-Elec-0402WGF1002TCE_C25744.pdf" H 9950 3250 50  0001 C CNN
-F 4 "C25744" H 9950 3250 50  0001 C CNN "LCSC"
-	1    9950 3250
+P 9850 3250
+F 0 "R17" H 9920 3296 50  0000 L CNN
+F 1 "10k" H 9920 3205 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 9780 3250 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/Uniroyal-Elec-0402WGF1002TCE_C25744.pdf" H 9850 3250 50  0001 C CNN
+F 4 "C25744" H 9850 3250 50  0001 C CNN "LCSC"
+	1    9850 3250
 	1    0    0    -1  
 $EndComp
 Wire Notes Line
 	500  4250 11200 4250
 Text GLabel 4250 2400 0    50   Output ~ 0
-5VSMPS
+5VPSU
 Wire Notes Line
 	9000 4250 9000 500 
-Text GLabel 10550 1350 2    50   Input ~ 0
-5VSMPS
-Text GLabel 9650 1950 0    50   Input ~ 0
-5VSMPS
-Wire Wire Line
-	9900 5100 9900 5200
-Wire Wire Line
-	9900 5200 9800 5200
-Connection ~ 9900 5200
-Wire Wire Line
-	9900 5200 9900 5300
-Wire Wire Line
-	9800 5300 9900 5300
-Wire Wire Line
-	9100 5900 9300 5900
-Wire Wire Line
-	9100 5900 8900 5900
-Connection ~ 9100 5900
-Wire Wire Line
-	8900 5800 9100 5800
-Wire Wire Line
-	8900 5700 9100 5700
-Wire Wire Line
-	8900 5600 9100 5600
-Wire Wire Line
-	9100 5900 9100 5800
-Connection ~ 9100 5800
-Wire Wire Line
-	9100 5800 9300 5800
-Wire Wire Line
-	9100 5700 9100 5800
-Connection ~ 9100 5700
-Wire Wire Line
-	9100 5700 9300 5700
-Wire Wire Line
-	9100 5600 9100 5700
-Connection ~ 9100 5600
-Wire Wire Line
-	9100 5600 9300 5600
+Text GLabel 10400 1150 2    50   Input ~ 0
+5VPSU
+Text GLabel 9800 1750 0    50   Input ~ 0
+5VPSU
 $Comp
 L Device:R R13
 U 1 1 6058550B
@@ -751,29 +599,6 @@ Wire Wire Line
 	4250 6200 4250 6350
 Wire Wire Line
 	4250 6350 5000 6350
-Wire Wire Line
-	8300 5900 8300 6000
-Wire Wire Line
-	8400 6000 8300 6000
-Connection ~ 8300 6000
-Wire Wire Line
-	8300 6000 8300 6100
-Wire Wire Line
-	9100 5900 9100 6000
-Wire Wire Line
-	8900 6000 9100 6000
-Connection ~ 9100 6000
-Wire Wire Line
-	9100 6000 9100 6100
-Wire Wire Line
-	9300 6000 9100 6000
-Wire Wire Line
-	9900 5900 9900 6000
-Wire Wire Line
-	9800 6000 9900 6000
-Connection ~ 9900 6000
-Wire Wire Line
-	9900 6000 9900 6100
 Wire Notes Line
 	8350 3850 8350 4250
 Wire Notes Line
@@ -11636,4 +11461,162 @@ C6 18 63 8C 31 DB B3 78 C9 18 63 8C 31 C6 18 63 B6 67 F1 92 31 C6 18 63 8C 31 C6
 00 00 49 45 4E 44 AE 42 60 82 
 EndData
 $EndBitmap
+Wire Wire Line
+	9800 1150 9850 1150
+Wire Wire Line
+	9850 1250 9800 1250
+Wire Wire Line
+	9850 1350 9800 1350
+Wire Wire Line
+	9850 1450 9800 1450
+Wire Wire Line
+	9850 1550 9800 1550
+Wire Wire Line
+	9850 1750 9800 1750
+Wire Wire Line
+	10400 1150 10350 1150
+Wire Wire Line
+	10400 1350 10350 1350
+Wire Wire Line
+	10400 1450 10350 1450
+Wire Wire Line
+	10400 1550 10350 1550
+Wire Wire Line
+	10400 1650 10350 1650
+Wire Wire Line
+	10400 1750 10350 1750
+Wire Wire Line
+	8350 5100 8350 5200
+Wire Wire Line
+	8350 5400 8350 5500
+Wire Wire Line
+	9850 5100 9850 5200
+Wire Wire Line
+	9850 5400 9850 5500
+Wire Wire Line
+	8900 5600 8950 5600
+Wire Wire Line
+	8900 5700 8950 5700
+Wire Wire Line
+	8900 5800 8950 5800
+Wire Wire Line
+	8900 5900 8950 5900
+Wire Wire Line
+	8900 6150 8950 6150
+Connection ~ 8950 5900
+Wire Wire Line
+	8950 5900 9300 5900
+Wire Wire Line
+	8950 5900 8950 5800
+Connection ~ 8950 5800
+Wire Wire Line
+	8950 5800 9300 5800
+Wire Wire Line
+	8950 5800 8950 5700
+Connection ~ 8950 5700
+Wire Wire Line
+	8950 5700 9300 5700
+Wire Wire Line
+	8950 5600 8950 5700
+Connection ~ 8950 5600
+Wire Wire Line
+	8950 5600 9300 5600
+Wire Wire Line
+	8950 5900 8950 6150
+$Comp
+L power:GND #PWR0102
+U 1 1 60E0942A
+P 9900 5400
+F 0 "#PWR0102" H 9900 5150 50  0001 C CNN
+F 1 "GND" V 9905 5272 50  0000 R CNN
+F 2 "" H 9900 5400 50  0001 C CNN
+F 3 "" H 9900 5400 50  0001 C CNN
+	1    9900 5400
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	9900 5400 9850 5400
+Connection ~ 9850 5400
+Wire Wire Line
+	9850 5400 9800 5400
+Wire Wire Line
+	9850 5500 9800 5500
+Connection ~ 9850 5500
+Wire Wire Line
+	9850 5500 9850 5600
+Wire Wire Line
+	9850 5600 9800 5600
+Connection ~ 9850 5600
+Wire Wire Line
+	9850 5600 9850 5700
+Wire Wire Line
+	9850 5700 9800 5700
+Connection ~ 9850 5700
+Wire Wire Line
+	9850 5700 9850 5800
+Wire Wire Line
+	9850 5800 9800 5800
+Connection ~ 9850 5800
+Wire Wire Line
+	9850 5800 9850 5900
+Wire Wire Line
+	9850 5900 9800 5900
+Wire Wire Line
+	8400 5400 8350 5400
+Wire Wire Line
+	8400 5300 8350 5300
+Wire Wire Line
+	8400 5200 8350 5200
+Connection ~ 8350 5200
+Wire Wire Line
+	8350 5200 8350 5300
+Wire Wire Line
+	9850 5200 9800 5200
+Connection ~ 9850 5200
+Wire Wire Line
+	9850 5200 9850 5300
+Wire Wire Line
+	9800 5300 9850 5300
+NoConn ~ 8900 6000
+NoConn ~ 9300 6000
+NoConn ~ 9800 6000
+NoConn ~ 8400 6000
+Wire Wire Line
+	8400 5900 8350 5900
+Wire Wire Line
+	8400 5800 8350 5800
+Connection ~ 8350 5800
+Wire Wire Line
+	8350 5800 8350 5900
+Wire Wire Line
+	8400 5700 8350 5700
+Connection ~ 8350 5700
+Wire Wire Line
+	8350 5700 8350 5800
+Wire Wire Line
+	8400 5600 8350 5600
+Connection ~ 8350 5600
+Wire Wire Line
+	8350 5600 8350 5700
+Wire Wire Line
+	8400 5500 8350 5500
+Connection ~ 8350 5500
+Wire Wire Line
+	8350 5500 8350 5600
+$Comp
+L power:GND #PWR0103
+U 1 1 60E59229
+P 8300 5400
+F 0 "#PWR0103" H 8300 5150 50  0001 C CNN
+F 1 "GND" V 8305 5272 50  0000 R CNN
+F 2 "" H 8300 5400 50  0001 C CNN
+F 3 "" H 8300 5400 50  0001 C CNN
+	1    8300 5400
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	8300 5400 8350 5400
+Connection ~ 8350 5400
+NoConn ~ 10350 1250
+NoConn ~ 9850 1650
 $EndSCHEMATC
