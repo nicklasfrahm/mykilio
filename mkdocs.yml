@@ -21,6 +21,7 @@ nav:
       - Blade (ATmega328P): cremini-blade-atmega328p.md
   - Primo:
       - Overview: primo-overview.md
+  - Contributing: contributing.md
 theme:
   name: material
   custom_dir: web/template
