@@ -52,7 +52,7 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           filename: ${{ matrix.pcb }}.zip
-          path: build/upload/*
+          directory: build/upload/
 
       - name: Update alpha release artifacts
         uses: ncipollo/release-action@v1
