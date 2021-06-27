@@ -58,7 +58,7 @@ jobs:
         uses: ncipollo/release-action@v1
         if: ${{ github.ref == 'refs/heads/main' }} # only on main branch
         with:
-          artifacts: "${{ matrix.pcb }}.zip"
+          artifacts: "build/upload/${{ matrix.pcb }}.zip"
           tag: main
           allowUpdates: true
           omitBody: true
