@@ -47,3 +47,14 @@ jobs:
         with:
           name: ${{ matrix.pcb }}
           path: build/upload/*
+
+      - name: Update alpha release artifacts
+        uses: ncipollo/release-action@v1
+        if: ${{ github.ref == 'refs/heads/main' }} # only on main branch
+        with:
+          artifacts: "build/upload/*"
+          tag: main
+          allowUpdates: true
+          omitBody: true
+          omitName: true
+          token: ${{ secrets.GITHUB_TOKEN }}
