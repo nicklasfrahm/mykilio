@@ -48,6 +48,12 @@ jobs:
           name: ${{ matrix.pcb }}
           path: build/upload/*
 
+      - name: Archive artifacts
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: ${{ matrix.pcb }}.zip
+          path: build/upload/*
+
       - name: Update alpha release artifacts
         uses: ncipollo/release-action@v1
         if: ${{ github.ref == 'refs/heads/main' }} # only on main branch
