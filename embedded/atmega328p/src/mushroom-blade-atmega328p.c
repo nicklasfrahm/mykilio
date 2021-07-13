@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include <util/delay.h>
 
+#include "adc.h"
 #include "cursor.h"
 #include "mushroom.h"
 #include "twi.h"
@@ -55,6 +56,14 @@ int main(void) {
   // Configure UART.
   usart_configure(F_CPU, USART_BAUD);
 
+  // Configure ADC.
+  adc_configure();
+  adc_channel_enable(0);
+  adc_channel_enable(1);
+  adc_channel_enable(2);
+  adc_channel_enable(3);
+  adc_start();
+
   // Configure user LED.
   DDRD |= _BV(DDD5);
   // Configure SBC connection input.
@@ -98,9 +107,10 @@ int main(void) {
 
     // TODO: Remove this. It is only useful for debugging.
     // _delay_ms(10);
+    double bmc_vol = (adc_channel_read(3) / 1.0);  // / 1024.0) / (12.0 / 59.0);
 
-    printf("\r{\"sbccon\":%d,\"sbcpon\":%d,\"ledman\":%d}", sbccon, sbcpon,
-           ledman);
+    printf("\r{\"sbccon\":%d,\"sbcpon\":%d,\"ledman\":%d,\"5V_bmc\":%.4f}",
+           sbccon, sbcpon, ledman, bmc_vol);
     _delay_ms(1000);
   }
 
