@@ -8,13 +8,13 @@ BIN_DIR		:= $(BUILD)/bin
 IMG_DIR		:= $(BUILD)/img
 LIB_DIR		:= $(BUILD)/lib
 VENDOR_DIR  := ./vendor
-TARGET		:= mushroom-blade-atmega328p
+TARGET		:= cremini-blade
 BOOTLOADER  := optiboot_atmega328
 PROGRAMMER  := arduino_isp
 PORT		?= /dev/ttyUSB0
 BAUD        ?= 115200
-SRC			:= $(wildcard ../lib/*.c) $(wildcard src/*.c)
-LIB			:= -I../lib/
+SRC			:= $(wildcard lib/*.c) $(wildcard src/*.c)
+LIB			:= -Ilib/
 OBJ			:= $(SRC:%.c=$(OBJ_DIR)/%.o)
 DEP			:= $(OBJ:.o=.d)
 
