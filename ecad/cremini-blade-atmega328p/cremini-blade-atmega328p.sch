@@ -5,7 +5,7 @@ $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
 Title "cremini-blade-atmega328p"
-Date "2021-03-23"
+Date "2021-06-24"
 Rev "v2.0"
 Comp ""
 Comment1 ""
@@ -13101,8 +13101,6 @@ Wire Wire Line
 Wire Wire Line
 	9000 6450 8900 6450
 Wire Wire Line
-	8900 6550 9000 6550
-Wire Wire Line
 	9000 6650 8900 6650
 Wire Wire Line
 	9500 6650 9600 6650
@@ -13114,8 +13112,6 @@ Wire Wire Line
 	9600 6350 9500 6350
 Wire Wire Line
 	9600 6250 9500 6250
-Wire Wire Line
-	9500 6150 9600 6150
 Wire Wire Line
 	9500 6050 9600 6050
 $Comp
@@ -13144,8 +13140,6 @@ Text GLabel 8900 6150 0    50   Output ~ 0
 SCL
 Text GLabel 8900 6350 0    50   Output ~ 0
 POWTMP
-Text GLabel 9600 6150 2    50   Output ~ 0
-RSV
 $Comp
 L power:GND #PWR033
 U 1 1 6050967A
@@ -13157,8 +13151,6 @@ F 3 "" H 8900 6050 50  0001 C CNN
 	1    8900 6050
 	0    1    -1   0   
 $EndComp
-Text GLabel 8900 6550 0    50   Output ~ 0
-RSV
 Text GLabel 9600 6350 2    50   Output ~ 0
 FANFDB
 Text GLabel 8900 6250 0    50   Input ~ 0
@@ -13989,4 +13981,6 @@ Text GLabel 9250 3850 0    50   Input ~ 0
 COPI
 Text GLabel 9250 3750 0    50   Output ~ 0
 CIPO
+NoConn ~ 9500 6150
+NoConn ~ 9000 6550
 $EndSCHEMATC
