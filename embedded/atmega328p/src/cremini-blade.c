@@ -2,14 +2,12 @@
 #define __AVR_ATmega328P__
 #endif
 
-#define F_CPU 16000000UL
-#define USART_BAUD 1000000
-#define TWI_BASE_ADDRESS 0x10
-
 #include <avr/io.h>
+#include <math.h>
 #include <stdint.h>
-#include <util/delay.h>
+#include <stdio.h>
 
+#include "context.h"
 #include "cremini.h"
 #include "cursor.h"
 #include "fan.h"
@@ -31,10 +29,10 @@
   registers[(address - offset) & 0xFF].value = data
 
 // Convert integer to boolean.
-#define BOOL(x) x ? 1 : 0
+#define BOOL(b) b ? 1 : 0
 
-// A cursor to store the information about the current TWI register operation.
-static volatile cursor_t cursor = CURSOR_INITIALIZER;
+// Convert boolean to text.
+#define BOOL_TEXT(b) b ? "yes" : "no"
 
 // An array that contains all uint8-typed status registers.
 static volatile cremini_uint8_t status_regs[9];
@@ -59,37 +57,51 @@ static void twi_send(void);
 static void timer_every_second(void);
 static void led_configure(void);
 static void sbc_management_configure(void);
-static void twi_address_configure(void);
+static uint8_t twi_address_configure(context_t *ctx);
 static void led_apply(void);
 static void sbc_power_apply(void);
 static void sbc_status_apply(void);
 
+static volatile cursor_t cursor = CURSOR_INITIALIZER;
 static volatile uint8_t fan_hz = 0;
 static volatile uint32_t uptime = 0;
 static volatile uint8_t render = 1;
 static volatile uint8_t sbccon = 0;
 static volatile uint8_t sbcpon = 1;
 static volatile uint8_t ledman = 1;
-static volatile uint16_t timer_top = 0;
+static double fan_rpm = 0;
 
-static uint8_t twi_address = 0x00;
+// Configure application by creating a context.
+context_t context = {
+    .cpu_frequency_hz = 16e6,
+    .twi_base_address = 0x10,
+    .usart_baud = 1e6,
+    .timer_interval_ms = 1000,
+};
 
 int main(void) {
   // USART must be configured as the first module to prevent random characters
   // appearing after a restart.
-  usart_configure(F_CPU, USART_BAUD);
+  usart_configure(&context);
 
-  // Initialize modules.
-  fan_tacho_configure();
-  timer_configure(F_CPU, timer_every_second);
-  led_configure();
-  sbc_management_configure();
-  twi_address_configure();
+  // TWI has to be configured as second module to allow the usage of the pins
+  // for other functionality later.
+  uint8_t twi_address = twi_address_configure(&context);
   twi_server_configure(twi_receive, twi_send);
   twi_server_start(twi_address);
 
+  // Enable interrupts.
+  sei();
+
+  // Initialize modules.
+  fan_tacho_configure();
+  fan_control_configure();
+  timer_configure(&context, timer_every_second);
+  led_configure();
+  sbc_management_configure();
+
   // Render status header.
-  printf("TWI\tUPTIME\tSBCCON\tSBCPON\tFANFDB\tTIMER\n");
+  printf("TWI\tUPTIME\tFANDTY\tSBCCON\tSBCPON\tFANFDB\tFANRPM\n");
 
   while (1) {
     if (render) {
@@ -97,9 +109,28 @@ int main(void) {
       sbc_power_apply();
       sbc_status_apply();
 
-      uint16_t fan_rpm = fan_hz * 60;
-      printf("\r0x%X\t%lu\t%d\t%d\t%d\t%d", twi_address, uptime, sbccon, sbcpon,
-             fan_rpm, timer_top);
+      // Clear previous information.
+      printf("\r");
+
+      // Print TWI address and uptime.
+      printf("0x%X\t%lu\t", twi_address, uptime);
+
+      // Print fan duty.
+      uint8_t duty = uptime % 255 * 5 % 255;
+      fan_control_duty(duty);
+      printf("%d%%  \t", (uint8_t)round((float)duty / (float)255 * 100.0));
+
+      // Print SBC status information.
+      printf("%s\t%s\t", BOOL_TEXT(sbccon), BOOL_TEXT(sbcpon));
+
+      // Discard values greater than 10000 RPM.
+      if (fan_hz <= 167) {
+        // Calculate and print RPM based on frequency.
+        fan_rpm *= 0.9;
+        fan_rpm += 0.1 * fan_hz * 60.0;
+      }
+      printf("%d   \t%d   ", (uint8_t)round(fan_rpm / 60.0),
+             (uint16_t)round(fan_rpm));
 
       // Mark rendering cycle as complete.
       render = 0;
@@ -195,24 +226,20 @@ static void led_configure(void) {
   DDRD |= _BV(DDD5);
 }
 
-static void twi_address_configure(void) {
+static uint8_t twi_address_configure(context_t *ctx) {
   // Configure TWI address input.
   DDRB &= ~(_BV(DDB5) | _BV(DDB4) | _BV(DDB3) | _BV(DDB2));
 
-  twi_address = TWI_BASE_ADDRESS | ((PINB >> 2) & 0x0F);
+  return ctx->twi_base_address | ((PINB >> 2) & 0x0F);
 }
 
 static void timer_every_second(void) {
-  // Read fan speed.
-  fan_hz = fan_tacho_read();
-  fan_tacho_reset();
-
-  // Fetch timer value.
-  timer_top = TCNT1;
-
   // Track uptime.
   uptime++;
 
   // Schedule new rendering.
   render = 1;
+
+  // Read fan speed.
+  fan_hz = fan_tacho_read();
 }

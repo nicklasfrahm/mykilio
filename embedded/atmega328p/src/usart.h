@@ -1,13 +1,9 @@
 #ifndef UART_H
 #define UART_H
 
-#include <stdint.h>
-#include <stdio.h>
-
-// This code is heavily inspired by this blogpost:
-// https://embedds.com/using-standard-io-streams-in-avr-gcc/
+#include "context.h"
 
 // Initializes the USART transceiver.
-void usart_configure(uint32_t cpu_freq, uint32_t baud);
+void usart_configure(context_t* ctx);
 
 #endif

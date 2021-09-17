@@ -14,8 +14,6 @@ void twi_server_configure(void (*on_receive)(uint8_t), void (*on_send)(void)) {
   twi_server_on_send = on_send;
 }
 
-// TODO: Remove all occurences of `cli()` and `sei()`.
-
 void twi_server_start(uint8_t address) {
   // Clear acknowledge and enable bits by
   // disabling interrupts.
