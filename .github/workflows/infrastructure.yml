@@ -90,7 +90,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install kubectl
-        uses: azure/setup-kubectl@v1
+        uses: azure/setup-kubectl@v3
 
       - name: Install helm
         uses: azure/setup-helm@v1
@@ -120,7 +120,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install kubectl
-        uses: azure/setup-kubectl@v1
+        uses: azure/setup-kubectl@v3
 
       - name: Install helm
         uses: azure/setup-helm@v1
@@ -157,7 +157,7 @@ jobs:
       name: infrastructure
     steps:
       - name: Install kubectl
-        uses: azure/setup-kubectl@v1
+        uses: azure/setup-kubectl@v3
 
       - name: Set up kubeconfig
         run: |
